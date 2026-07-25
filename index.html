@@ -1,0 +1,74 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programmable Card Game</title><link rel="stylesheet" href="app.css"></head>
+<body><main>
+<header class="app-header"><h1>Cybernet Deck</h1></header>
+<section id="deck-setup" class="setup-panel"><p class="eyebrow">Deck selection</p><h2>Choose a deck</h2>
+<p class="sub">Select one of your saved decks, or create a new one.</p>
+<label>Your name<input id="owner" value="Taylor"></label>
+<label>Saved decks<select id="saved-decks"><option value="">No saved deck selected</option></select></label>
+<button id="show-new-deck">Create a new deck</button>
+<label id="new-deck-wrap" hidden>New deck name<input id="deck-name" placeholder="Deck name"></label>
+<button class="primary" id="confirm-deck" disabled>Confirm deck &rarr;</button><button id="create-deck" hidden></button></section>
+<nav id="workflow-nav" class="workflow" aria-label="Workflow" hidden>
+  <button data-view="deck" class="active"><span>1</span>Deckbuilding</button>
+  <button data-view="program"><span>2</span>Programming</button>
+  <button data-view="results" disabled><span>3</span>Results</button>
+  <button data-view="logs" disabled><span>4</span>Battle Logs</button>
+</nav>
+<p id="status" class="status" aria-live="polite" hidden></p>
+
+<section id="view-deck" class="view" hidden><div class="view-grid">
+<article class="primary-panel"><h2>Build</h2>
+<p class="sub">Choose your cards. Add multiple copies as needed.</p>
+<label>Filter cards<input id="card-filter" placeholder="Search names or effects"></label>
+<p id="card-result-count" class="field-hint" aria-live="polite"></p><div id="card-gallery" class="card-gallery"></div>
+<p id="deck-validity" class="deck-validity" aria-live="polite"></p>
+<button class="primary" id="continue-to-program">Continue to programming &rarr;</button></article>
+<aside class="context-panel"><h2>Your deck</h2>
+<div id="deck-preview" class="deck-preview"><p class="empty-state">Add cards to see your decklist.</p></div>
+<p id="deck-preview-summary" class="deck-preview-summary">0 / 20&ndash;30 cards</p>
+<div class="format-note"><strong>Format</strong><span>20&ndash;30 cards &middot; win at 20 victory points</span></div></aside>
+</div></section>
+
+<section id="view-program" class="view" hidden><div class="view-grid">
+<article class="primary-panel"><div class="section-heading"><div><h2>Program</h2><p class="sub">Rules run from top to bottom. The first matching rule acts.</p></div></div>
+<p class="field-hint rule-preview-label">Preview</p><div id="rule-sentence" class="rule-sentence" aria-live="polite">Choose a condition and action to preview the rule.</div>
+<div class="program-grid"><div><label>Condition<select id="condition-type">
+<option value="if_able" selected>If able</option><option value="card_in_hand">Card is in my hand</option><option value="own_victory_points_at_most">My victory points are at most</option>
+<option value="opponent_victory_points_at_most">Opponent victory points are at most</option></select></label>
+<label id="condition-card-wrap">Card<select id="condition-card"></select></label>
+<label id="condition-energy-wrap" hidden>Victory-point threshold (or less)<select id="condition-energy"></select></label></div>
+<div><label>Action<select id="action-type"><option value="play_named_card">Play named card</option>
+<option value="play_random_card">Play random card</option><option value="end_turn">End turn</option></select></label>
+<label id="action-card-wrap">Card to play<select id="action-card"></select></label></div></div>
+<div class="row rule-actions"><button id="add-rule">Add</button></div>
+<div hidden aria-hidden="true"><button id="rule-up"></button><button id="rule-down"></button><button id="remove-rule"></button></div>
+<p class="field-hint">Select a rule below to reorder or remove it.</p><ol id="rules" class="rules-list"></ol>
+<div class="simulation-settings"><h3>Simulation settings</h3><div class="program-grid">
+<label>Games per opponent<input id="games" type="number" min="1" value="1000"></label>
+<label>Action limit<input id="action-limit" type="number" min="1" value="100000"></label></div></div>
+<div class="program-submit-actions"><button id="save-deck">Save</button><button id="export-deck">Export for Discord</button><button class="primary" id="submit">Simulate</button></div></article>
+<aside class="context-panel"><h2>Deck reference</h2>
+<div id="program-deck-preview" class="deck-preview"></div>
+<p id="program-deck-summary" class="deck-preview-summary"></p></aside></div></section>
+
+<section id="view-results" class="view" hidden><div class="view-grid">
+<article class="primary-panel"><div class="section-heading"><div>
+<h2>Results</h2></div></div><progress id="simulation-progress" value="0" max="5" hidden></progress>
+<div id="results-empty" class="empty-state">Submit a programmed deck to see matchup results.</div>
+<div id="results-table-wrap" hidden><table><thead><tr><th>Opponent</th><th>Wins</th><th>Losses</th><th>Draws</th><th>Win rate</th></tr></thead>
+<tbody id="matches"></tbody></table></div>
+<div id="match-panel" hidden><div class="subsection-heading"><div><p class="eyebrow">Selected matchup</p>
+<h3 id="match-title"></h3></div><button id="back-to-matchups">&larr; Results</button></div>
+<p class="sub">Select a battle to open its player-facing log.</p><div id="battle-pages" class="page"></div>
+<div class="table-scroll"><table><thead><tr><th>#</th><th>Result</th><th>Score</th><th>Reason</th></tr></thead><tbody id="battles"></tbody></table></div></div></article>
+</div></section>
+
+<section id="view-logs" class="view" hidden><div class="view-grid">
+<article class="primary-panel log-panel"><div class="section-heading"><div>
+<h2>Battle Logs</h2><p id="log-title" class="sub">Player-facing narration for the selected battle.</p></div>
+<button id="back-to-battles">&larr; Back to battles</button></div><div id="log-controls" class="log-controls"></div>
+<pre id="log">Select a battle from the simulation results.</pre></article>
+</div></section>
+</main><script src="app.js"></script></body></html>
