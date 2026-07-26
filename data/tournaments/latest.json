@@ -1,5 +1,5 @@
 {
-  "snapshot_id": "tournament-20260726T160715Z",
+  "snapshot_id": "tournament-20260726T161602Z",
   "manifest": {
     "cards": [
       {
@@ -59,10 +59,14 @@
         "victory_points": 0
       }
     ],
-    "created_at": "2026-07-26T16:07:15.114159+00:00",
+    "created_at": "2026-07-26T16:16:02.623563+00:00",
     "format_version": "cd-ts-1",
-    "id": "tournament-20260726T160715Z",
+    "id": "tournament-20260726T161602Z",
     "published": true,
+    "replay_assets": {
+      "cards": "cards.js",
+      "engine": "engine.js"
+    },
     "rules_fingerprint": "b56431d1bf5702ec9ae967bf17e1d4855126b44a62425aaca6da4dcb85171574"
   },
   "standings": [
