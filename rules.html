@@ -1,0 +1,37 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css"></head>
+<body><main>
+<header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
+<article class="rules-reference"><p class="eyebrow">Rules Reference</p><h1>CyberNetDeck Rules</h1>
+<p>Cybernet Deck is a two-player game where each player builds a 20–30 card deck, sets an ordered program, and then lets their deck battle automatically.</p>
+<h2>Winning the battle</h2>
+<p>You can win in either of two ways:</p>
+<ul>
+<li>Reach <strong>20 Flux</strong>. Flux represents your score. It starts at 0.</li>
+<li>Reduce your opponent&#x27;s <strong>Sync</strong> to 0. Both players start at 20 Sync.</li>
+</ul>
+<p>If you try to draw a card when your deck is empty, you lose the battle and your opponent wins. A battle can also end at the configured action limit; the player who has taken fewer attributed actions wins, or it is a draw if tied.</p>
+<h2>Decks and cards</h2>
+<p>Each deck must contain 20–30 cards. You may include any number of a card that is available in the current format.</p>
+<p>There are two types of cards:</p>
+<ul>
+<li><strong>Pulse</strong> cards resolve their effect and then go to your discard pile.</li>
+<li><strong>Daemon</strong> cards stay on your battlefield, so their ongoing effect remains active.</li>
+</ul>
+<h2>Battle flow</h2>
+<p>Each player starts with five cards. Turns proceed through Start, Draw, Main, and End.</p>
+<h3>Start</h3>
+<p>Start effects resolve, if a future card or format supplies any.</p>
+<h3>Draw</h3>
+<p>Draw one card. If your deck is empty when you attempt that draw, you lose the battle.</p>
+<h3>Main</h3>
+<p>Your program chooses actions while you have cards in hand. It checks its rules from top to bottom and takes the first action whose condition is true.</p>
+<h3>End</h3>
+<p>The turn ends and the other player begins their next turn.</p>
+<h2>Programs</h2>
+<p>A program is an ordered list of simple rules. On each Main-phase decision, the first rule whose condition is true takes its action. If no rule applies, the default action takes over. This continues until you end your turn or run out of cards that you are able to play.</p>
+<p>The default action is a random eligible card by default. You can instead end the turn, or choose which card types are eligible for that default random play.</p>
+<h2>Simulations and battle logs</h2>
+<p>Simulations play a chosen number of battles against each available opponent. Select a matchup and then a battle to read its log. The full log is shown first; choose <strong>View Turns</strong> to inspect one turn at a time and move through it with the turn controls.</p></article>
+</main></body></html>
