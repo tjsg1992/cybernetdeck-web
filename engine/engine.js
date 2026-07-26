@@ -31,6 +31,7 @@ export class Battle {
     winner;
     reason = "";
     active = 0;
+    starting_player = 0;
     phase = "start";
     players;
     constructor(first, second, cards, config, rng, captureLog = true) {
@@ -144,7 +145,7 @@ export class Battle {
             }
         else
             this.note(`${p.id} | turn_end`);
-    } this.active = 1 - this.active; }
+    } this.active = (1 - this.active); }
     finish(winner, reason) { if (this.winner !== undefined)
         return; this.winner = winner; this.reason = reason; this.note(`system | battle_end:${winner ?? "draw"}:${reason}`); }
     run() { while (this.winner === undefined)
