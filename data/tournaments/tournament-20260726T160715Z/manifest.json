@@ -1,0 +1,65 @@
+{
+  "cards": [
+    {
+      "card_id": "victory_point_1",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Core",
+      "effect": "Gain 1 Flux.",
+      "victory_points": 1
+    },
+    {
+      "card_id": "victory_point_2",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Twin Core",
+      "effect": "Gain 2 Flux.",
+      "victory_points": 2
+    },
+    {
+      "card_id": "threefold_siphon",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Spirit Gun",
+      "effect": "Remove 3 Flux from your opponent.",
+      "victory_points": 0
+    },
+    {
+      "card_id": "sparkleback_totem",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "One For All",
+      "effect": "Whenever you gain Flux, gain 1 additional Flux.",
+      "victory_points": 0
+    },
+    {
+      "card_id": "overcharge_gambit",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Kaioken",
+      "effect": "If you have 5 or fewer Flux, gain 10 Flux.",
+      "victory_points": 0
+    },
+    {
+      "card_id": "cursed_seal",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Cursed Seal",
+      "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn.",
+      "victory_points": 0
+    },
+    {
+      "card_id": "five_l",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "5L",
+      "effect": "Reduce your opponent's Sync by 1.",
+      "victory_points": 0
+    }
+  ],
+  "created_at": "2026-07-26T16:07:15.114159+00:00",
+  "format_version": "cd-ts-1",
+  "id": "tournament-20260726T160715Z",
+  "published": false,
+  "rules_fingerprint": "b56431d1bf5702ec9ae967bf17e1d4855126b44a62425aaca6da4dcb85171574"
+}
