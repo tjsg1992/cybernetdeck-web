@@ -74,16 +74,19 @@ export class Battle {
         return false;
     } const moved = this.move(p, c, p.deck, p.hand, "deck", "hand"); if (moved && narrate)
         this.note(`${p.id} | draw`); return moved; }
-    changePoints(p, amount) { this.act(p, `change flux by ${amount}`); const before = p.points; p.points = Math.max(0, p.points + amount); const applied = p.points - before; if (applied)
-        this.note(`${p.id} | flux:${applied}:${p.points}:${Math.max(0, this.config.victory_points_to_win - p.points)}`); }
+    changePoints(p, amount, source) { this.act(p, `change flux by ${amount}`); const before = p.points; p.points = Math.max(0, p.points + amount); const applied = p.points - before; if (applied)
+        this.note(`${p.id} | flux:${applied}:${p.points}:${source ?? ""}`); }
     setSync(p, value) { this.act(p, `set sync to ${value}`); const before = p.sync; p.sync = Math.max(0, value); const applied = p.sync - before; if (applied)
         this.note(`${p.id} | sync:${applied}:${p.sync}`); if (p.sync === 0)
         this.finish(this.opponent(p).id, "sync"); }
     changeSync(p, amount) { this.setSync(p, p.sync + amount); }
-    gain(p, amount, bonus = true) { const before = p.points; this.changePoints(p, Math.max(0, amount)); const applied = p.points - before; if (applied && bonus) {
-        const extra = p.battlefield.flatMap(c => c.definition.mechanics ?? []).filter((m) => (m.type === "victory_point_gain_bonus")).reduce((n, m) => n + m.amount, 0);
-        if (extra)
-            this.gain(p, extra, false);
+    gain(p, amount, bonus = true, source) { const before = p.points; this.changePoints(p, Math.max(0, amount), source); const applied = p.points - before; if (applied && bonus) {
+        for (const daemon of p.battlefield) {
+            for (const mechanic of daemon.definition.mechanics ?? []) {
+                if (mechanic.type === "victory_point_gain_bonus")
+                    this.gain(p, mechanic.amount, false, `bonus:${daemon.definition.card_id}`);
+            }
+        }
     } }
     resolve(p, card) { for (const m of card.definition.mechanics ?? []) {
         if (m.type === "remove_opponent_victory_points")
