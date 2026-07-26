@@ -1,5 +1,5 @@
 {
-  "format_id": "daemon-log-effects",
+  "format_id": "daemon-log-effects-fix-1",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -93,5 +93,5 @@
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "ffaf2a198d87c29e257f55433892e3f6a052715e819dd94fd87c1bf81e0db4b8"
+  "fingerprint": "84ff558df7ff2f9cd77d0eafdfa744b46484ed9c4e9b486c2c2e6737c81cbdc5"
 }
