@@ -1,8 +1,8 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=3df638c93991"></head>
+<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=ffa02fe100d6"></head>
 <body><main>
-<header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="rules.html">Rules Reference</a></header>
+<header class="app-header"><h1>CyberNetDeck</h1><div class="header-actions"><button id="header-tournament" class="header-tournament" type="button" data-tournament-open hidden>Tournament</button><a class="rules-button" href="rules.html">Rules Reference</a></div></header>
 <section id="latest-tournament" class="tournament-panel" aria-live="polite"><p class="eyebrow">TOURNAMENT</p><button class="primary tournament-open" type="button" data-tournament-open>View tournament results</button></section>
 <section id="tournament-view" class="tournament-view" hidden aria-live="polite"></section>
 <section id="deck-setup" class="setup-panel"><p class="eyebrow">Deck selection</p><h2>Choose a deck</h2>
@@ -62,7 +62,7 @@
 
 <section id="view-results" class="view" hidden><div class="view-grid">
 <article class="primary-panel"><div class="section-heading"><div>
-<h2>Results</h2></div><button class="discord-export" id="export-deck-results">Export for Discord</button></div><progress id="simulation-progress" value="0" max="5" hidden></progress>
+<h2>Results</h2></div><div class="results-actions"><button id="view-opponent-deck" class="primary" type="button" hidden>View opponent deck</button><button class="discord-export" id="export-deck-results">Export for Discord</button></div></div><progress id="simulation-progress" value="0" max="5" hidden></progress>
 <div id="results-empty" class="empty-state">Submit a programmed deck to see matchup results.</div>
 <div id="results-table-wrap" hidden><table><thead><tr><th>Opponent</th><th>Wins</th><th>Losses</th><th>Draws</th><th>Win rate</th></tr></thead>
 <tbody id="matches"></tbody></table></div>
@@ -70,6 +70,7 @@
 <h3 id="match-title"></h3></div><button id="back-to-matchups">&larr; Results</button></div>
 <p class="sub">Select a battle to open its player-facing log.</p><div id="battle-pages" class="page"></div>
 <div class="table-scroll"><table><thead><tr><th>#</th><th>Result</th><th>Score</th><th>Reason</th></tr></thead><tbody id="battles"></tbody></table></div></div></article>
+<article id="opponent-deck-panel" class="primary-panel" hidden></article>
 </div></section>
 
 <section id="view-logs" class="view" hidden><div class="view-grid">

@@ -74,8 +74,10 @@ export class Battle {
         return false;
     } const moved = this.move(p, c, p.deck, p.hand, "deck", "hand"); if (moved && narrate)
         this.note(`${p.id} | draw`); return moved; }
-    changePoints(p, amount) { this.act(p, `change flux by ${amount}`); p.points = Math.max(0, p.points + amount); this.note(`${p.id} | flux:${amount}:${p.points}:${Math.max(0, this.config.victory_points_to_win - p.points)}`); }
-    setSync(p, value) { this.act(p, `set sync to ${value}`); p.sync = Math.max(0, value); this.note(`${p.id} | sync:${p.sync}`); if (p.sync === 0)
+    changePoints(p, amount) { this.act(p, `change flux by ${amount}`); const before = p.points; p.points = Math.max(0, p.points + amount); const applied = p.points - before; if (applied)
+        this.note(`${p.id} | flux:${applied}:${p.points}:${Math.max(0, this.config.victory_points_to_win - p.points)}`); }
+    setSync(p, value) { this.act(p, `set sync to ${value}`); const before = p.sync; p.sync = Math.max(0, value); const applied = p.sync - before; if (applied)
+        this.note(`${p.id} | sync:${applied}:${p.sync}`); if (p.sync === 0)
         this.finish(this.opponent(p).id, "sync"); }
     changeSync(p, amount) { this.setSync(p, p.sync + amount); }
     gain(p, amount, bonus = true) { const before = p.points; this.changePoints(p, Math.max(0, amount)); const applied = p.points - before; if (applied && bonus) {
@@ -97,8 +99,11 @@ export class Battle {
         else if (m.type === "set_own_sync_and_draw_half_deck") {
             this.setSync(p, m.sync);
             const drawCount = Math.floor(p.deck.length / 2);
+            let drawn = 0;
             for (let index = 0; index < drawCount && this.winner === undefined; index++)
-                this.draw(p);
+                drawn += Number(this.draw(p, false));
+            if (drawn)
+                this.note(`${p.id} | draw_many:${drawn}`);
         }
         else if (m.type === "end_own_turn") {
             this.phase = "end";
