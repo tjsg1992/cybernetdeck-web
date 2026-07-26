@@ -5,7 +5,7 @@
 <header class="app-header"><h1>Cybernet Deck</h1></header>
 <section id="deck-setup" class="setup-panel"><p class="eyebrow">Deck selection</p><h2>Choose a deck</h2>
 <p class="sub">Select one of your saved decks, or create a new one.</p>
-<label>Your name<input id="owner" value="Taylor"></label>
+<label>Your name<input id="owner" value=""></label>
 <label>Saved decks<select id="saved-decks"><option value="">No saved deck selected</option></select></label>
 <button id="show-new-deck">Create a new deck</button>
 <label id="new-deck-wrap" hidden>New deck name<input id="deck-name" placeholder="Deck name"></label>
@@ -28,34 +28,39 @@
 <aside class="context-panel"><h2>Your deck</h2>
 <div id="deck-preview" class="deck-preview"><p class="empty-state">Add cards to see your decklist.</p></div>
 <p id="deck-preview-summary" class="deck-preview-summary">0 / 20&ndash;30 cards</p>
-<div class="format-note"><strong>Format</strong><span>20&ndash;30 cards &middot; win at 20 victory points</span></div></aside>
+<div class="format-note"><strong>Format</strong><span>20&ndash;30 cards &middot; win at 20 Flux &middot; start at 20 Sync</span></div></aside>
 </div></section>
 
 <section id="view-program" class="view" hidden><div class="view-grid">
 <article class="primary-panel"><div class="section-heading"><div><h2>Program</h2><p class="sub">Rules run from top to bottom. The first matching rule acts.</p></div></div>
 <p class="field-hint rule-preview-label">Preview</p><div id="rule-sentence" class="rule-sentence" aria-live="polite">Choose a condition and action to preview the rule.</div>
 <div class="program-grid"><div><label>Condition<select id="condition-type">
-<option value="if_able" selected>If able</option><option value="card_in_hand">Card is in my hand</option><option value="own_victory_points_at_most">My victory points are at most</option>
-<option value="opponent_victory_points_at_most">Opponent victory points are at most</option></select></label>
+<option value="if_able" selected>If able</option><option value="card_in_hand">Card is in my hand</option><option value="own_victory_points_at_most">My Flux is at most</option>
+<option value="opponent_victory_points_at_most">Opponent Flux is at most</option><option value="opponent_victory_points_at_least">Opponent Flux is at least</option><option value="opponent_sync_at_most">Opponent Sync is at most</option></select></label>
 <label id="condition-card-wrap">Card<select id="condition-card"></select></label>
-<label id="condition-energy-wrap" hidden>Victory-point threshold (or less)<select id="condition-energy"></select></label></div>
+<label id="condition-energy-wrap" hidden>Flux threshold (or less)<select id="condition-energy"></select></label></div>
 <div><label>Action<select id="action-type"><option value="play_named_card">Play named card</option>
 <option value="play_random_card">Play random card</option><option value="end_turn">End turn</option></select></label>
 <label id="action-card-wrap">Card to play<select id="action-card"></select></label></div></div>
 <div class="row rule-actions"><button id="add-rule">Add</button></div>
 <div hidden aria-hidden="true"><button id="rule-up"></button><button id="rule-down"></button><button id="remove-rule"></button></div>
 <p class="field-hint">Select a rule below to reorder or remove it.</p><ol id="rules" class="rules-list"></ol>
+<section class="default-action"><h3>Default action</h3><p class="sub">Used when none of the programmed rules match.</p>
+<div class="row"><label>Action<select id="default-action"><option value="play_random_card" selected>Play a random eligible card</option><option value="end_turn">End turn</option></select></label><button id="configure-random-cards" type="button">Configure eligible cards</button></div>
+<p id="default-action-summary" class="field-hint"></p></section>
 <div class="simulation-settings"><h3>Simulation settings</h3><div class="program-grid">
 <label>Games per opponent<input id="games" type="number" min="1" value="1000"></label>
 <label>Action limit<input id="action-limit" type="number" min="1" value="100000"></label></div></div>
-<div class="program-submit-actions"><button id="save-deck">Save</button><button id="export-deck">Export for Discord</button><button class="primary" id="submit">Simulate</button></div></article>
+<div class="program-submit-actions"><button class="discord-export" id="export-deck">Export for Discord</button><button class="primary" id="submit">Simulate</button></div></article>
 <aside class="context-panel"><h2>Deck reference</h2>
 <div id="program-deck-preview" class="deck-preview"></div>
 <p id="program-deck-summary" class="deck-preview-summary"></p></aside></div></section>
 
+<section id="view-random-cards" class="view" hidden><article class="primary-panel"><div class="section-heading"><div><h2>Eligible random cards</h2><p class="sub">Select which cards may be played by your default random action. Deactivated cards can still be played by a matching programmed rule.</p></div><button id="confirm-random-cards" type="button">Confirm</button></div><div id="random-card-picker" class="random-card-picker"></div></article></section>
+
 <section id="view-results" class="view" hidden><div class="view-grid">
 <article class="primary-panel"><div class="section-heading"><div>
-<h2>Results</h2></div></div><progress id="simulation-progress" value="0" max="5" hidden></progress>
+<h2>Results</h2></div><button class="discord-export" id="export-deck-results">Export for Discord</button></div><progress id="simulation-progress" value="0" max="5" hidden></progress>
 <div id="results-empty" class="empty-state">Submit a programmed deck to see matchup results.</div>
 <div id="results-table-wrap" hidden><table><thead><tr><th>Opponent</th><th>Wins</th><th>Losses</th><th>Draws</th><th>Win rate</th></tr></thead>
 <tbody id="matches"></tbody></table></div>

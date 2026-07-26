@@ -4,7 +4,7 @@
     {
       "card_id": "victory_point_1",
       "display_name": "Core",
-      "effect": "Gain 1 victory point.",
+      "effect": "Gain 1 Flux.",
       "victory_points": 1,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
@@ -15,7 +15,7 @@
     {
       "card_id": "victory_point_2",
       "display_name": "Twin Core",
-      "effect": "Gain 2 victory points.",
+      "effect": "Gain 2 Flux.",
       "victory_points": 2,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
@@ -26,7 +26,7 @@
     {
       "card_id": "threefold_siphon",
       "display_name": "Spirit Gun",
-      "effect": "Remove 3 victory points from your opponent.",
+      "effect": "Remove 3 Flux from your opponent.",
       "victory_points": 0,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
@@ -37,7 +37,7 @@
     {
       "card_id": "sparkleback_totem",
       "display_name": "One For All",
-      "effect": "Whenever you gain victory points, gain 1 additional victory point.",
+      "effect": "Whenever you gain Flux, gain 1 additional Flux.",
       "victory_points": 0,
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
@@ -48,13 +48,35 @@
     {
       "card_id": "overcharge_gambit",
       "display_name": "Kaioken",
-      "effect": "If you have 5 or fewer victory points, gain 10 victory points.",
+      "effect": "If you have 5 or fewer Flux, gain 10 Flux.",
       "victory_points": 0,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "https://wallpapersok.com/images/high/goku-red-kaioken-aura-2yivgcz9ybmljr4j.jpg",
       "art_alt": "Goku powering up with a red Kaioken aura",
       "art_position": "center 22%"
+    },
+    {
+      "card_id": "cursed_seal",
+      "display_name": "Cursed Seal",
+      "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn.",
+      "victory_points": 0,
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/cursed_seal.png",
+      "art_alt": "Sasuke in his first-stage Cursed Seal form from the Naruto anime",
+      "art_position": "0% 0%"
+    },
+    {
+      "card_id": "five_l",
+      "display_name": "5L",
+      "effect": "Reduce your opponent's Sync by 1.",
+      "victory_points": 0,
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/five_l.png",
+      "art_alt": "Sol Badguy performing a fast standing light attack in Guilty Gear -Strive-",
+      "art_position": "0% 0%"
     }
   ],
   "config": {

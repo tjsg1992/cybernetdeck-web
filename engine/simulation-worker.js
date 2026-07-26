@@ -15,7 +15,9 @@ self.onmessage = (event) => { const request = event.data; try {
         const opponent = SAMPLE_DECKS.find(deck => deck.name === request.opponent);
         if (!opponent)
             throw Error("Opponent was not found.");
-        const battle = replayBattle(request.submission, opponent, CARD_POOL, request.seed, { ...DEFAULT_CONFIG, maximum_actions_per_battle: request.actionLimit });
+        const startingPlayer = request.startingPlayer ?? ((request.gameNumber - 1) % 2);
+        const battle = replayBattle(request.submission, opponent, CARD_POOL, request.seed, { ...DEFAULT_CONFIG, maximum_actions_per_battle: request.actionLimit }, startingPlayer);
+        battle.game_number = request.gameNumber;
         self.postMessage({ type: "replay", battle });
     }
 }
