@@ -53,7 +53,7 @@ export class Battle {
                 this.note(`${p.id} | opening_hand`);
         }
     }
-    player(s, id) { const deck = []; for (const [card_id, count] of Object.entries(s.decklist))
+    player(s, id) { const deck = []; const entries = Object.entries(s.decklist).sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0); for (const [card_id, count] of entries)
         for (let i = 0; i < count; i++)
             deck.push({ uid: `${id}:${card_id}:${i}`, definition: this.cards[card_id] }); return { id, program: s.program, deck, hand: [], discard: [], battlefield: [], points: 0, sync: 20, actions: 0, default_action: s.default_action ?? "play_random_card", random_card_ids: s.random_card_ids }; }
     opponent(p) { return this.players[0] === p ? this.players[1] : this.players[0]; }
