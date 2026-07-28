@@ -1,12 +1,11 @@
 {
-  "format_id": "daemon-log-effects-fix-1",
+  "format_id": "cd5",
   "format_version": "cd-ts-1",
   "cards": [
     {
       "card_id": "victory_point_1",
       "display_name": "Core",
       "effect": "Gain 1 Flux.",
-      "victory_points": 1,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "https://images.unsplash.com/photo-1518568740560-333139a27e72?auto=format&fit=crop&w=900&q=85",
@@ -17,7 +16,6 @@
       "card_id": "victory_point_2",
       "display_name": "Twin Core",
       "effect": "Gain 2 Flux.",
-      "victory_points": 2,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=85",
@@ -28,7 +26,6 @@
       "card_id": "threefold_siphon",
       "display_name": "Spirit Gun",
       "effect": "Remove 3 Flux from your opponent.",
-      "victory_points": 0,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "https://wallpapers.com/images/hd/yusuke-urameshi-spirit-gun-pose-zdgv4yd25lr5zg66.jpg",
@@ -39,7 +36,6 @@
       "card_id": "sparkleback_totem",
       "display_name": "One For All",
       "effect": "Whenever you gain Flux, gain 1 additional Flux.",
-      "victory_points": 0,
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
       "art_url": "https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2023/04/My-Hero-Academia-One-For-All-temporada-6.jpg?quality=80&resize=1280%2C1735&ssl=1",
@@ -47,10 +43,19 @@
       "art_position": "center 18%"
     },
     {
+      "card_id": "throttle",
+      "display_name": "Throttle",
+      "effect": "The next time your opponent would gain Flux, prevent that gain. Then, delete Throttle.",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "art_url": "card-art/throttle.jpg",
+      "art_alt": "Temporary placeholder art for Throttle showing a blue rate-limit firewall",
+      "art_position": "50% 35%"
+    },
+    {
       "card_id": "overcharge_gambit",
       "display_name": "Kaioken",
-      "effect": "If you have 5 or fewer Flux, gain 10 Flux.",
-      "victory_points": 0,
+      "effect": "If you have 5 or fewer Flux, gain 7 Flux.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "https://wallpapersok.com/images/high/goku-red-kaioken-aura-2yivgcz9ybmljr4j.jpg",
@@ -58,10 +63,19 @@
       "art_position": "center 22%"
     },
     {
+      "card_id": "download_scan",
+      "display_name": "Download",
+      "effect": "Look at the top 5 cards of your deck and add any Core cards to your hand. Then, put the remaining cards on the bottom in the same order.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/download_scan.jpg",
+      "art_alt": "Placeholder artwork for Download",
+      "art_position": "34% 49%"
+    },
+    {
       "card_id": "cursed_seal",
       "display_name": "Cursed Seal",
       "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn.",
-      "victory_points": 0,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "card-art/cursed_seal.png",
@@ -72,12 +86,41 @@
       "card_id": "five_l",
       "display_name": "5L",
       "effect": "Reduce your opponent's Sync by 1.",
-      "victory_points": 0,
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "card-art/five_l.png",
       "art_alt": "Sol Badguy performing a fast standing light attack in Guilty Gear -Strive-",
       "art_position": "0% 0%"
+    },
+    {
+      "card_id": "time_walk",
+      "display_name": "Time Walk",
+      "effect": "Pay 10 Flux: At the end of your turn, take an extra turn.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/time_walk.jpg",
+      "art_alt": "Placeholder artwork for Time Walk",
+      "art_position": "50% 48%"
+    },
+    {
+      "card_id": "seal",
+      "display_name": "Seal",
+      "effect": "When your opponent would gain Flux, play this to prevent that gain.",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch",
+      "art_url": "card-art/seal.jpeg",
+      "art_alt": "Temporary placeholder art for Seal showing a red cybernetic ward",
+      "art_position": "50% 0%"
+    },
+    {
+      "card_id": "dixie_flatline",
+      "display_name": "Dixie Flatline",
+      "effect": "When your Sync becomes 0, set your Sync to 3, then delete this card.",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "art_url": "card-art/dixie_flatline.jpg",
+      "art_alt": "Temporary placeholder card art for Dixie Flatline",
+      "art_position": "0% 38%"
     }
   ],
   "card_ids": [
@@ -85,13 +128,18 @@
     "victory_point_2",
     "threefold_siphon",
     "sparkleback_totem",
+    "throttle",
     "overcharge_gambit",
+    "download_scan",
     "cursed_seal",
-    "five_l"
+    "five_l",
+    "time_walk",
+    "seal",
+    "dixie_flatline"
   ],
   "config": {
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "84ff558df7ff2f9cd77d0eafdfa744b46484ed9c4e9b486c2c2e6737c81cbdc5"
+  "fingerprint": "bab9bcb9f8d092d8b0a07b154991b19c2ea7f6cc4246b60d49dd516eb006ab41"
 }

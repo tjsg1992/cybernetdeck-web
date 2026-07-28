@@ -1,11 +1,16 @@
 export const CARD_POOL = {
-    victory_point_1: { card_id: "victory_point_1", display_name: "Core", victory_points: 1, effect: "Gain 1 Flux.", card_kind: "pulse" },
-    victory_point_2: { card_id: "victory_point_2", display_name: "Twin Core", victory_points: 2, effect: "Gain 2 Flux.", card_kind: "pulse" },
-    threefold_siphon: { card_id: "threefold_siphon", display_name: "Spirit Gun", victory_points: 0, effect: "Remove 3 Flux from your opponent.", card_kind: "pulse", mechanics: [{ type: "remove_opponent_victory_points", amount: 3 }] },
-    sparkleback_totem: { card_id: "sparkleback_totem", display_name: "One For All", victory_points: 0, effect: "Whenever you gain Flux, gain 1 additional Flux.", card_kind: "daemon", mechanics: [{ type: "victory_point_gain_bonus", amount: 1 }] },
-    overcharge_gambit: { card_id: "overcharge_gambit", display_name: "Kaioken", victory_points: 0, effect: "If you have 5 or fewer Flux, gain 10 Flux.", card_kind: "pulse", mechanics: [{ type: "gain_victory_points_if_at_most", threshold: 5, amount: 10 }] },
-    cursed_seal: { card_id: "cursed_seal", display_name: "Cursed Seal", victory_points: 0, effect: "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn.", card_kind: "pulse", mechanics: [{ type: "set_own_sync_and_draw_half_deck", sync: 1 }, { type: "end_own_turn" }] },
-    five_l: { card_id: "five_l", display_name: "5L", victory_points: 0, effect: "Reduce your opponent's Sync by 1.", card_kind: "pulse", mechanics: [{ type: "remove_opponent_sync", amount: 1 }] }
+    victory_point_1: { card_id: "victory_point_1", display_name: "Core", effect: "Gain 1 Flux.", card_kind: "pulse", mechanics: [{ type: "gain_flux", amount: 1 }] },
+    victory_point_2: { card_id: "victory_point_2", display_name: "Twin Core", effect: "Gain 2 Flux.", card_kind: "pulse", mechanics: [{ type: "gain_flux", amount: 2 }] },
+    threefold_siphon: { card_id: "threefold_siphon", display_name: "Spirit Gun", effect: "Remove 3 Flux from your opponent.", card_kind: "pulse", mechanics: [{ type: "remove_opponent_victory_points", amount: 3 }] },
+    sparkleback_totem: { card_id: "sparkleback_totem", display_name: "One For All", effect: "Whenever you gain Flux, gain 1 additional Flux.", card_kind: "daemon", mechanics: [{ type: "victory_point_gain_bonus", amount: 1 }] },
+    throttle: { card_id: "throttle", display_name: "Throttle", effect: "The next time your opponent would gain Flux, prevent that gain. Then, delete Throttle.", card_kind: "daemon", mechanics: [{ type: "prevent_next_opponent_flux_gain" }] },
+    overcharge_gambit: { card_id: "overcharge_gambit", display_name: "Kaioken", effect: "If you have 5 or fewer Flux, gain 7 Flux.", card_kind: "pulse", mechanics: [{ type: "gain_victory_points_if_at_most", threshold: 5, amount: 7 }] },
+    download_scan: { card_id: "download_scan", display_name: "Download", effect: "Look at the top 5 cards of your deck and add any Core cards to your hand. Then, put the remaining cards on the bottom in the same order.", card_kind: "pulse", mechanics: [{ type: "scan_deck", count: 5, card_ids: ["victory_point_1"] }] },
+    cursed_seal: { card_id: "cursed_seal", display_name: "Cursed Seal", effect: "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn.", card_kind: "pulse", mechanics: [{ type: "set_own_sync_and_draw_half_deck", sync: 1 }, { type: "end_own_turn" }] },
+    five_l: { card_id: "five_l", display_name: "5L", effect: "Reduce your opponent's Sync by 1.", card_kind: "pulse", mechanics: [{ type: "remove_opponent_sync", amount: 1 }] },
+    time_walk: { card_id: "time_walk", display_name: "Time Walk", effect: "Pay 10 Flux: At the end of your turn, take an extra turn.", card_kind: "pulse", flux_cost: 10, mechanics: [{ type: "queue_extra_turn" }] },
+    seal: { card_id: "seal", display_name: "Seal", effect: "When your opponent would gain Flux, play this to prevent that gain.", card_kind: "glitch", reaction_triggers: ["opponent_would_gain_flux"], mechanics: [{ type: "prevent_triggering_event" }] },
+    dixie_flatline: { card_id: "dixie_flatline", display_name: "Dixie Flatline", effect: "When your Sync becomes 0, set your Sync to 3, then delete this card.", card_kind: "daemon", mechanics: [{ type: "restore_sync_when_zero_and_delete_self", sync: 3 }] }
 };
 const prefer = (...ids) => ids.map(id => ({ condition_type: "card_in_hand", condition_card_id: id, action_type: "play_named_card", action_card_id: id }));
 const deck = (name, owner_name, decklist, ids) => ({ name, owner_name, decklist, program: prefer(...ids) });
