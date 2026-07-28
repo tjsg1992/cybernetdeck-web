@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=e6637cae518f"></head>
+<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=b4a9adac0d9d"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><div class="header-actions"><button id="header-tournament" class="header-tournament" type="button" data-tournament-open hidden>Tournament</button><a class="rules-button" href="rules.html">Rules Reference</a></div></header>
 <section id="latest-tournament" class="tournament-panel" aria-live="polite"><p class="eyebrow">TOURNAMENT</p><button class="primary tournament-open" type="button" data-tournament-open>View tournament results</button></section>
@@ -35,25 +35,33 @@
 
 <section id="view-program" class="view" hidden><div class="view-grid">
 <article class="primary-panel"><div class="section-heading"><div><h2>Program</h2><p class="sub">Rules run from top to bottom. The first matching rule acts.</p></div></div>
-<p class="field-hint rule-preview-label">Preview</p><div id="rule-sentence" class="rule-sentence" aria-live="polite">Choose a condition and action to preview the rule.</div>
-<div class="program-grid"><div><label>Condition<select id="condition-type">
-<option value="if_able" selected>If able</option><option value="card_in_hand">Card is in my hand</option><option value="own_victory_points_at_most">My Flux is at most</option>
-<option value="opponent_victory_points_at_most">Opponent Flux is at most</option><option value="opponent_victory_points_at_least">Opponent Flux is at least</option><option value="opponent_sync_at_most">Opponent Sync is at most</option></select></label>
+<div class="program-tabs" role="tablist" aria-label="Program type"><button id="program-tab-action" class="program-tab active" type="button" role="tab" aria-selected="true" aria-controls="action-program-panel" data-program-tab="action">Action</button><button id="program-tab-reaction" class="program-tab" type="button" role="tab" aria-selected="false" aria-controls="reaction-program" data-program-tab="reaction">Reaction</button></div>
+<div id="action-program-panel" class="program-panel" role="tabpanel" aria-labelledby="program-tab-action">
+<p class="field-hint rule-preview-label">Preview</p><div id="rule-sentence" class="rule-sentence" aria-live="polite">Choose a condition and action to preview the rule.</div><div id="condition-builder" class="program-builder-row condition-builder"></div>
+<div id="action-builder" class="program-builder-row"><span id="action-condition-prefix" class="builder-prefix">If able,</span><label>Condition<select id="condition-type">
+<option value="if_able" selected>If able</option><option value="card_is">A card is…</option><option value="own_victory_points_at_most">My Flux is at most</option>
+<option value="opponent_victory_points_at_most">Opponent Flux is at most</option><option value="opponent_victory_points_at_least">Opponent Flux is at least</option><option value="opponent_sync_at_most">Opponent Sync is at most</option><option value="quantity_compare">Compare a quantity…</option></select></label>
 <label id="condition-card-wrap">Card<select id="condition-card"></select></label>
-<label id="condition-energy-wrap" hidden>Flux threshold (or less)<select id="condition-energy"></select></label></div>
-<div><label>Action<select id="action-type"><option value="play_named_card">Play named card</option>
+<label id="card-condition-wrap">Is<select id="card-condition"><option value="in_your_hand">In your hand</option><option value="on_your_side_of_board">On your side of the board</option></select></label>
+<label id="condition-energy-wrap" hidden>Flux threshold (or less)<select id="condition-energy"></select></label>
+<label id="quantity-wrap" hidden>Quantity<select id="condition-quantity"><option value="cards_in_your_deck">Cards in your deck</option><option value="cards_in_your_hand">Cards in your hand</option><option value="cards_in_opponent_hand">Cards in opponent's hand</option><option value="your_flux">Your Flux</option><option value="opponent_flux">Opponent Flux</option><option value="your_sync">Your Sync</option><option value="opponent_sync">Opponent Sync</option></select></label>
+<label id="comparison-wrap" hidden>Comparison<select id="comparison-operator"><option value="<">Fewer than</option><option value="<=">At most</option><option value="=">Exactly</option><option value=">=">At least</option><option value=">">More than</option></select></label>
+<label id="quantity-threshold-wrap" hidden>Threshold<input id="quantity-threshold" type="number" min="0" step="1" value="0"></label><span class="builder-prefix then-prefix">Then</span><label>Action<select id="action-type"><option value="play_named_card">Play named card</option>
 <option value="play_random_card">Play random card</option><option value="end_turn">End turn</option></select></label>
-<label id="action-card-wrap">Card to play<select id="action-card"></select></label></div></div>
-<div class="row rule-actions"><button id="add-rule">Add</button></div>
+<label id="action-card-wrap">Cards to play<select id="action-card"></select></label></div>
+<div id="action-rule-actions" class="row rule-actions"><button id="add-rule">Add</button></div>
 <div hidden aria-hidden="true"><button id="rule-up"></button><button id="rule-down"></button><button id="remove-rule"></button></div>
 <p class="field-hint">Select a rule below to reorder or remove it.</p><ol id="rules" class="rules-list"></ol>
-<section class="default-action"><h3>Default action</h3><p class="sub">Used when none of the programmed rules match.</p>
+<section id="action-default" class="default-action"><h3>Default action</h3><p class="sub">Used when none of the programmed rules match.</p>
 <div class="row"><label>Action<select id="default-action"><option value="play_random_card" selected>Play a random eligible card</option><option value="end_turn">End turn</option></select></label><button id="configure-random-cards" type="button">Configure eligible cards</button></div>
 <p id="default-action-summary" class="field-hint"></p></section>
-<div class="simulation-settings"><h3>Simulation settings</h3><div class="program-grid">
+<div id="action-simulation-settings" class="simulation-settings"><h3>Simulation settings</h3><div class="program-grid">
 <label>Games per opponent<input id="games" type="number" min="1" value="1000"></label>
 <label>Action limit<input id="action-limit" type="number" min="1" value="100000"></label></div></div>
-<div class="program-submit-actions"><button class="discord-export" id="export-deck">Export for Discord</button><button class="primary" id="submit">Simulate</button></div></article>
+<div id="action-submit-actions" class="program-submit-actions"><button class="discord-export" id="export-deck">Export for Discord</button><button class="primary" id="submit">Simulate</button></div></div>
+<section id="reaction-program" class="program-panel" role="tabpanel" aria-labelledby="program-tab-reaction" hidden><h3>Reaction rules</h3><p class="sub">Checked any time an event occurs.</p>
+<div class="program-builder-row"><span class="builder-prefix">When</span><label>Trigger<select id="reaction-trigger"><option value="opponent_would_gain_flux">Opponent would gain Flux</option></select></label><label>Comparison<select id="reaction-comparison"><option value=">">More than</option><option value=">=">At least</option><option value="=">Exactly</option><option value="<=">At most</option><option value="<">Fewer than</option></select></label><label>Amount<input id="reaction-threshold" type="number" min="0" step="1" value="0"></label><span class="builder-prefix then-prefix">Then</span><label>Card to play<select id="reaction-card"></select></label></div>
+<div class="row rule-actions"><button id="add-reaction" type="button">Add reaction</button></div><ol id="reactions" class="rules-list"></ol></section></article>
 <aside class="context-panel"><h2>Deck reference</h2>
 <div id="program-deck-preview" class="deck-preview"></div>
 <p id="program-deck-summary" class="deck-preview-summary"></p></aside></div></section>
@@ -64,12 +72,12 @@
 <article class="primary-panel"><div class="section-heading"><div>
 <h2>Results</h2></div><div class="results-actions"><button id="view-opponent-deck" class="primary" type="button" hidden>View opponent deck</button><button class="discord-export" id="export-deck-results">Export for Discord</button></div></div><progress id="simulation-progress" value="0" max="5" hidden></progress>
 <div id="results-empty" class="empty-state">Submit a programmed deck to see matchup results.</div>
-<div id="results-table-wrap" hidden><table><thead><tr><th>Opponent</th><th>Wins</th><th>Losses</th><th>Draws</th><th>Win rate</th></tr></thead>
+<div id="results-table-wrap" hidden><table><thead><tr><th>Opponent</th><th>Wins</th><th>Losses</th><th>Draws</th><th>Win rate</th><th>Avg. turns</th></tr></thead>
 <tbody id="matches"></tbody></table></div>
 <div id="match-panel" hidden><div class="subsection-heading"><div><p class="eyebrow">Selected matchup</p>
 <h3 id="match-title"></h3></div><button id="back-to-matchups">&larr; Results</button></div>
 <p class="sub">Select a battle to open its player-facing log.</p><div id="battle-pages" class="page"></div>
-<div class="table-scroll"><table><thead><tr><th>#</th><th>Result</th><th>Score</th><th>Reason</th></tr></thead><tbody id="battles"></tbody></table></div></div></article>
+<div class="table-scroll"><table><thead><tr><th>#</th><th>Result</th><th>Score</th><th>Turns</th><th>Reason</th></tr></thead><tbody id="battles"></tbody></table></div></div></article>
 <article id="opponent-deck-panel" class="primary-panel" hidden></article>
 </div></section>
 
@@ -79,4 +87,5 @@
 <button id="back-to-battles">&larr; Back to battles</button></div><div id="log-controls" class="log-controls"></div>
 <pre id="log">Select a battle from the simulation results.</pre></article>
 </div></section>
+
 </main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js"></script></body></html>
