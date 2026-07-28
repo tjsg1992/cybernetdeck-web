@@ -28,11 +28,19 @@ export function narrateBattleEvent(event, context) {
     if (detail.startsWith("play:"))
         return `${player} plays ${context.card(detail.split(":")[1])}.`;
     if (detail.startsWith("scan_deck:")) {
-        const [, looked, found, ids, source] = detail.split(":"), cardIds = ids.split(","), target = cardIds.length === 1 ? `${context.card(cardIds[0])} ${plural(found, "card")}` : "matching cards";
+        const fields = detail.split(":"), looked = fields[1], found = fields[2];
+        if (fields.length < 5)
+            return `${player} looks at the top ${looked} cards and adds ${found} matching cards to their hand.`;
+        const [, _, __, ids, source] = fields, cardIds = ids.split(","), target = cardIds.length === 1 ? `${context.card(cardIds[0])} ${plural(found, "card")}` : "matching cards";
         return `${player} uses ${context.card(source)} to look at the top ${looked} cards and adds ${found} ${target} to their hand.`;
     }
     if (detail.startsWith("reaction_play:")) {
-        const [, trigger, cardId, recipient] = detail.split(":"), response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
+        const fields = detail.split(":");
+        if (fields.length === 3) {
+            const [, cardId, amount] = fields;
+            return `${player} plays ${context.card(cardId)} in response to the opponent gaining ${amount} Flux.`;
+        }
+        const [, trigger, cardId, recipient] = fields, response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
         return `${player} plays ${context.card(cardId)} in response to ${response}.`;
     }
     if (detail.startsWith("flux_gain_prevented:")) {
