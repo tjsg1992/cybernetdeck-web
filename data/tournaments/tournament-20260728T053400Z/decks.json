@@ -1,0 +1,348 @@
+[
+  {
+    "discord_user_id": "134208646606356480",
+    "player_name": "Eli",
+    "submission": {
+      "name": "WeShallGoTogether",
+      "owner_name": "Rawhide Kobayashi",
+      "decklist": {
+        "threefold_siphon": 5,
+        "cursed_seal": 5,
+        "five_l": 20
+      },
+      "program": [
+        {
+          "condition_type": "opponent_victory_points_at_least",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 10,
+          "action_card_id": "threefold_siphon"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "cursed_seal"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [
+        "cursed_seal",
+        "five_l"
+      ],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  },
+  {
+    "discord_user_id": "162838551925358592",
+    "player_name": "Josh",
+    "submission": {
+      "name": "Can I Rename this?",
+      "owner_name": "Graig",
+      "decklist": {
+        "victory_point_2": 8,
+        "threefold_siphon": 3,
+        "sparkleback_totem": 3,
+        "overcharge_gambit": 2,
+        "cursed_seal": 1,
+        "five_l": 3
+      },
+      "program": [
+        {
+          "condition_type": "opponent_sync_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 1,
+          "action_card_id": "five_l"
+        },
+        {
+          "condition_type": "own_victory_points_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 5,
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "sparkleback_totem",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "victory_point_2",
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "threefold_siphon",
+          "action_card_id": "threefold_siphon"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "cursed_seal"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  },
+  {
+    "discord_user_id": "173981293229506561",
+    "player_name": "Alex",
+    "submission": {
+      "name": "Incremental Advantage",
+      "owner_name": "\"Hope you're toe\" Johnson",
+      "decklist": {
+        "victory_point_2": 10,
+        "sparkleback_totem": 6,
+        "overcharge_gambit": 3,
+        "five_l": 1
+      },
+      "program": [
+        {
+          "condition_type": "opponent_sync_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 1,
+          "action_card_id": "five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "own_victory_points_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 5,
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "opponent_victory_points_at_least",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 3,
+          "action_card_id": "threefold_siphon"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  },
+  {
+    "discord_user_id": "173986825889644544",
+    "player_name": "Phen",
+    "submission": {
+      "name": "Big Points",
+      "owner_name": "Phen",
+      "decklist": {
+        "victory_point_2": 10,
+        "sparkleback_totem": 4,
+        "overcharge_gambit": 4,
+        "five_l": 2
+      },
+      "program": [
+        {
+          "condition_type": "opponent_sync_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 1,
+          "action_card_id": "five_l"
+        },
+        {
+          "condition_type": "own_victory_points_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 5,
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "victory_point_2"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  },
+  {
+    "discord_user_id": "184439858255626240",
+    "player_name": "Taylor",
+    "submission": {
+      "name": "One For Me, One For Kaioken",
+      "owner_name": "Loth",
+      "decklist": {
+        "victory_point_2": 14,
+        "sparkleback_totem": 9,
+        "overcharge_gambit": 7
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "victory_point_2"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  },
+  {
+    "discord_user_id": "184825720311119872",
+    "player_name": "Jenna",
+    "submission": {
+      "name": "11tc",
+      "owner_name": "TheBlueGateMage",
+      "decklist": {
+        "victory_point_2": 11,
+        "threefold_siphon": 1,
+        "sparkleback_totem": 6,
+        "overcharge_gambit": 2
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "threefold_siphon"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "own_victory_points_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 5,
+          "action_card_id": "cursed_seal"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  },
+  {
+    "discord_user_id": "221460738928017408",
+    "player_name": "Stella",
+    "submission": {
+      "name": "Exodia Obliterate",
+      "owner_name": "Stella",
+      "decklist": {
+        "victory_point_2": 11,
+        "sparkleback_totem": 5,
+        "overcharge_gambit": 4
+      },
+      "program": [
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "sparkleback_totem",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "overcharge_gambit",
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "victory_point_2",
+          "action_card_id": "victory_point_2"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [
+        "victory_point_2",
+        "sparkleback_totem",
+        "overcharge_gambit"
+      ],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  },
+  {
+    "discord_user_id": "240154642816696322",
+    "player_name": "Blkwaterpark",
+    "submission": {
+      "name": "Sam's Test",
+      "owner_name": "Blkwaterpark",
+      "decklist": {
+        "victory_point_2": 8,
+        "sparkleback_totem": 8,
+        "overcharge_gambit": 4
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "own_victory_points_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 5,
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "victory_point_2"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [
+        "victory_point_2",
+        "sparkleback_totem"
+      ],
+      "format_id": "daemon-log-effects-fix-1"
+    }
+  }
+]
