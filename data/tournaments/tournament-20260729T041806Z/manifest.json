@@ -1,0 +1,98 @@
+{
+  "cards": [
+    {
+      "card_id": "victory_point_1",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Core",
+      "effect": "Gain 1 Flux."
+    },
+    {
+      "card_id": "victory_point_2",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Twin Core",
+      "effect": "Gain 2 Flux."
+    },
+    {
+      "card_id": "threefold_siphon",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Spirit Gun",
+      "effect": "Remove 3 Flux from your opponent."
+    },
+    {
+      "card_id": "sparkleback_totem",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "One For All",
+      "effect": "Whenever you gain Flux, gain 1 additional Flux."
+    },
+    {
+      "card_id": "throttle",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Throttle",
+      "effect": "The next time your opponent would gain Flux, prevent that gain. Then, delete Throttle."
+    },
+    {
+      "card_id": "overcharge_gambit",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Kaioken",
+      "effect": "If you have 5 or fewer Flux, gain 7 Flux."
+    },
+    {
+      "card_id": "download_scan",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Download",
+      "effect": "Look at the top 5 cards of your deck and add any Core cards to your hand. Then, put the remaining cards on the bottom in the same order."
+    },
+    {
+      "card_id": "cursed_seal",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Cursed Seal",
+      "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn."
+    },
+    {
+      "card_id": "five_l",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "5L",
+      "effect": "Reduce your opponent's Sync by 1."
+    },
+    {
+      "card_id": "time_walk",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Time Walk",
+      "effect": "Pay 10 Flux: At the end of your turn, take an extra turn."
+    },
+    {
+      "card_id": "seal",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch",
+      "display_name": "Seal",
+      "effect": "When your opponent would gain Flux, play this to prevent that gain."
+    },
+    {
+      "card_id": "dixie_flatline",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Dixie Flatline",
+      "effect": "When your Sync becomes 0, set your Sync to 3, then delete this card."
+    }
+  ],
+  "created_at": "2026-07-29T04:18:06.471434+00:00",
+  "format_version": "cd-ts-1",
+  "id": "tournament-20260729T041806Z",
+  "published": false,
+  "replay_assets": {
+    "cards": "cards.js",
+    "engine": "engine.js"
+  },
+  "rules_fingerprint": "aad9b918a00e5a9f23dde6728d43113280ba7d5b26c5f6b34e16e6d8c916d21b",
+  "tournament_seed": 3967989329
+}
