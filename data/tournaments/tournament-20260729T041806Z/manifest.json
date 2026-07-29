@@ -88,7 +88,8 @@
   "created_at": "2026-07-29T04:18:06.471434+00:00",
   "format_version": "cd-ts-1",
   "id": "tournament-20260729T041806Z",
-  "published": false,
+  "published": true,
+  "published_at": "2026-07-29T13:12:37.916900+00:00",
   "replay_assets": {
     "cards": "cards.js",
     "engine": "engine.js"
