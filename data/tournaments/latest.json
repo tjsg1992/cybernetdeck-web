@@ -91,7 +91,7 @@
     "format_version": "cd-ts-1",
     "id": "tournament-20260729T041806Z",
     "published": true,
-    "published_at": "2026-07-29T13:12:37.916900+00:00",
+    "published_at": "2026-07-29T22:23:40.983251+00:00",
     "replay_assets": {
       "cards": "cards.js",
       "engine": "engine.js"
@@ -504,6 +504,7 @@
   ],
   "matchups": [
     {
+      "matchup_id": "matchup-001",
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "173981293229506561",
       "summary": {
@@ -515,6 +516,7 @@
       }
     },
     {
+      "matchup_id": "matchup-002",
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "173986825889644544",
       "summary": {
@@ -526,6 +528,7 @@
       }
     },
     {
+      "matchup_id": "matchup-003",
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "184439858255626240",
       "summary": {
@@ -537,6 +540,7 @@
       }
     },
     {
+      "matchup_id": "matchup-004",
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "184825720311119872",
       "summary": {
@@ -548,6 +552,7 @@
       }
     },
     {
+      "matchup_id": "matchup-005",
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "221460738928017408",
       "summary": {
@@ -559,6 +564,7 @@
       }
     },
     {
+      "matchup_id": "matchup-006",
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "240154642816696322",
       "summary": {
@@ -570,6 +576,7 @@
       }
     },
     {
+      "matchup_id": "matchup-007",
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "173986825889644544",
       "summary": {
@@ -581,6 +588,7 @@
       }
     },
     {
+      "matchup_id": "matchup-008",
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "184439858255626240",
       "summary": {
@@ -592,6 +600,7 @@
       }
     },
     {
+      "matchup_id": "matchup-009",
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "184825720311119872",
       "summary": {
@@ -603,6 +612,7 @@
       }
     },
     {
+      "matchup_id": "matchup-010",
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "221460738928017408",
       "summary": {
@@ -614,6 +624,7 @@
       }
     },
     {
+      "matchup_id": "matchup-011",
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "240154642816696322",
       "summary": {
@@ -625,6 +636,7 @@
       }
     },
     {
+      "matchup_id": "matchup-012",
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "184439858255626240",
       "summary": {
@@ -636,6 +648,7 @@
       }
     },
     {
+      "matchup_id": "matchup-013",
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "184825720311119872",
       "summary": {
@@ -647,6 +660,7 @@
       }
     },
     {
+      "matchup_id": "matchup-014",
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "221460738928017408",
       "summary": {
@@ -658,6 +672,7 @@
       }
     },
     {
+      "matchup_id": "matchup-015",
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "240154642816696322",
       "summary": {
@@ -669,6 +684,7 @@
       }
     },
     {
+      "matchup_id": "matchup-016",
       "first_discord_user_id": "184439858255626240",
       "second_discord_user_id": "184825720311119872",
       "summary": {
@@ -680,6 +696,7 @@
       }
     },
     {
+      "matchup_id": "matchup-017",
       "first_discord_user_id": "184439858255626240",
       "second_discord_user_id": "221460738928017408",
       "summary": {
@@ -691,6 +708,7 @@
       }
     },
     {
+      "matchup_id": "matchup-018",
       "first_discord_user_id": "184439858255626240",
       "second_discord_user_id": "240154642816696322",
       "summary": {
@@ -702,6 +720,7 @@
       }
     },
     {
+      "matchup_id": "matchup-019",
       "first_discord_user_id": "184825720311119872",
       "second_discord_user_id": "221460738928017408",
       "summary": {
@@ -713,6 +732,7 @@
       }
     },
     {
+      "matchup_id": "matchup-020",
       "first_discord_user_id": "184825720311119872",
       "second_discord_user_id": "240154642816696322",
       "summary": {
@@ -724,6 +744,7 @@
       }
     },
     {
+      "matchup_id": "matchup-021",
       "first_discord_user_id": "221460738928017408",
       "second_discord_user_id": "240154642816696322",
       "summary": {
