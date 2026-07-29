@@ -1,5 +1,5 @@
 {
-  "format_id": "cd5",
+  "format_id": "cd8",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -38,6 +38,7 @@
       "effect": "Whenever you gain Flux, gain 1 additional Flux.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
+      "keyword_line": "Uplink 2",
       "art_url": "https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2023/04/My-Hero-Academia-One-For-All-temporada-6.jpg?quality=80&resize=1280%2C1735&ssl=1",
       "art_alt": "Deku with the One For All bearers",
       "art_position": "center 18%"
@@ -121,6 +122,58 @@
       "art_url": "card-art/dixie_flatline.jpg",
       "art_alt": "Temporary placeholder card art for Dixie Flatline",
       "art_position": "0% 38%"
+    },
+    {
+      "card_id": "one_more_roll",
+      "display_name": "One More Roll",
+      "effect": "If your hand is empty, draw two cards. Otherwise, discard a card at random.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/one_more_roll.jpg",
+      "art_alt": "Placeholder artwork for One More Roll",
+      "art_position": "31% 0%"
+    },
+    {
+      "card_id": "air_five_l",
+      "display_name": "Air 5L",
+      "effect": "Your opponent loses 2 Sync. You lose 1 Sync.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/air_five_l.png",
+      "art_alt": "Placeholder artwork for Air 5L",
+      "art_position": "84% 44%"
+    },
+    {
+      "card_id": "charge_ki",
+      "display_name": "Charge Ki",
+      "effect": "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon \u2022 Immutable",
+      "immutable": true,
+      "art_url": "card-art/charge_ki.png",
+      "art_alt": "Temporary placeholder artwork for Charge Ki",
+      "art_position": "49% 0%"
+    },
+    {
+      "card_id": "scrappy_kamehameha",
+      "display_name": "Scrappy Kamehameha",
+      "effect": "Play this card only if you have 1 or more Ki. It deals 3 damage.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/scrappy_kamehameha.jpg",
+      "art_alt": "Temporary placeholder artwork for Scrappy Kamehameha",
+      "art_position": "54% 0%"
+    },
+    {
+      "card_id": "farmer_with_shotgun",
+      "display_name": "Farmer With Shotgun",
+      "effect": "",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "keyword_line": "Integrity 1",
+      "art_url": "card-art/farmer_with_shotgun.png",
+      "art_alt": "Temporary placeholder artwork for Farmer With Shotgun",
+      "art_position": "50% 0%"
     }
   ],
   "card_ids": [
@@ -135,11 +188,16 @@
     "five_l",
     "time_walk",
     "seal",
-    "dixie_flatline"
+    "dixie_flatline",
+    "one_more_roll",
+    "air_five_l",
+    "charge_ki",
+    "scrappy_kamehameha",
+    "farmer_with_shotgun"
   ],
   "config": {
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "bab9bcb9f8d092d8b0a07b154991b19c2ea7f6cc4246b60d49dd516eb006ab41"
+  "fingerprint": "4ade464921e8af165f5d36500b31728c89882a3a9cb9df7aa50ce5e6b86c733f"
 }

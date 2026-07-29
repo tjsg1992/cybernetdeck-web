@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=2ab2c8e7711e"></head>
+<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=1184eecb898f"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
 <article class="rules-reference"><p class="eyebrow">Rules Reference</p><h1>CyberNetDeck Rules</h1>
@@ -18,19 +18,22 @@
 <ul>
 <li><strong>Pulse</strong> cards resolve their effects and then go to the discard pile.</li>
 <li><strong>Daemon</strong> cards remain on the battlefield with their ongoing effects active.</li>
+<li><strong>Agent</strong> cards remain on the battlefield with a printed <strong>Integrity</strong> value. Agents take damage from attacks; an Agent at 0 Integrity is deleted.</li>
+<li><strong>Immutable</strong> cards are limited to one copy, searched into the opening hand before ordinary draws, and played onto the battlefield before the first turn without activating their effects. They cannot be removed from the battlefield or targeted by effects.</li>
 <li><strong>Glitch</strong> cards can be played from the hand on either turn as a reaction to a specified event, then go directly to the discard pile. They are not deleted; deletion moves a Daemon from the battlefield to its discard pile.</li>
 </ul>
+<p>When a card deals damage, it first hits an opposing Agent if one is present. The Agent with the best chance of being destroyed is chosen; if several Agents are equally suitable, one is chosen at random. The Agent loses Integrity equal to the damage, and is deleted when its Integrity reaches 0. Damage does not carry over to another Agent. If there are no Agents, the damage reduces Sync.</p>
 <h2>Battle flow</h2>
-<p>Each player starts with five cards. Turns proceed through Start, Draw, Main, and End.</p>
+<p>Each player starts with five cards. Ki and Uplink both start at 0. Turns proceed through Start, Draw, Main, and End.</p>
 <ul>
-<li><strong>Start:</strong> The turn begins.</li>
+<li><strong>Start:</strong> The turn begins and its player gains 1 Uplink. Uplink requirements are thresholds, not costs.</li>
 <li><strong>Draw:</strong> Draw one card. Drawing from an empty deck loses the battle.</li>
 <li><strong>Main:</strong> Follow the program while playable cards remain in hand.</li>
 <li><strong>End:</strong> The turn ends and the other player begins their turn.</li>
 </ul>
 <h2>Programs</h2>
 <p>An Action program is an ordered list of rules. During Main, the rules are checked from top to bottom. The first rule whose condition is true and whose action can be performed is used.</p>
-<p>Actions can play a named card, play a random card, or end the turn. If no Action rule is selected, the default action is used.</p>
+<p>Actions can play a named card, activate an Immutable card, play a random card, or end the turn. If no Action rule is selected, the default action is used.</p>
 <h2>Reactions</h2>
 <p>A Reaction program is separate from the Action program and has no default action. Whenever an event in the game occurs, the Reaction rules are checked in order. The current turn player gets priority first, followed by the other player, alternating until both players have no eligible Reaction to the event. The first eligible Glitch for the player with priority is played. If no reaction is eligible, nothing happens.</p>
 <p>A reaction window belongs to one pending event. If a reaction prevents that event, the reaction window closes immediately; no other matching Glitch can be played for that same event. If a reaction resolves without preventing the event and the event remains pending, priority continues to alternate until both players pass.</p>

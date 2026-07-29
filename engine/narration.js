@@ -3,17 +3,16 @@ const plural = (count, noun) => `${noun}${count === "1" ? "" : "s"}`;
 export function isTurnStartEvent(event) { return parts(event).detail.startsWith("turn_start"); }
 /** Keep engine setup diagnostics out of player turn navigation. */
 export function groupBattleLogByTurn(events) {
-    const turns = [];
+    const turns = [], pregame = [];
     let current;
     for (const event of events) {
         if (isTurnStartEvent(event)) {
             current = [];
             turns.push(current);
         }
-        if (current)
-            current.push(event);
+        (current ?? pregame).push(event);
     }
-    return turns;
+    return pregame.some((event) => event.includes(" | play:")) ? [pregame, ...turns] : turns;
 }
 export function narrateBattleEvent(event, context) {
     const { actor, detail } = parts(event), player = context.player(actor);
@@ -25,8 +24,32 @@ export function narrateBattleEvent(event, context) {
         return `${player} draws a card.`;
     if (detail.startsWith("draw_many:"))
         return `${player} draws ${detail.split(":")[1]} cards.`;
+    if (detail.startsWith("discard_random:"))
+        return `${player} discards ${context.card(detail.split(":")[1])} at random.`;
+    if (detail === "discard_random")
+        return `${player} discards a card at random.`;
     if (detail.startsWith("play:"))
         return `${player} plays ${context.card(detail.split(":")[1])}.`;
+    if (detail.startsWith("activate:"))
+        return `${player} activates ${context.card(detail.split(":")[1])}.`;
+    if (detail.startsWith("ki:")) {
+        const [, amount, current] = detail.split(":"), value = Number(amount);
+        return `${player} gains ${value} Ki. <span class="log-total">(${current})</span>`;
+    }
+    if (detail.startsWith("uplink:")) {
+        const [, amount, current] = detail.split(":"), value = Number(amount);
+        return `${player} gains ${value} Uplink. <span class="log-total">(${current})</span>`;
+    }
+    if (detail.startsWith("damage:"))
+        return `${player} takes ${detail.split(":")[1]} damage directly to Sync.`;
+    if (detail.startsWith("agent_damaged:")) {
+        const [, cardId, amount, integrity] = detail.split(":");
+        return `${context.card(cardId)} takes ${amount} damage and has ${integrity} Integrity remaining.`;
+    }
+    if (detail.startsWith("agent_deleted:"))
+        return `${player}'s ${context.card(detail.split(":")[1])} is deleted.`;
+    if (detail === "pregame_end_turn_effect")
+        return `${player}'s card effect has no turn to end before the battle begins.`;
     if (detail.startsWith("scan_deck:")) {
         const fields = detail.split(":"), looked = fields[1], found = fields[2];
         if (fields.length < 5)

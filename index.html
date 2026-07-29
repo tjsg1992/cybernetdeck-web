@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=2ab2c8e7711e"></head>
+<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=1184eecb898f"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><div class="header-actions"><button id="header-tournament" class="header-tournament" type="button" data-tournament-open hidden>Tournament</button><a class="rules-button" href="rules.html">Rules Reference</a></div></header>
 <section id="latest-tournament" class="tournament-panel" aria-live="polite"><p class="eyebrow">TOURNAMENT</p><button class="primary tournament-open" type="button" data-tournament-open>View tournament results</button></section>
@@ -42,11 +42,11 @@
 <option value="opponent_victory_points_at_most">Opponent Flux is at most</option><option value="opponent_victory_points_at_least">Opponent Flux is at least</option><option value="opponent_sync_at_most">Opponent Sync is at most</option><option value="quantity_compare">Compare a quantity…</option></select></label>
 <label id="condition-card-wrap">Card<select id="condition-card"></select></label>
 <label id="card-condition-wrap">Is<select id="card-condition"><option value="in_your_hand">In your hand</option><option value="on_your_side_of_board">On your side of the board</option></select></label>
-<label id="condition-energy-wrap" hidden>Flux threshold (or less)<select id="condition-energy"></select></label>
-<label id="quantity-wrap" hidden>Quantity<select id="condition-quantity"><option value="cards_in_your_deck">Cards in your deck</option><option value="cards_in_your_hand">Cards in your hand</option><option value="cards_in_opponent_hand">Cards in opponent's hand</option><option value="your_flux">Your Flux</option><option value="opponent_flux">Opponent Flux</option><option value="your_sync">Your Sync</option><option value="opponent_sync">Opponent Sync</option></select></label>
+<div id="condition-energy-wrap" hidden><input id="condition-energy" type="hidden" value="0"></div>
+<label id="quantity-wrap" hidden>Quantity<select id="condition-quantity"><option value="cards_in_your_deck">Cards in your deck</option><option value="cards_in_your_hand">Cards in your hand</option><option value="cards_in_opponent_hand">Cards in opponent's hand</option><option value="your_flux">Your Flux</option><option value="opponent_flux">Opponent Flux</option><option value="your_ki">Your Ki</option><option value="your_sync">Your Sync</option><option value="opponent_sync">Opponent Sync</option></select></label>
 <label id="comparison-wrap" hidden>Comparison<select id="comparison-operator"><option value="<">Fewer than</option><option value="<=">At most</option><option value="=">Exactly</option><option value=">=">At least</option><option value=">">More than</option></select></label>
 <label id="quantity-threshold-wrap" hidden>Threshold<input id="quantity-threshold" type="number" min="0" step="1" value="0"></label><span class="builder-prefix then-prefix">Then</span><label>Action<select id="action-type"><option value="play_named_card">Play named card</option>
-<option value="play_random_card">Play random card</option><option value="end_turn">End turn</option></select></label>
+<option value="activate_immutable_card">Activate</option><option value="play_random_card">Play random card</option><option value="end_turn">End turn</option></select></label>
 <label id="action-card-wrap">Cards to play<select id="action-card"></select></label></div>
 <div id="action-rule-actions" class="row rule-actions"><button id="add-rule">Add</button></div>
 <div hidden aria-hidden="true"><button id="rule-up"></button><button id="rule-down"></button><button id="remove-rule"></button></div>
@@ -85,7 +85,7 @@
 <article class="primary-panel log-panel"><div class="section-heading"><div>
 <h2>Battle Logs</h2><p id="log-title" class="sub">Player-facing narration for the selected battle.</p></div>
 <button id="back-to-battles">&larr; Back to battles</button></div><div id="log-controls" class="log-controls"></div>
-<pre id="log">Select a battle from the simulation results.</pre></article>
+<div id="log-context" class="log-context"></div><pre id="log">Select a battle from the simulation results.</pre></article>
 </div></section>
 
-</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=c53192466e6c"></script></body></html>
+</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=58eaf30b6640"></script></body></html>

@@ -15,7 +15,7 @@ self.onmessage = (event) => { const request = event.data; try {
     }
     else {
         const startingPlayer = request.startingPlayer ?? (request.gameNumber - 1) % 2, config = { ...DEFAULT_CONFIG, ...request.config, maximum_actions_per_battle: request.actionLimit };
-        const battle = replayBattle(request.submission, request.opponent, CARD_POOL, request.seed, config, startingPlayer);
+        const battle = replayBattle(request.submission, request.opponent, CARD_POOL, request.seed, config, startingPlayer, request.setup);
         battle.game_number = request.gameNumber;
         self.postMessage({ type: "replay", battle });
     }
