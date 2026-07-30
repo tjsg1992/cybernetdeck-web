@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=1184eecb898f"></head>
+<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=f25ee7e0c0c1"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
 <article class="rules-reference"><p class="eyebrow">Rules Reference</p><h1>CyberNetDeck Rules</h1>
@@ -24,9 +24,12 @@
 </ul>
 <h2>Damage targeting</h2>
 <p>Damage is dealt to the opposing player. You do not choose a particular Agent; the game applies the following order every time an effect deals damage.</p>
-<p>1. <strong>No opposing Agents:</strong> the damage reduces that player&#x27;s Sync. 2. <strong>An Agent can be destroyed:</strong> if one or more opposing Agents have remaining Integrity equal to or less than the damage, the game chooses at random among only those destroyable Agents. It damages that Agent and deletes it at 0 Integrity. 3. <strong>No Agent can be destroyed:</strong> the game chooses an Agent with the lowest remaining Integrity. If several Agents are tied for lowest, it chooses at random among those tied Agents. That Agent takes all of the damage.</p>
+<ol>
+<li><strong>No opposing Agents:</strong> the damage reduces that player&#x27;s Sync.</li>
+<li><strong>An Agent can be destroyed:</strong> if one or more opposing Agents have remaining Integrity equal to or less than the damage, the game chooses at random among only those destroyable Agents. It damages that Agent and deletes it at 0 Integrity.</li>
+<li><strong>No Agent can be destroyed:</strong> the game chooses an Agent with the lowest remaining Integrity. If several Agents are tied for lowest, it chooses at random among those tied Agents. That Agent takes all of the damage.</li>
+</ol>
 <p>An Agent absorbs the entire damage event. Damage never carries over from that Agent to another Agent or to Sync, even if the Agent is deleted.</p>
-<p>For example, against Agents with 1, 3, and 5 Integrity, a 3-damage effect randomly destroys either the 1-Integrity or 3-Integrity Agent; it cannot hit the 5-Integrity Agent or Sync. Against 4- and 5-Integrity Agents, that same 3-damage effect must hit the 4-Integrity Agent, leaving it at 1 Integrity. If an effect deals damage more than once, repeat this targeting process separately for each damage event using the battlefield as it exists at that moment.</p>
 <h2>Battle flow</h2>
 <p>Each player starts with five cards. Ki and Uplink both start at 0. Turns proceed through Start, Draw, Main, and End.</p>
 <ul>
