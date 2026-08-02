@@ -145,6 +145,7 @@ export class Battle {
     actionCount = 0;
     turnCount = 0;
     extraTurns = [[], []];
+    generatedCardCount = 0;
     winner;
     reason = "";
     active = 0;
@@ -203,6 +204,7 @@ export class Battle {
             player.hand = makeCards(playerSetup.hand, "hand");
             player.battlefield = makeCards(playerSetup.battlefield, "battlefield");
             player.discard = makeCards(playerSetup.discard, "discard");
+            player.void = makeCards(playerSetup.void, "void");
             player.points = playerSetup.flux ?? 0;
             player.sync = playerSetup.sync ?? 20;
             player.ki = playerSetup.ki ?? 0;
@@ -234,6 +236,7 @@ export class Battle {
             deck,
             hand: [],
             discard: [],
+            void: [],
             battlefield: [],
             points: 0,
             sync: 20,
@@ -287,6 +290,13 @@ export class Battle {
     randomize(player, area) {
         this.act(player, "randomize deck");
         this.rng.shuffle(area);
+    }
+    shuffleDeck(player) {
+        if (!this.act(player, "shuffle deck")) {
+            return false;
+        }
+        this.rng.shuffle(player.deck);
+        return true;
     }
     draw(player, narrate = true) {
         const card = player.deck[0];
@@ -392,6 +402,78 @@ export class Battle {
         }
         player.uplink += gain;
         this.note(`${player.id} | uplink:${gain}:${player.uplink}`);
+    }
+    deleteDaemon(player, card, event = "daemon_deleted") {
+        if (card.definition.immutable) {
+            return false;
+        }
+        if (this.move(player, card, player.battlefield, player.discard, "battlefield", "discard")) {
+            this.note(`${player.id} | ${event}:${card.definition.card_id}`);
+            return true;
+        }
+        return false;
+    }
+    wipe(player, card) {
+        if (this.move(player, card, player.battlefield, player.void, "battlefield", "void")) {
+            this.note(`${player.id} | wiped:${card.definition.card_id}`);
+            return true;
+        }
+        return false;
+    }
+    addCardsToDeck(player, cardId, amount, shuffle, source) {
+        const definition = this.cards[cardId];
+        if (!definition) {
+            return;
+        }
+        let added = 0;
+        for (let index = 0; index < Math.max(0, amount); index++) {
+            if (!this.act(player, `create ${cardId} in deck`)) {
+                break;
+            }
+            this.generatedCardCount++;
+            player.deck.push({
+                uid: `generated:${player.id}:${this.generatedCardCount}:${cardId}`,
+                definition,
+                ...(definition.card_kind === "agent"
+                    ? { remaining_integrity: definition.integrity }
+                    : {}),
+            });
+            added++;
+        }
+        if (added) {
+            this.note(`${player.id} | cards_added_to_deck:${added}:${cardId}:${source}:${shuffle ? "shuffled" : "ordered"}`);
+            if (shuffle) {
+                this.shuffleDeck(player);
+            }
+        }
+    }
+    recoverRandomDiscard(player, amount, source) {
+        let recovered = 0;
+        for (let index = 0; index < Math.max(0, amount); index++) {
+            if (!player.discard.length || this.winner !== undefined) {
+                break;
+            }
+            const card = player.discard[this.rng.int(player.discard.length)];
+            if (card && this.move(player, card, player.discard, player.deck, "discard", "deck")) {
+                recovered++;
+            }
+        }
+        if (recovered) {
+            this.note(`${player.id} | discard_recovered:${recovered}:${source}`);
+            this.shuffleDeck(player);
+        }
+    }
+    destroyRandomOpponentDaemon(player, source) {
+        const opponent = this.opponent(player);
+        const candidates = opponent.battlefield.filter((card) => card.definition.card_kind === "daemon" && !card.definition.immutable);
+        if (!candidates.length) {
+            return;
+        }
+        const target = candidates[this.rng.int(candidates.length)];
+        if (target) {
+            this.deleteDaemon(opponent, target);
+            this.note(`${player.id} | destroy_random_daemon:${target.definition.card_id}:${source}`);
+        }
     }
     dealDamage(source, target, amount) {
         const damage = Math.max(0, amount);
@@ -537,7 +619,7 @@ export class Battle {
         }
         const discarded = player.hand[this.rng.int(player.hand.length)];
         if (discarded && this.move(player, discarded, player.hand, player.discard, "hand", "discard")) {
-            this.note(`${player.id} | discard_random`);
+            this.note(`${player.id} | discard_random:${discarded.definition.card_id}`);
         }
     }
     snapshot(player, phase) {
@@ -551,6 +633,31 @@ export class Battle {
             deckCount: player.deck.length,
             hand: player.hand.map((card) => card.definition.card_id),
         });
+    }
+    resolvePlayTriggers(player, playedCard) {
+        const triggers = player.battlefield.filter((card) => card !== playedCard &&
+            card.definition.card_id === playedCard.definition.card_id &&
+            card.definition.mechanics?.some((mechanic) => mechanic.type === "draw_when_another_copy_played"));
+        for (const trigger of triggers) {
+            if (this.winner !== undefined || !this.act(player, `resolve triggered ${trigger.definition.card_id}`)) {
+                return;
+            }
+            if (this.draw(player, false)) {
+                this.note(`${player.id} | triggered_draw:${trigger.definition.card_id}`);
+            }
+        }
+    }
+    playTopCardOfDeck(player, source) {
+        const opponent = this.opponent(player);
+        const card = opponent.deck[0];
+        if (!card || !this.canPlay(opponent, card)) {
+            return;
+        }
+        if (!this.move(opponent, card, opponent.deck, opponent.hand, "deck", "hand")) {
+            return;
+        }
+        this.note(`${opponent.id} | play_top_card:${card.definition.card_id}:${source}`);
+        this.play(opponent, card, true);
     }
     resolve(player, card) {
         for (const mechanic of card.definition.mechanics ?? []) {
@@ -613,13 +720,36 @@ export class Battle {
                 this.extraTurns[this.players.indexOf(player)].push(card.definition.card_id);
                 this.note(`${player.id} | extra_turn_queued:${card.definition.card_id}`);
             }
+            else if (mechanic.type === "draw_when_another_copy_played") {
+                // This is a triggered ability. It resolves when another copy enters play.
+            }
+            else if (mechanic.type === "destroy_random_opponent_daemon") {
+                this.destroyRandomOpponentDaemon(player, card.definition.card_id);
+            }
+            else if (mechanic.type === "recover_random_discard") {
+                this.recoverRandomDiscard(player, mechanic.amount, card.definition.card_id);
+            }
+            else if (mechanic.type === "wipe_this_card") {
+                this.wipe(player, card);
+            }
+            else if (mechanic.type === "add_cards_to_deck") {
+                this.addCardsToDeck(player, mechanic.card_id, mechanic.amount, mechanic.shuffle, card.definition.card_id);
+            }
+            else if (mechanic.type === "gain_own_sync") {
+                this.changeSync(player, mechanic.amount);
+            }
+            else if (mechanic.type === "play_top_card_of_opponent_deck") {
+                this.playTopCardOfDeck(player, card.definition.card_id);
+            }
         }
     }
-    play(player, card) {
+    play(player, card, fromDeck = false) {
         if (!this.canPlay(player, card)) {
             return false;
         }
-        this.note(`${player.id} | play:${card.definition.card_id}`);
+        if (!fromDeck) {
+            this.note(`${player.id} | play:${card.definition.card_id}`);
+        }
         if (!this.payFlux(player, card.definition.flux_cost ?? 0) ||
             !this.move(player, card, player.hand, player.battlefield, "hand", "battlefield")) {
             return false;
@@ -629,6 +759,7 @@ export class Battle {
         }
         this.act(player, `resolve ${card.definition.card_id}`);
         this.resolve(player, card);
+        this.resolvePlayTriggers(player, card);
         if (card.definition.card_kind === "pulse") {
             this.move(player, card, player.battlefield, player.discard, "battlefield", "discard");
         }
