@@ -1,0 +1,330 @@
+[
+  {
+    "discord_user_id": "134208646606356480",
+    "player_name": "Eli",
+    "submission": {
+      "name": "TIME TO DIE",
+      "owner_name": "Rawhide Kobayashi",
+      "decklist": {
+        "threefold_siphon": 5,
+        "cursed_seal": 1,
+        "five_l": 11,
+        "dixie_flatline": 2,
+        "air_five_l": 11
+      },
+      "program": [
+        {
+          "condition_type": "opponent_victory_points_at_least",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 10,
+          "action_card_id": "threefold_siphon"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "in_your_hand",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board",
+          "action_card_id": "cursed_seal"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "air_five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "five_l"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [
+        "cursed_seal",
+        "five_l"
+      ],
+      "format_id": "cd8"
+    }
+  },
+  {
+    "discord_user_id": "163009224090058753",
+    "player_name": "Noonan",
+    "submission": {
+      "name": "Bobby Hill",
+      "owner_name": "NNBJ",
+      "decklist": {
+        "threefold_siphon": 3,
+        "cursed_seal": 1,
+        "seal": 7,
+        "dixie_flatline": 1,
+        "one_more_roll": 1,
+        "air_five_l": 1,
+        "charge_ki": 1,
+        "scrappy_kamehameha": 8
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "activate_immutable_card",
+          "quantity": "your_ki",
+          "comparison_operator": "<",
+          "quantity_threshold": 1,
+          "action_card_id": "charge_ki"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "opponent_sync",
+          "comparison_operator": "<",
+          "quantity_threshold": 3,
+          "action_card_id": "air_five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board",
+          "action_card_id": "cursed_seal"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "one_more_roll"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "scrappy_kamehameha"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "opponent_flux",
+          "comparison_operator": ">=",
+          "quantity_threshold": 9,
+          "action_card_id": "threefold_siphon"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [
+        "seal"
+      ],
+      "reactions": [
+        {
+          "trigger_type": "opponent_would_gain_flux",
+          "comparison_operator": ">",
+          "quantity_threshold": 1,
+          "action_card_id": "seal"
+        }
+      ],
+      "format_id": "cd8"
+    }
+  },
+  {
+    "discord_user_id": "173981293229506561",
+    "player_name": "Alex",
+    "submission": {
+      "name": "Tournament 3 deck",
+      "owner_name": "\"Hope you're toe\" Johnson",
+      "decklist": {
+        "seal": 16,
+        "dixie_flatline": 3,
+        "one_more_roll": 1,
+        "farmer_with_shotgun": 10
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "farmer_with_shotgun"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "one_more_roll"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [],
+      "reactions": [
+        {
+          "trigger_type": "opponent_would_gain_flux",
+          "comparison_operator": ">",
+          "quantity_threshold": 0,
+          "action_card_id": "seal"
+        }
+      ],
+      "format_id": "cd8"
+    }
+  },
+  {
+    "discord_user_id": "173986825889644544",
+    "player_name": "Colin",
+    "submission": {
+      "name": "CounterBurn",
+      "owner_name": "Phen",
+      "decklist": {
+        "seal": 16,
+        "one_more_roll": 1,
+        "charge_ki": 1,
+        "scrappy_kamehameha": 12
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "scrappy_kamehameha"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "<",
+          "quantity_threshold": 2,
+          "action_card_id": "one_more_roll"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "activate_immutable_card",
+          "action_card_id": "charge_ki"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [
+        "seal"
+      ],
+      "reactions": [
+        {
+          "trigger_type": "opponent_would_gain_flux",
+          "comparison_operator": ">",
+          "quantity_threshold": 0,
+          "action_card_id": "seal"
+        }
+      ],
+      "format_id": "cd8"
+    }
+  },
+  {
+    "discord_user_id": "184439858255626240",
+    "player_name": "Taylor",
+    "submission": {
+      "name": "Turtle Destruction Wave",
+      "owner_name": "Loth",
+      "decklist": {
+        "seal": 3,
+        "dixie_flatline": 2,
+        "one_more_roll": 2,
+        "charge_ki": 1,
+        "scrappy_kamehameha": 22
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "activate_immutable_card",
+          "quantity": "your_ki",
+          "comparison_operator": "=",
+          "quantity_threshold": 0,
+          "action_card_id": "charge_ki"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "one_more_roll"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_deck",
+          "comparison_operator": "<=",
+          "quantity_threshold": 19,
+          "action_card_id": "scrappy_kamehameha"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "end_turn",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dixie_flatline"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [
+        "scrappy_kamehameha"
+      ],
+      "reactions": [
+        {
+          "trigger_type": "opponent_would_gain_flux",
+          "comparison_operator": ">",
+          "quantity_threshold": 1,
+          "action_card_id": "seal"
+        }
+      ],
+      "format_id": "cd8"
+    }
+  },
+  {
+    "discord_user_id": "221460738928017408",
+    "player_name": "Stella",
+    "submission": {
+      "name": "WHAT 9000",
+      "owner_name": "Stella",
+      "decklist": {
+        "one_more_roll": 1,
+        "charge_ki": 1,
+        "scrappy_kamehameha": 18
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "scrappy_kamehameha"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "one_more_roll"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "activate_immutable_card",
+          "action_card_id": "charge_ki"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "format_id": "cd8"
+    }
+  }
+]

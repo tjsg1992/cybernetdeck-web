@@ -1,5 +1,5 @@
 {
-  "snapshot_id": "tournament-20260729T041806Z",
+  "snapshot_id": "tournament-20260802T040333Z",
   "manifest": {
     "cards": [
       {
@@ -28,7 +28,8 @@
         "card_kind": "daemon",
         "card_kind_label": "Daemon",
         "display_name": "One For All",
-        "effect": "Whenever you gain Flux, gain 1 additional Flux."
+        "effect": "Whenever you gain Flux, gain 1 additional Flux.",
+        "keyword_line": "Uplink 2"
       },
       {
         "card_id": "throttle",
@@ -85,62 +86,94 @@
         "card_kind_label": "Daemon",
         "display_name": "Dixie Flatline",
         "effect": "When your Sync becomes 0, set your Sync to 3, then delete this card."
+      },
+      {
+        "card_id": "one_more_roll",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "One More Roll",
+        "effect": "If your hand is empty, draw two cards. Otherwise, discard a card at random."
+      },
+      {
+        "card_id": "air_five_l",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Air 5L",
+        "effect": "Your opponent loses 2 Sync. You lose 1 Sync."
+      },
+      {
+        "card_id": "charge_ki",
+        "card_kind": "daemon",
+        "card_kind_label": "Daemon \u2022 Immutable",
+        "display_name": "Charge Ki",
+        "effect": "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.",
+        "immutable": true
+      },
+      {
+        "card_id": "scrappy_kamehameha",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Scrappy Kamehameha",
+        "effect": "Play this card only if you have 1 or more Ki. It deals 3 damage."
+      },
+      {
+        "card_id": "farmer_with_shotgun",
+        "card_kind": "agent",
+        "card_kind_label": "Agent",
+        "display_name": "Farmer With Shotgun",
+        "effect": "",
+        "keyword_line": "Integrity 1"
       }
     ],
-    "created_at": "2026-07-29T04:18:06.471434+00:00",
+    "created_at": "2026-08-02T04:03:33.187767+00:00",
+    "format_fingerprint": "4ade464921e8af165f5d36500b31728c89882a3a9cb9df7aa50ce5e6b86c733f",
+    "format_id": "cd8",
     "format_version": "cd-ts-1",
-    "id": "tournament-20260729T041806Z",
+    "id": "tournament-20260802T040333Z",
     "published": true,
-    "published_at": "2026-07-29T22:23:40.983251+00:00",
     "replay_assets": {
       "cards": "cards.js",
       "engine": "engine.js"
     },
-    "rules_fingerprint": "aad9b918a00e5a9f23dde6728d43113280ba7d5b26c5f6b34e16e6d8c916d21b",
-    "tournament_seed": 3967989329
+    "rules_fingerprint": "2210b409f081f098d96e7841a38a1b65ad08d51acdb9b8cf7e900a8a2e62340f",
+    "tournament_seed": 32463297
   },
   "standings": [
     {
-      "deck_name": "For Eli (A Tribute)",
-      "discord_user_id": "184439858255626240",
-      "player_name": "Taylor",
-      "total_wins": 4278
-    },
-    {
-      "deck_name": "Stall",
-      "discord_user_id": "173986825889644544",
-      "player_name": "Phen",
-      "total_wins": 4090
-    },
-    {
-      "deck_name": "Weeb Shit",
+      "deck_name": "WHAT 9000",
       "discord_user_id": "221460738928017408",
       "player_name": "Stella",
-      "total_wins": 3598
+      "total_wins": 4805
     },
     {
-      "deck_name": "kms",
-      "discord_user_id": "134208646606356480",
-      "player_name": "Eli",
-      "total_wins": 2641
+      "deck_name": "Turtle Destruction Wave",
+      "discord_user_id": "184439858255626240",
+      "player_name": "Taylor",
+      "total_wins": 4148
     },
     {
-      "deck_name": "Sam V2",
-      "discord_user_id": "240154642816696322",
-      "player_name": "Blkwaterpark",
-      "total_wins": 2578
-    },
-    {
-      "deck_name": "Inferiority Complex",
+      "deck_name": "Tournament 3 deck",
       "discord_user_id": "173981293229506561",
       "player_name": "Alex",
-      "total_wins": 2271
+      "total_wins": 1857
     },
     {
-      "deck_name": "Time After Time",
-      "discord_user_id": "184825720311119872",
-      "player_name": "Jenna",
-      "total_wins": 1544
+      "deck_name": "CounterBurn",
+      "discord_user_id": "173986825889644544",
+      "player_name": "Colin",
+      "total_wins": 1635
+    },
+    {
+      "deck_name": "Bobby Hill",
+      "discord_user_id": "163009224090058753",
+      "player_name": "Noonan",
+      "total_wins": 1583
+    },
+    {
+      "deck_name": "TIME TO DIE",
+      "discord_user_id": "134208646606356480",
+      "player_name": "Eli",
+      "total_wins": 972
     }
   ],
   "decks": [
@@ -148,13 +181,14 @@
       "discord_user_id": "134208646606356480",
       "player_name": "Eli",
       "submission": {
-        "name": "kms",
+        "name": "TIME TO DIE",
         "owner_name": "Rawhide Kobayashi",
         "decklist": {
           "threefold_siphon": 5,
           "cursed_seal": 1,
-          "five_l": 22,
-          "dixie_flatline": 2
+          "five_l": 11,
+          "dixie_flatline": 2,
+          "air_five_l": 11
         },
         "program": [
           {
@@ -180,6 +214,11 @@
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
+            "action_card_id": "air_five_l"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
             "action_card_id": "five_l"
           }
         ],
@@ -188,101 +227,169 @@
           "cursed_seal",
           "five_l"
         ],
-        "format_id": "cd5"
+        "format_id": "cd8"
       }
     },
     {
-      "discord_user_id": "173981293229506561",
-      "player_name": "Alex",
+      "discord_user_id": "163009224090058753",
+      "player_name": "Noonan",
       "submission": {
-        "name": "Inferiority Complex",
-        "owner_name": "\"Hope you're toe\" Johnson",
+        "name": "Bobby Hill",
+        "owner_name": "NNBJ",
         "decklist": {
-          "victory_point_2": 9,
-          "sparkleback_totem": 7,
-          "overcharge_gambit": 5,
-          "cursed_seal": 2,
-          "five_l": 1,
-          "seal": 6
+          "threefold_siphon": 3,
+          "cursed_seal": 1,
+          "seal": 7,
+          "dixie_flatline": 1,
+          "one_more_roll": 1,
+          "air_five_l": 1,
+          "charge_ki": 1,
+          "scrappy_kamehameha": 8
         },
         "program": [
           {
             "condition_type": "quantity_compare",
+            "action_type": "activate_immutable_card",
+            "quantity": "your_ki",
+            "comparison_operator": "<",
+            "quantity_threshold": 1,
+            "action_card_id": "charge_ki"
+          },
+          {
+            "condition_type": "quantity_compare",
             "action_type": "play_named_card",
             "quantity": "opponent_sync",
-            "comparison_operator": "=",
-            "quantity_threshold": 1,
-            "action_card_id": "five_l"
+            "comparison_operator": "<",
+            "quantity_threshold": 3,
+            "action_card_id": "air_five_l"
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "sparkleback_totem"
+            "action_card_id": "dixie_flatline"
           },
           {
-            "condition_type": "quantity_compare",
+            "condition_type": "card_is",
             "action_type": "play_named_card",
-            "quantity": "your_flux",
-            "comparison_operator": "<=",
-            "quantity_threshold": 5,
-            "action_card_id": "overcharge_gambit"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "your_flux",
-            "comparison_operator": ">=",
-            "quantity_threshold": 6,
-            "action_card_id": "victory_point_2"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_in_opponent_hand",
-            "comparison_operator": "<",
-            "quantity_threshold": 1,
+            "condition_card_id": "dixie_flatline",
+            "card_condition": "on_your_side_of_board",
             "action_card_id": "cursed_seal"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity": "cards_in_your_hand",
+            "comparison_operator": "=",
+            "quantity_threshold": 1,
+            "action_card_id": "one_more_roll"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "scrappy_kamehameha"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity": "opponent_flux",
+            "comparison_operator": ">=",
+            "quantity_threshold": 9,
+            "action_card_id": "threefold_siphon"
           }
         ],
-        "default_action": "end_turn",
+        "default_action": "play_random_card",
         "random_card_ids": [
-          "victory_point_2",
-          "sparkleback_totem",
-          "overcharge_gambit",
           "seal"
         ],
         "reactions": [
           {
             "trigger_type": "opponent_would_gain_flux",
             "comparison_operator": ">",
-            "quantity_threshold": 2,
+            "quantity_threshold": 1,
             "action_card_id": "seal"
           }
         ],
-        "format_id": "cd5"
+        "format_id": "cd8"
+      }
+    },
+    {
+      "discord_user_id": "173981293229506561",
+      "player_name": "Alex",
+      "submission": {
+        "name": "Tournament 3 deck",
+        "owner_name": "\"Hope you're toe\" Johnson",
+        "decklist": {
+          "seal": 16,
+          "dixie_flatline": 3,
+          "one_more_roll": 1,
+          "farmer_with_shotgun": 10
+        },
+        "program": [
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "dixie_flatline"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "farmer_with_shotgun"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity": "cards_in_your_hand",
+            "comparison_operator": "=",
+            "quantity_threshold": 1,
+            "action_card_id": "one_more_roll"
+          }
+        ],
+        "default_action": "play_random_card",
+        "random_card_ids": [],
+        "reactions": [
+          {
+            "trigger_type": "opponent_would_gain_flux",
+            "comparison_operator": ">",
+            "quantity_threshold": 0,
+            "action_card_id": "seal"
+          }
+        ],
+        "format_id": "cd8"
       }
     },
     {
       "discord_user_id": "173986825889644544",
-      "player_name": "Phen",
+      "player_name": "Colin",
       "submission": {
-        "name": "Stall",
+        "name": "CounterBurn",
         "owner_name": "Phen",
         "decklist": {
-          "five_l": 4,
-          "seal": 26
+          "seal": 16,
+          "one_more_roll": 1,
+          "charge_ki": 1,
+          "scrappy_kamehameha": 12
         },
         "program": [
           {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "scrappy_kamehameha"
+          },
+          {
             "condition_type": "quantity_compare",
             "action_type": "play_named_card",
-            "quantity": "opponent_flux",
-            "comparison_operator": "<=",
-            "quantity_threshold": 1,
-            "action_card_id": "five_l"
+            "quantity": "cards_in_your_hand",
+            "comparison_operator": "<",
+            "quantity_threshold": 2,
+            "action_card_id": "one_more_roll"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "activate_immutable_card",
+            "action_card_id": "charge_ki"
           }
         ],
-        "default_action": "end_turn",
+        "default_action": "play_random_card",
         "random_card_ids": [
           "seal"
         ],
@@ -294,106 +401,52 @@
             "action_card_id": "seal"
           }
         ],
-        "format_id": "cd5"
+        "format_id": "cd8"
       }
     },
     {
       "discord_user_id": "184439858255626240",
       "player_name": "Taylor",
       "submission": {
-        "name": "For Eli (A Tribute)",
+        "name": "Turtle Destruction Wave",
         "owner_name": "Loth",
         "decklist": {
-          "victory_point_2": 11,
-          "sparkleback_totem": 3,
-          "five_l": 1,
-          "seal": 15
+          "seal": 3,
+          "dixie_flatline": 2,
+          "one_more_roll": 2,
+          "charge_ki": 1,
+          "scrappy_kamehameha": 22
         },
         "program": [
           {
             "condition_type": "quantity_compare",
+            "action_type": "activate_immutable_card",
+            "quantity": "your_ki",
+            "comparison_operator": "=",
+            "quantity_threshold": 0,
+            "action_card_id": "charge_ki"
+          },
+          {
+            "condition_type": "quantity_compare",
             "action_type": "play_named_card",
-            "quantity": "opponent_sync",
+            "quantity": "cards_in_your_hand",
             "comparison_operator": "=",
             "quantity_threshold": 1,
-            "action_card_id": "five_l"
+            "action_card_id": "one_more_roll"
           },
           {
-            "condition_type": "if_able",
+            "condition_type": "quantity_compare",
             "action_type": "play_named_card",
-            "action_card_id": "sparkleback_totem"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "overcharge_gambit"
+            "quantity": "cards_in_your_deck",
+            "comparison_operator": "<=",
+            "quantity_threshold": 19,
+            "action_card_id": "scrappy_kamehameha"
           },
           {
             "condition_type": "card_is",
-            "action_type": "play_named_card",
-            "condition_card_id": "sparkleback_totem",
-            "card_condition": "on_your_side_of_board",
-            "action_card_id": "victory_point_2"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "opponent_flux",
-            "comparison_operator": ">=",
-            "quantity_threshold": 3,
-            "action_card_id": "threefold_siphon"
-          }
-        ],
-        "default_action": "play_random_card",
-        "random_card_ids": [],
-        "reactions": [
-          {
-            "trigger_type": "opponent_would_gain_flux",
-            "comparison_operator": ">",
-            "quantity_threshold": 1,
-            "action_card_id": "seal"
-          }
-        ],
-        "format_id": "cd5"
-      }
-    },
-    {
-      "discord_user_id": "184825720311119872",
-      "player_name": "Jenna",
-      "submission": {
-        "name": "Time After Time",
-        "owner_name": "TheBlueGateMage",
-        "decklist": {
-          "victory_point_2": 10,
-          "sparkleback_totem": 6,
-          "overcharge_gambit": 1,
-          "time_walk": 1,
-          "seal": 1,
-          "dixie_flatline": 1
-        },
-        "program": [
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "sparkleback_totem"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "overcharge_gambit"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "victory_point_2"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "your_flux",
-            "comparison_operator": ">=",
-            "quantity_threshold": 10,
-            "action_card_id": "time_walk"
+            "action_type": "end_turn",
+            "condition_card_id": "dixie_flatline",
+            "card_condition": "on_your_side_of_board"
           },
           {
             "condition_type": "if_able",
@@ -402,103 +455,54 @@
           }
         ],
         "default_action": "play_random_card",
-        "random_card_ids": [],
-        "format_id": "cd5"
+        "random_card_ids": [
+          "scrappy_kamehameha"
+        ],
+        "reactions": [
+          {
+            "trigger_type": "opponent_would_gain_flux",
+            "comparison_operator": ">",
+            "quantity_threshold": 1,
+            "action_card_id": "seal"
+          }
+        ],
+        "format_id": "cd8"
       }
     },
     {
       "discord_user_id": "221460738928017408",
       "player_name": "Stella",
       "submission": {
-        "name": "Weeb Shit",
+        "name": "WHAT 9000",
         "owner_name": "Stella",
         "decklist": {
-          "victory_point_2": 8,
-          "sparkleback_totem": 5,
-          "cursed_seal": 5,
-          "five_l": 1,
-          "seal": 7,
-          "dixie_flatline": 4
+          "one_more_roll": 1,
+          "charge_ki": 1,
+          "scrappy_kamehameha": 18
         },
         "program": [
           {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "scrappy_kamehameha"
+          },
+          {
             "condition_type": "quantity_compare",
             "action_type": "play_named_card",
-            "quantity": "opponent_sync",
+            "quantity": "cards_in_your_hand",
             "comparison_operator": "=",
             "quantity_threshold": 1,
-            "action_card_id": "five_l"
+            "action_card_id": "one_more_roll"
           },
           {
             "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "dixie_flatline"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "sparkleback_totem"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_in_your_deck",
-            "comparison_operator": "<",
-            "quantity_threshold": 13,
-            "action_card_id": "victory_point_2"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "cursed_seal"
-          }
-        ],
-        "default_action": "end_turn",
-        "random_card_ids": [
-          "seal"
-        ],
-        "reactions": [
-          {
-            "trigger_type": "opponent_would_gain_flux",
-            "comparison_operator": ">",
-            "quantity_threshold": 1,
-            "action_card_id": "seal"
-          }
-        ],
-        "format_id": "cd5"
-      }
-    },
-    {
-      "discord_user_id": "240154642816696322",
-      "player_name": "Blkwaterpark",
-      "submission": {
-        "name": "Sam V2",
-        "owner_name": "Blkwaterpark",
-        "decklist": {
-          "victory_point_2": 10,
-          "sparkleback_totem": 7,
-          "overcharge_gambit": 3
-        },
-        "program": [
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "sparkleback_totem"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "overcharge_gambit"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "victory_point_2"
+            "action_type": "activate_immutable_card",
+            "action_card_id": "charge_ki"
           }
         ],
         "default_action": "end_turn",
         "random_card_ids": [],
-        "format_id": "cd5"
+        "format_id": "cd8"
       }
     }
   ],
@@ -506,49 +510,49 @@
     {
       "matchup_id": "matchup-001",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "163009224090058753",
       "summary": {
-        "first_wins": 468,
-        "second_wins": 532,
-        "draws": 0,
+        "average_turns": 12.7,
         "battle_count": 1000,
-        "average_turns": 11.5
+        "draws": 0,
+        "first_wins": 141,
+        "second_wins": 859
       }
     },
     {
       "matchup_id": "matchup-002",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "173986825889644544",
+      "second_discord_user_id": "173981293229506561",
       "summary": {
-        "first_wins": 910,
-        "second_wins": 90,
-        "draws": 0,
+        "average_turns": 20.9,
         "battle_count": 1000,
-        "average_turns": 29.1
+        "draws": 0,
+        "first_wins": 638,
+        "second_wins": 362
       }
     },
     {
       "matchup_id": "matchup-003",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "184439858255626240",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "first_wins": 652,
-        "second_wins": 348,
-        "draws": 0,
+        "average_turns": 13.8,
         "battle_count": 1000,
-        "average_turns": 27.2
+        "draws": 0,
+        "first_wins": 181,
+        "second_wins": 819
       }
     },
     {
       "matchup_id": "matchup-004",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "184825720311119872",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "first_wins": 71,
-        "second_wins": 929,
-        "draws": 0,
+        "average_turns": 7.6,
         "battle_count": 1000,
-        "average_turns": 16.3
+        "draws": 0,
+        "first_wins": 8,
+        "second_wins": 992
       }
     },
     {
@@ -556,107 +560,107 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "first_wins": 510,
-        "second_wins": 490,
-        "draws": 0,
+        "average_turns": 4.0,
         "battle_count": 1000,
-        "average_turns": 5.3
+        "draws": 0,
+        "first_wins": 4,
+        "second_wins": 996
       }
     },
     {
       "matchup_id": "matchup-006",
-      "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "240154642816696322",
+      "first_discord_user_id": "163009224090058753",
+      "second_discord_user_id": "173981293229506561",
       "summary": {
-        "first_wins": 30,
-        "second_wins": 970,
-        "draws": 0,
+        "average_turns": 31.2,
         "battle_count": 1000,
-        "average_turns": 7.1
+        "draws": 0,
+        "first_wins": 4,
+        "second_wins": 996
       }
     },
     {
       "matchup_id": "matchup-007",
-      "first_discord_user_id": "173981293229506561",
+      "first_discord_user_id": "163009224090058753",
       "second_discord_user_id": "173986825889644544",
       "summary": {
-        "first_wins": 499,
-        "second_wins": 501,
-        "draws": 0,
+        "average_turns": 18.1,
         "battle_count": 1000,
-        "average_turns": 51.0
+        "draws": 0,
+        "first_wins": 688,
+        "second_wins": 312
       }
     },
     {
       "matchup_id": "matchup-008",
-      "first_discord_user_id": "173981293229506561",
+      "first_discord_user_id": "163009224090058753",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "first_wins": 32,
-        "second_wins": 968,
-        "draws": 0,
+        "average_turns": 10.0,
         "battle_count": 1000,
-        "average_turns": 23.9
+        "draws": 0,
+        "first_wins": 25,
+        "second_wins": 975
       }
     },
     {
       "matchup_id": "matchup-009",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "184825720311119872",
+      "first_discord_user_id": "163009224090058753",
+      "second_discord_user_id": "221460738928017408",
       "summary": {
-        "first_wins": 628,
-        "second_wins": 372,
-        "draws": 0,
+        "average_turns": 5.2,
         "battle_count": 1000,
-        "average_turns": 8.1
+        "draws": 0,
+        "first_wins": 7,
+        "second_wins": 993
       }
     },
     {
       "matchup_id": "matchup-010",
       "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "221460738928017408",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "first_wins": 107,
-        "second_wins": 893,
-        "draws": 0,
+        "average_turns": 51.0,
         "battle_count": 1000,
-        "average_turns": 6.0
+        "draws": 0,
+        "first_wins": 499,
+        "second_wins": 501
       }
     },
     {
       "matchup_id": "matchup-011",
       "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "240154642816696322",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "first_wins": 473,
-        "second_wins": 527,
-        "draws": 0,
+        "average_turns": 26.4,
         "battle_count": 1000,
-        "average_turns": 5.4
+        "draws": 0,
+        "first_wins": 0,
+        "second_wins": 1000
       }
     },
     {
       "matchup_id": "matchup-012",
-      "first_discord_user_id": "173986825889644544",
-      "second_discord_user_id": "184439858255626240",
+      "first_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "221460738928017408",
       "summary": {
-        "first_wins": 500,
-        "second_wins": 500,
-        "draws": 0,
+        "average_turns": 13.4,
         "battle_count": 1000,
-        "average_turns": 51.0
+        "draws": 0,
+        "first_wins": 0,
+        "second_wins": 1000
       }
     },
     {
       "matchup_id": "matchup-013",
       "first_discord_user_id": "173986825889644544",
-      "second_discord_user_id": "184825720311119872",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "first_wins": 1000,
-        "second_wins": 0,
-        "draws": 0,
+        "average_turns": 9.7,
         "battle_count": 1000,
-        "average_turns": 31.5
+        "draws": 0,
+        "first_wins": 3,
+        "second_wins": 997
       }
     },
     {
@@ -664,95 +668,23 @@
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "first_wins": 999,
-        "second_wins": 1,
-        "draws": 0,
+        "average_turns": 4.9,
         "battle_count": 1000,
-        "average_turns": 13.0
+        "draws": 0,
+        "first_wins": 0,
+        "second_wins": 1000
       }
     },
     {
       "matchup_id": "matchup-015",
-      "first_discord_user_id": "173986825889644544",
-      "second_discord_user_id": "240154642816696322",
-      "summary": {
-        "first_wins": 1000,
-        "second_wins": 0,
-        "draws": 0,
-        "battle_count": 1000,
-        "average_turns": 31.5
-      }
-    },
-    {
-      "matchup_id": "matchup-016",
-      "first_discord_user_id": "184439858255626240",
-      "second_discord_user_id": "184825720311119872",
-      "summary": {
-        "first_wins": 983,
-        "second_wins": 17,
-        "draws": 0,
-        "battle_count": 1000,
-        "average_turns": 23.7
-      }
-    },
-    {
-      "matchup_id": "matchup-017",
       "first_discord_user_id": "184439858255626240",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "first_wins": 616,
-        "second_wins": 384,
-        "draws": 0,
+        "average_turns": 5.4,
         "battle_count": 1000,
-        "average_turns": 11.4
-      }
-    },
-    {
-      "matchup_id": "matchup-018",
-      "first_discord_user_id": "184439858255626240",
-      "second_discord_user_id": "240154642816696322",
-      "summary": {
-        "first_wins": 863,
-        "second_wins": 137,
         "draws": 0,
-        "battle_count": 1000,
-        "average_turns": 22.5
-      }
-    },
-    {
-      "matchup_id": "matchup-019",
-      "first_discord_user_id": "184825720311119872",
-      "second_discord_user_id": "221460738928017408",
-      "summary": {
-        "first_wins": 31,
-        "second_wins": 969,
-        "draws": 0,
-        "battle_count": 1000,
-        "average_turns": 5.9
-      }
-    },
-    {
-      "matchup_id": "matchup-020",
-      "first_discord_user_id": "184825720311119872",
-      "second_discord_user_id": "240154642816696322",
-      "summary": {
-        "first_wins": 195,
-        "second_wins": 805,
-        "draws": 0,
-        "battle_count": 1000,
-        "average_turns": 3.9
-      }
-    },
-    {
-      "matchup_id": "matchup-021",
-      "first_discord_user_id": "221460738928017408",
-      "second_discord_user_id": "240154642816696322",
-      "summary": {
-        "first_wins": 861,
-        "second_wins": 139,
-        "draws": 0,
-        "battle_count": 1000,
-        "average_turns": 5.4
+        "first_wins": 184,
+        "second_wins": 816
       }
     }
   ]

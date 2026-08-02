@@ -26,7 +26,8 @@
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
       "display_name": "One For All",
-      "effect": "Whenever you gain Flux, gain 1 additional Flux."
+      "effect": "Whenever you gain Flux, gain 1 additional Flux.",
+      "keyword_line": "Uplink 2"
     },
     {
       "card_id": "throttle",
@@ -83,17 +84,55 @@
       "card_kind_label": "Daemon",
       "display_name": "Dixie Flatline",
       "effect": "When your Sync becomes 0, set your Sync to 3, then delete this card."
+    },
+    {
+      "card_id": "one_more_roll",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "One More Roll",
+      "effect": "If your hand is empty, draw two cards. Otherwise, discard a card at random."
+    },
+    {
+      "card_id": "air_five_l",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Air 5L",
+      "effect": "Your opponent loses 2 Sync. You lose 1 Sync."
+    },
+    {
+      "card_id": "charge_ki",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon \u2022 Immutable",
+      "display_name": "Charge Ki",
+      "effect": "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.",
+      "immutable": true
+    },
+    {
+      "card_id": "scrappy_kamehameha",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Scrappy Kamehameha",
+      "effect": "Play this card only if you have 1 or more Ki. It deals 3 damage."
+    },
+    {
+      "card_id": "farmer_with_shotgun",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Farmer With Shotgun",
+      "effect": "",
+      "keyword_line": "Integrity 1"
     }
   ],
-  "created_at": "2026-07-29T04:18:06.471434+00:00",
+  "created_at": "2026-08-02T04:03:33.187767+00:00",
+  "format_fingerprint": "4ade464921e8af165f5d36500b31728c89882a3a9cb9df7aa50ce5e6b86c733f",
+  "format_id": "cd8",
   "format_version": "cd-ts-1",
-  "id": "tournament-20260729T041806Z",
+  "id": "tournament-20260802T040333Z",
   "published": true,
-  "published_at": "2026-07-29T22:23:40.983251+00:00",
   "replay_assets": {
     "cards": "cards.js",
     "engine": "engine.js"
   },
-  "rules_fingerprint": "aad9b918a00e5a9f23dde6728d43113280ba7d5b26c5f6b34e16e6d8c916d21b",
-  "tournament_seed": 3967989329
+  "rules_fingerprint": "2210b409f081f098d96e7841a38a1b65ad08d51acdb9b8cf7e900a8a2e62340f",
+  "tournament_seed": 32463297
 }
