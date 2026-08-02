@@ -1,5 +1,7 @@
 const parts = (event) => { const [actor, detail = ""] = event.split(" | "); return { actor, detail }; };
 const plural = (count, noun) => `${noun}${count === "1" ? "" : "s"}`;
+const deck = (context, playerId) => context.deck?.(playerId) ?? "Deck";
+const drawn = (context, playerId, label, fallback) => context.drawnCardIds?.length && context.drawnCards ? context.drawnCards(label, context.drawnCardIds, playerId) : fallback;
 export function isTurnStartEvent(event) { return parts(event).detail.startsWith("turn_start"); }
 /** Keep engine setup diagnostics out of player turn navigation. */
 export function groupBattleLogByTurn(events) {
@@ -21,13 +23,27 @@ export function narrateBattleEvent(event, context) {
     if (detail.startsWith("turn_start:extra_turn:"))
         return `${player} begins their extra turn from ${context.card(detail.split(":")[2])}.`;
     if (detail === "draw")
-        return `${player} draws a card.`;
-    if (detail.startsWith("draw_many:"))
-        return `${player} draws ${detail.split(":")[1]} cards.`;
+        return `${player} draws ${context.drawnCardIds?.length === 1 ? context.card(context.drawnCardIds[0]) : drawn(context, actor, "a card", "a card")}.`;
+    if (detail.startsWith("draw_many:")) {
+        const count = detail.split(":")[1];
+        if (context.drawnCardIds?.length === 1)
+            return `${player} draws ${context.card(context.drawnCardIds[0])}.`;
+        return `${player} draws ${drawn(context, actor, `${count} ${plural(count, "card")}`, `${count} ${plural(count, "card")}`)}.`;
+    }
+    if (detail.startsWith("triggered_draw:")) {
+        const source = context.card(detail.split(":")[1]);
+        const count = context.drawnCardIds?.length ?? 0;
+        const subject = count === 1 ? context.card(context.drawnCardIds[0]) : drawn(context, actor, `${count} cards`, "a card");
+        return `${player} draws ${subject} from ${source}.`;
+    }
     if (detail.startsWith("discard_random:"))
         return `${player} discards ${context.card(detail.split(":")[1])} at random.`;
     if (detail === "discard_random")
         return `${player} discards a card at random.`;
+    if (detail.startsWith("play_top_card:")) {
+        const [, cardId, source] = detail.split(":");
+        return `${player} plays the top card of their ${deck(context, actor)}, ${context.card(cardId)}, from ${context.card(source)}.`;
+    }
     if (detail.startsWith("play:"))
         return `${player} plays ${context.card(detail.split(":")[1])}.`;
     if (detail.startsWith("activate:"))
@@ -48,6 +64,8 @@ export function narrateBattleEvent(event, context) {
     }
     if (detail.startsWith("agent_deleted:"))
         return `${player}'s ${context.card(detail.split(":")[1])} is deleted.`;
+    if (detail.startsWith("daemon_deleted:"))
+        return `${player}'s ${context.card(detail.split(":")[1])} is deleted.`;
     if (detail === "pregame_end_turn_effect")
         return `${player}'s card effect has no turn to end before the battle begins.`;
     if (detail.startsWith("scan_deck:")) {
@@ -57,6 +75,18 @@ export function narrateBattleEvent(event, context) {
         const [, _, __, ids, source] = fields, cardIds = ids.split(","), target = cardIds.length === 1 ? `${context.card(cardIds[0])} ${plural(found, "card")}` : "matching cards";
         return `${player} uses ${context.card(source)} to look at the top ${looked} cards and adds ${found} ${target} to their hand.`;
     }
+    if (detail.startsWith("cards_added_to_deck:")) {
+        const [, amount, cardId, source, order] = detail.split(":"), targetDeck = deck(context, actor);
+        return `${player} uses ${context.card(source)} to add ${amount} ${context.card(cardId)} ${plural(amount, "card")} to their ${targetDeck}${order === "shuffled" ? ` and shuffles their ${targetDeck}` : ""}.`;
+    }
+    if (detail.startsWith("discard_recovered:")) {
+        const [, amount] = detail.split(":");
+        return `${player} shuffles ${amount} ${plural(amount, "card")} from their Discard into their ${deck(context, actor)}.`;
+    }
+    if (detail === "shuffle deck")
+        return `${player} shuffles their ${deck(context, actor)}.`;
+    if (detail.startsWith("wiped:"))
+        return `${player} wipes ${context.card(detail.split(":")[1])} into the Void.`;
     if (detail.startsWith("reaction_play:")) {
         const fields = detail.split(":");
         if (fields.length === 3) {
@@ -97,6 +127,10 @@ export function narrateBattleEvent(event, context) {
         return `${player} ended their turn.`;
     if (event.startsWith("system | battle_end:")) {
         const [, winner, reason] = event.split(":");
+        if (reason === "deck_exhausted" && winner !== "draw") {
+            const loser = winner === "first" ? "second" : "first";
+            return `${context.player(winner)} won when their opponent could not draw from their ${deck(context, loser)}.`;
+        }
         return winner === "draw" ? `The battle ended in a draw (${reason}).` : `${context.player(winner)} won by ${reason}.`;
     }
     return "";
