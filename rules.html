@@ -14,7 +14,7 @@
 <p>Trying to draw from an empty deck loses the battle. A battle can also end at the configured action limit; the player with fewer attributed actions wins, or the battle is a draw if the counts are tied.</p>
 <p>Reactions and triggered card effects resolve before the game checks for a winning or losing state caused by that event.</p>
 <h2>Decks and cards</h2>
-<p>Each deck contains 20–30 cards and may include any number of each card in the current format.</p>
+<p>Each deck contains 20–30 cards and may include any number of each card in the current format. A card with <strong>Bandwidth N</strong> costs N Bandwidth to play. A card with <strong>Sync cost N</strong> reduces its controller&#x27;s Sync by N when played.</p>
 <ul>
 <li><strong>Pulse</strong> cards resolve their effects and then go to the discard pile.</li>
 <li><strong>Daemon</strong> cards remain on the battlefield with their ongoing effects active.</li>
@@ -32,18 +32,21 @@
 </ol>
 <p>An Agent absorbs the entire damage event. Damage never carries over from that Agent to another Agent or to Sync, even if the Agent is deleted.</p>
 <h2>Battle flow</h2>
-<p>Each player starts with five cards. Ki and Uplink both start at 0. Turns proceed through Start, Draw, Main, and End.</p>
+<p>Each player starts with five cards. Ki, Uplink, and current Bandwidth all start at 0; Bandwidth&#x27;s maximum also starts at 0. Turns proceed through Start, Draw, Main, and End.</p>
 <ul>
-<li><strong>Start:</strong> The turn begins and its player gains 1 Uplink. Uplink requirements are thresholds, not costs.</li>
+<li><strong>Start:</strong> The turn begins and its player gains 1 Uplink. Their Bandwidth maximum increases by 1, and their current Bandwidth is restored to that new maximum. Uplink requirements are thresholds, not costs.</li>
 <li><strong>Draw:</strong> Draw one card. Drawing from an empty deck loses the battle.</li>
 <li><strong>Main:</strong> Follow the program while playable cards remain in hand.</li>
 <li><strong>End:</strong> The turn ends and the other player begins their turn.</li>
 </ul>
+<p>Bandwidth is a spendable resource. Playing a card with <strong>Bandwidth N</strong> reduces your current Bandwidth by N; it cannot be spent below 0. Unspent Bandwidth does not carry through the next Start phase. Programs can compare your current Bandwidth with the quantity condition; that condition does not compare the maximum.</p>
+<p>Sync costs reduce your current Sync when the card is played. You cannot pay more Sync than you have. For a reaction with a cost, the game confirms that the cost can be paid, announces the reaction, then pays the cost before the card moves or resolves. If paying a Sync cost reaches 0 Sync, zero-Sync effects resolve before the loss check; if Sync remains 0, the battle ends before the card moves or resolves.</p>
 <h2>Programs</h2>
 <p>An Action program is an ordered list of rules. During Main, the rules are checked from top to bottom. The first rule whose condition is true and whose action can be performed is used.</p>
+<p>Quantity conditions can compare cards in either deck or hand, either player&#x27;s Flux or Sync, your Ki, or your current Bandwidth using fewer than, at most, exactly, at least, or more than a whole-number threshold.</p>
 <p>Actions can play a named card, activate an Immutable card, play a random card, or end the turn. If no Action rule is selected, the default action is used. When your deck contains a card that can add another named card to your deck, the added card is also available in the condition and named-action selectors; it still cannot be played until a copy is actually in your hand.</p>
 <h2>Reactions</h2>
-<p>A Reaction program is separate from the Action program and has no default action. Whenever an event in the game occurs, the Reaction rules are checked in order. The current turn player gets priority first, followed by the other player, alternating until both players have no eligible Reaction to the event. The first eligible Glitch for the player with priority is played. If no reaction is eligible, nothing happens.</p>
+<p>A Reaction program is separate from the Action program and has no default action. Whenever an event in the game occurs, the Reaction rules are checked in order. The current turn player gets priority first, followed by the other player, alternating until both players have no eligible Reaction to the event. The first eligible Glitch for the player with priority is played. If no reaction is eligible or its costs cannot be paid, nothing happens.</p>
 <p>A reaction window belongs to one pending event. If a reaction prevents that event, the reaction window closes immediately; no other matching Glitch can be played for that same event. If a reaction resolves without preventing the event and the event remains pending, priority continues to alternate until both players pass.</p>
 <h2>Simulations and battle logs</h2>
 <p>Simulations play the selected number of battles against each available opponent. Select a matchup and then a battle to read its player-facing log.</p></article>

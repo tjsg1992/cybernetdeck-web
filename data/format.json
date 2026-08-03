@@ -1,5 +1,5 @@
 {
-  "format_id": "cd10",
+  "format_id": "seal-card-display-1",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -106,7 +106,7 @@
     {
       "card_id": "seal",
       "display_name": "Seal",
-      "effect": "When your opponent would gain Flux, play this to prevent that gain.",
+      "effect": "When your opponent would gain Flux, you may pay 2 Sync and play this card. If you do, prevent that gain.",
       "card_kind": "glitch",
       "card_kind_label": "Glitch",
       "art_url": "card-art/seal.jpeg",
@@ -157,9 +157,10 @@
     {
       "card_id": "scrappy_kamehameha",
       "display_name": "Scrappy Kamehameha",
-      "effect": "Play this card only if you have 1 or more Ki. It deals 3 damage.",
+      "effect": "Play this card only if you have 1 or more Ki. When it enters play, it deals 3 damage.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 1",
       "art_url": "card-art/scrappy_kamehameha.jpg",
       "art_alt": "Temporary placeholder artwork for Scrappy Kamehameha",
       "art_position": "54% 0%"
@@ -178,9 +179,10 @@
     {
       "card_id": "matt_daemon",
       "display_name": "Matt Daemon",
-      "effect": "Whenever you play another Matt Daemon, draw a card.",
+      "effect": "Whenever another Matt Daemon enters play under your control, draw a card.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
+      "keyword_line": "Bandwidth 1",
       "art_url": "card-art/matt_daemon.jpg",
       "art_alt": "Temporary placeholder artwork for Matt Daemon",
       "art_position": "50% 26%"
@@ -271,5 +273,5 @@
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "1e575942257e43f1213a16f3cfc40e02dcb92b42b76fdaf2a082ccc565f6c12b"
+  "fingerprint": "803b8d1d5a5327ba1485ed52a5412c72a3b44c8b05cd5b4ea27cabb7f4c4a540"
 }

@@ -56,6 +56,14 @@ export function narrateBattleEvent(event, context) {
         const [, amount, current] = detail.split(":"), value = Number(amount);
         return `${player} gains ${value} Uplink. <span class="log-total">(${current})</span>`;
     }
+    if (detail.startsWith("bandwidth:")) {
+        const [, amount, _current, max] = detail.split(":"), value = Number(amount);
+        return `${player} gains ${value} Bandwidth. <span class="log-total">(${max})</span>`;
+    }
+    if (detail.startsWith("bandwidth_paid:")) {
+        const [, amount, current, max] = detail.split(":"), value = Number(amount);
+        return `${player} spends ${value} Bandwidth. <span class="log-total">(${current}/${max})</span>`;
+    }
     if (detail.startsWith("damage:"))
         return `${player} takes ${detail.split(":")[1]} damage directly to Sync.`;
     if (detail.startsWith("agent_damaged:")) {
