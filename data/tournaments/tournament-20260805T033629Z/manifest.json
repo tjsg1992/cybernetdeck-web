@@ -76,7 +76,7 @@
       "card_kind": "glitch",
       "card_kind_label": "Glitch",
       "display_name": "Seal",
-      "effect": "When your opponent would gain Flux, play this to prevent that gain."
+      "effect": "When your opponent would gain Flux, you may pay 2 Sync and play this card. If you do, prevent that gain."
     },
     {
       "card_id": "dixie_flatline",
@@ -112,7 +112,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "display_name": "Scrappy Kamehameha",
-      "effect": "Play this card only if you have 1 or more Ki. It deals 3 damage."
+      "effect": "Play this card only if you have 1 or more Ki. When it enters play, it deals 3 damage.",
+      "keyword_line": "Bandwidth 1"
     },
     {
       "card_id": "farmer_with_shotgun",
@@ -121,18 +122,67 @@
       "display_name": "Farmer With Shotgun",
       "effect": "",
       "keyword_line": "Integrity 1"
+    },
+    {
+      "card_id": "matt_daemon",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Matt Daemon",
+      "effect": "Whenever another Matt Daemon enters play under your control, draw a card.",
+      "keyword_line": "Bandwidth 1"
+    },
+    {
+      "card_id": "crush_card_virus",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Crush Card Virus",
+      "effect": "If your opponent has a Daemon card in play, destroy a random Daemon card they control."
+    },
+    {
+      "card_id": "garbage_collection",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Garbage Collection",
+      "effect": "Shuffle two random cards from your Discard into your deck. Then wipe this card."
+    },
+    {
+      "adds_card_ids": [
+        "victory_point_1"
+      ],
+      "card_id": "core_a_core",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Core-a-Core",
+      "effect": "Gain 1 Flux. Then add a Core card to your deck and shuffle."
+    },
+    {
+      "adds_card_ids": [
+        "victory_point_1"
+      ],
+      "card_id": "two_cores_in_a_box",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Two Cores (in a box)",
+      "effect": "Add two Core cards to your deck and shuffle."
+    },
+    {
+      "card_id": "admin_override",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Admin Override",
+      "effect": "Gain 1 Sync. Then, your opponent plays the top card of their deck."
     }
   ],
-  "created_at": "2026-08-02T04:03:33.187767+00:00",
-  "format_fingerprint": "4ade464921e8af165f5d36500b31728c89882a3a9cb9df7aa50ce5e6b86c733f",
-  "format_id": "cd8",
+  "created_at": "2026-08-05T03:36:29.305976+00:00",
+  "format_fingerprint": "803b8d1d5a5327ba1485ed52a5412c72a3b44c8b05cd5b4ea27cabb7f4c4a540",
+  "format_id": "seal-card-display-1",
   "format_version": "cd-ts-1",
-  "id": "tournament-20260802T040333Z",
+  "id": "tournament-20260805T033629Z",
   "published": true,
   "replay_assets": {
     "cards": "cards.js",
     "engine": "engine.js"
   },
-  "rules_fingerprint": "2210b409f081f098d96e7841a38a1b65ad08d51acdb9b8cf7e900a8a2e62340f",
-  "tournament_seed": 32463297
+  "rules_fingerprint": "bcffc5443cb236d58cd74ccd1af2cd17272fe58c2504f4c007c4c557ebc17078",
+  "tournament_seed": 323404910
 }

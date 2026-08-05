@@ -105,6 +105,7 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
                 "your_flux",
                 "opponent_flux",
                 "your_ki",
+                "your_bandwidth",
                 "your_sync",
                 "opponent_sync",
             ].includes(rule.quantity ?? "") ||
@@ -142,9 +143,12 @@ export class Battle {
     scenarioSetup;
     log = [];
     turnSnapshots = [];
+    deckSnapshots = [];
+    drawEvents = [];
     actionCount = 0;
     turnCount = 0;
     extraTurns = [[], []];
+    generatedCardCount = 0;
     winner;
     reason = "";
     active = 0;
@@ -203,10 +207,13 @@ export class Battle {
             player.hand = makeCards(playerSetup.hand, "hand");
             player.battlefield = makeCards(playerSetup.battlefield, "battlefield");
             player.discard = makeCards(playerSetup.discard, "discard");
+            player.void = makeCards(playerSetup.void, "void");
             player.points = playerSetup.flux ?? 0;
             player.sync = playerSetup.sync ?? 20;
             player.ki = playerSetup.ki ?? 0;
             player.uplink = playerSetup.uplink ?? 0;
+            player.maxBandwidth = Math.max(0, playerSetup.bandwidth_max ?? playerSetup.bandwidth ?? 0);
+            player.bandwidth = Math.min(player.maxBandwidth, Math.max(0, playerSetup.bandwidth ?? player.maxBandwidth));
             player.cardsPlayedThisTurn = playerSetup.cards_played_this_turn ?? 0;
         }
         this.active = setup.active_player ?? 0;
@@ -234,11 +241,14 @@ export class Battle {
             deck,
             hand: [],
             discard: [],
+            void: [],
             battlefield: [],
             points: 0,
             sync: 20,
             ki: 0,
             uplink: 0,
+            bandwidth: 0,
+            maxBandwidth: 0,
             cardsPlayedThisTurn: 0,
             actions: 0,
             default_action: submission.default_action ?? "play_random_card",
@@ -252,6 +262,16 @@ export class Battle {
         if (this.captureLog) {
             this.log.push(text);
         }
+    }
+    snapshotDeck(player, eventIndex = this.log.length - 1) {
+        if (!this.captureLog || !this.log.length || eventIndex < 0) {
+            return;
+        }
+        this.deckSnapshots.push({
+            eventIndex,
+            player: player.id,
+            deck: player.deck.map((card) => card.definition.card_id),
+        });
     }
     act(player, text) {
         if (this.winner !== undefined) {
@@ -288,16 +308,39 @@ export class Battle {
         this.act(player, "randomize deck");
         this.rng.shuffle(area);
     }
-    draw(player, narrate = true) {
+    shuffleDeck(player) {
+        if (!this.act(player, `${player.id} | shuffle deck`)) {
+            return false;
+        }
+        this.rng.shuffle(player.deck);
+        this.snapshotDeck(player);
+        return true;
+    }
+    snapshotDraw(player, cards, eventIndex = this.log.length - 1) {
+        if (!this.captureLog || !cards.length || eventIndex < 0) {
+            return;
+        }
+        this.drawEvents.push({
+            eventIndex,
+            player: player.id,
+            cards: [...cards],
+        });
+    }
+    draw(player, narrate = true, drawnCards) {
         const card = player.deck[0];
         if (!card) {
             this.note(`${player.id} | draw_failed`);
+            this.snapshotDeck(player);
             this.finish(this.opponent(player).id, "deck_exhausted");
             return false;
         }
         const moved = this.move(player, card, player.deck, player.hand, "deck", "hand");
-        if (moved && narrate) {
-            this.note(`${player.id} | draw`);
+        if (moved) {
+            drawnCards?.push(card.definition.card_id);
+            if (narrate) {
+                this.note(`${player.id} | draw`);
+                this.snapshotDraw(player, [card.definition.card_id]);
+            }
         }
         return moved;
     }
@@ -313,22 +356,48 @@ export class Battle {
     canPayFlux(player, amount) {
         return player.points >= Math.max(0, amount);
     }
-    payFlux(player, amount) {
-        const cost = Math.max(0, amount);
-        if (!this.canPayFlux(player, cost)) {
+    canPayBandwidth(player, amount) {
+        return player.bandwidth >= Math.max(0, amount);
+    }
+    canPaySync(player, amount) {
+        return player.sync >= Math.max(0, amount);
+    }
+    canPayCosts(player, card) {
+        return (this.canPayFlux(player, card.flux_cost ?? 0) &&
+            this.canPayBandwidth(player, card.bandwidth_cost ?? 0) &&
+            this.canPaySync(player, card.sync_cost ?? 0));
+    }
+    payCosts(player, card) {
+        const fluxCost = Math.max(0, card.flux_cost ?? 0);
+        const bandwidthCost = Math.max(0, card.bandwidth_cost ?? 0);
+        const syncCost = Math.max(0, card.sync_cost ?? 0);
+        if (!this.canPayFlux(player, fluxCost) ||
+            !this.canPayBandwidth(player, bandwidthCost) ||
+            !this.canPaySync(player, syncCost)) {
             return false;
         }
-        if (cost === 0) {
-            return true;
+        if (fluxCost) {
+            this.changePoints(player, -fluxCost, "cost");
+            this.note(`${player.id} | flux_paid:${fluxCost}`);
         }
-        this.changePoints(player, -cost, "cost");
-        this.note(`${player.id} | flux_paid:${cost}`);
+        if (bandwidthCost) {
+            this.act(player, `spend ${bandwidthCost} bandwidth`);
+            player.bandwidth -= bandwidthCost;
+            this.note(`${player.id} | bandwidth_paid:${bandwidthCost}:${player.bandwidth}:${player.maxBandwidth}`);
+        }
+        if (syncCost) {
+            this.changeSync(player, -syncCost);
+            this.note(`${player.id} | sync_paid:${syncCost}:${player.sync}`);
+            if (this.winner !== undefined) {
+                return false;
+            }
+        }
         return true;
     }
     canPlay(player, card) {
         return (card.definition.card_kind !== "glitch" &&
             (this.phase === "main" || this.phase === "pregame") &&
-            this.canPayFlux(player, card.definition.flux_cost ?? 0) &&
+            this.canPayCosts(player, card.definition) &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
             player.ki >= (card.definition.minimum_ki ?? 0) &&
             (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0));
@@ -336,7 +405,7 @@ export class Battle {
     canActivate(player, card) {
         return (card.definition.immutable === true &&
             this.phase === "main" &&
-            this.canPayFlux(player, card.definition.flux_cost ?? 0) &&
+            this.canPayCosts(player, card.definition) &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
             player.ki >= (card.definition.minimum_ki ?? 0) &&
             (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0));
@@ -393,6 +462,91 @@ export class Battle {
         player.uplink += gain;
         this.note(`${player.id} | uplink:${gain}:${player.uplink}`);
     }
+    increaseBandwidthMaxAndRestore(player, amount) {
+        const gain = Math.max(0, amount);
+        if (!gain || !this.act(player, `increase bandwidth maximum by ${gain}`)) {
+            return;
+        }
+        player.maxBandwidth += gain;
+        player.bandwidth = player.maxBandwidth;
+        this.note(`${player.id} | bandwidth:${gain}:${player.bandwidth}:${player.maxBandwidth}`);
+    }
+    deleteDaemon(player, card, event = "daemon_deleted") {
+        if (card.definition.immutable) {
+            return false;
+        }
+        if (this.move(player, card, player.battlefield, player.discard, "battlefield", "discard")) {
+            this.note(`${player.id} | ${event}:${card.definition.card_id}`);
+            return true;
+        }
+        return false;
+    }
+    wipe(player, card) {
+        if (this.move(player, card, player.battlefield, player.void, "battlefield", "void")) {
+            this.note(`${player.id} | wiped:${card.definition.card_id}`);
+            return true;
+        }
+        return false;
+    }
+    addCardsToDeck(player, cardId, amount, shuffle, source) {
+        const definition = this.cards[cardId];
+        if (!definition) {
+            return;
+        }
+        let added = 0;
+        for (let index = 0; index < Math.max(0, amount); index++) {
+            if (!this.act(player, `create ${cardId} in deck`)) {
+                break;
+            }
+            this.generatedCardCount++;
+            player.deck.push({
+                uid: `generated:${player.id}:${this.generatedCardCount}:${cardId}`,
+                definition,
+                ...(definition.card_kind === "agent"
+                    ? { remaining_integrity: definition.integrity }
+                    : {}),
+            });
+            added++;
+        }
+        if (added) {
+            this.note(`${player.id} | cards_added_to_deck:${added}:${cardId}:${source}:${shuffle ? "shuffled" : "ordered"}`);
+            const addedEventIndex = this.log.length - 1;
+            if (shuffle) {
+                this.shuffleDeck(player);
+            }
+            this.snapshotDeck(player, addedEventIndex);
+        }
+    }
+    recoverRandomDiscard(player, amount, source) {
+        let recovered = 0;
+        for (let index = 0; index < Math.max(0, amount); index++) {
+            if (!player.discard.length || this.winner !== undefined) {
+                break;
+            }
+            const card = player.discard[this.rng.int(player.discard.length)];
+            if (card && this.move(player, card, player.discard, player.deck, "discard", "deck")) {
+                recovered++;
+            }
+        }
+        if (recovered) {
+            this.note(`${player.id} | discard_recovered:${recovered}:${source}`);
+            const recoveredEventIndex = this.log.length - 1;
+            this.shuffleDeck(player);
+            this.snapshotDeck(player, recoveredEventIndex);
+        }
+    }
+    destroyRandomOpponentDaemon(player, source) {
+        const opponent = this.opponent(player);
+        const candidates = opponent.battlefield.filter((card) => card.definition.card_kind === "daemon" && !card.definition.immutable);
+        if (!candidates.length) {
+            return;
+        }
+        const target = candidates[this.rng.int(candidates.length)];
+        if (target) {
+            this.deleteDaemon(opponent, target);
+            this.note(`${player.id} | destroy_random_daemon:${target.definition.card_id}:${source}`);
+        }
+    }
     dealDamage(source, target, amount) {
         const damage = Math.max(0, amount);
         if (!damage) {
@@ -432,11 +586,14 @@ export class Battle {
                 !compare(event.amount, rule.comparison_operator, rule.quantity_threshold)) {
                 continue;
             }
-            if (!this.payFlux(player, card.definition.flux_cost ?? 0) ||
-                !this.move(player, card, player.hand, player.discard, "hand", "discard")) {
+            if (!this.canPayCosts(player, card.definition)) {
                 continue;
             }
             this.note(`${player.id} | reaction_play:${rule.trigger_type}:${card.definition.card_id}:${event.recipient.id}`);
+            if (!this.payCosts(player, card.definition) ||
+                !this.move(player, card, player.hand, player.discard, "hand", "discard")) {
+                continue;
+            }
             this.act(player, `resolve reaction ${card.definition.card_id}`);
             if (card.definition.mechanics?.some((mechanic) => mechanic.type === "prevent_triggering_event")) {
                 event.prevented = true;
@@ -486,7 +643,7 @@ export class Battle {
         else {
             this.react(event);
         }
-        if (event.prevented) {
+        if (this.winner !== undefined || event.prevented) {
             return;
         }
         const before = player.points;
@@ -523,21 +680,24 @@ export class Battle {
             }
         }
         this.note(`${player.id} | scan_deck:${lookedAt.length}:${found}:${cardIds.join(",")}:${source}`);
+        this.snapshotDeck(player);
     }
     resolveConditionalHandEffect(player) {
         if (player.hand.length === 0) {
             let drawn = 0;
+            const drawnCards = [];
             for (let i = 0; i < 2 && this.winner === undefined; i++) {
-                drawn += Number(this.draw(player, false));
+                drawn += Number(this.draw(player, false, drawnCards));
             }
             if (drawn) {
                 this.note(`${player.id} | draw_many:${drawn}`);
+                this.snapshotDraw(player, drawnCards);
             }
             return;
         }
         const discarded = player.hand[this.rng.int(player.hand.length)];
         if (discarded && this.move(player, discarded, player.hand, player.discard, "hand", "discard")) {
-            this.note(`${player.id} | discard_random`);
+            this.note(`${player.id} | discard_random:${discarded.definition.card_id}`);
         }
     }
     snapshot(player, phase) {
@@ -550,7 +710,36 @@ export class Battle {
             phase,
             deckCount: player.deck.length,
             hand: player.hand.map((card) => card.definition.card_id),
+            deck: player.deck.map((card) => card.definition.card_id),
         });
+    }
+    resolvePlayTriggers(player, playedCard) {
+        const triggers = player.battlefield.filter((card) => card !== playedCard &&
+            card.definition.card_id === playedCard.definition.card_id &&
+            card.definition.mechanics?.some((mechanic) => mechanic.type === "draw_when_another_copy_played"));
+        for (const trigger of triggers) {
+            if (this.winner !== undefined || !this.act(player, `resolve triggered ${trigger.definition.card_id}`)) {
+                return;
+            }
+            const drawnCards = [];
+            if (this.draw(player, false, drawnCards)) {
+                this.note(`${player.id} | triggered_draw:${trigger.definition.card_id}`);
+                this.snapshotDraw(player, drawnCards);
+            }
+        }
+    }
+    playTopCardOfDeck(player, source) {
+        const opponent = this.opponent(player);
+        const card = opponent.deck[0];
+        if (!card || !this.canPlay(opponent, card)) {
+            return;
+        }
+        if (!this.move(opponent, card, opponent.deck, opponent.hand, "deck", "hand")) {
+            return;
+        }
+        this.note(`${opponent.id} | play_top_card:${card.definition.card_id}:${source}`);
+        this.snapshotDeck(opponent);
+        this.play(opponent, card, true);
     }
     resolve(player, card) {
         for (const mechanic of card.definition.mechanics ?? []) {
@@ -593,11 +782,13 @@ export class Battle {
                 this.setSync(player, mechanic.sync);
                 const drawCount = Math.floor(player.deck.length / 2);
                 let drawn = 0;
+                const drawnCards = [];
                 for (let i = 0; i < drawCount && this.winner === undefined; i++) {
-                    drawn += Number(this.draw(player, false));
+                    drawn += Number(this.draw(player, false, drawnCards));
                 }
                 if (drawn) {
                     this.note(`${player.id} | draw_many:${drawn}`);
+                    this.snapshotDraw(player, drawnCards);
                 }
             }
             else if (mechanic.type === "end_own_turn") {
@@ -613,14 +804,37 @@ export class Battle {
                 this.extraTurns[this.players.indexOf(player)].push(card.definition.card_id);
                 this.note(`${player.id} | extra_turn_queued:${card.definition.card_id}`);
             }
+            else if (mechanic.type === "draw_when_another_copy_played") {
+                // This is a triggered ability. It resolves when another copy enters play.
+            }
+            else if (mechanic.type === "destroy_random_opponent_daemon") {
+                this.destroyRandomOpponentDaemon(player, card.definition.card_id);
+            }
+            else if (mechanic.type === "recover_random_discard") {
+                this.recoverRandomDiscard(player, mechanic.amount, card.definition.card_id);
+            }
+            else if (mechanic.type === "wipe_this_card") {
+                this.wipe(player, card);
+            }
+            else if (mechanic.type === "add_cards_to_deck") {
+                this.addCardsToDeck(player, mechanic.card_id, mechanic.amount, mechanic.shuffle, card.definition.card_id);
+            }
+            else if (mechanic.type === "gain_own_sync") {
+                this.changeSync(player, mechanic.amount);
+            }
+            else if (mechanic.type === "play_top_card_of_opponent_deck") {
+                this.playTopCardOfDeck(player, card.definition.card_id);
+            }
         }
     }
-    play(player, card) {
+    play(player, card, fromDeck = false) {
         if (!this.canPlay(player, card)) {
             return false;
         }
-        this.note(`${player.id} | play:${card.definition.card_id}`);
-        if (!this.payFlux(player, card.definition.flux_cost ?? 0) ||
+        if (!fromDeck) {
+            this.note(`${player.id} | play:${card.definition.card_id}`);
+        }
+        if (!this.payCosts(player, card.definition) ||
             !this.move(player, card, player.hand, player.battlefield, "hand", "battlefield")) {
             return false;
         }
@@ -629,6 +843,7 @@ export class Battle {
         }
         this.act(player, `resolve ${card.definition.card_id}`);
         this.resolve(player, card);
+        this.resolvePlayTriggers(player, card);
         if (card.definition.card_kind === "pulse") {
             this.move(player, card, player.battlefield, player.discard, "battlefield", "discard");
         }
@@ -642,7 +857,7 @@ export class Battle {
             return false;
         }
         this.note(`${player.id} | activate:${card.definition.card_id}`);
-        if (!this.payFlux(player, card.definition.flux_cost ?? 0)) {
+        if (!this.payCosts(player, card.definition)) {
             return false;
         }
         player.cardsPlayedThisTurn++;
@@ -710,11 +925,13 @@ export class Battle {
                             ? opponent.points
                             : rule.quantity === "your_ki"
                                 ? player.ki
-                                : rule.quantity === "your_sync"
-                                    ? player.sync
-                                    : rule.quantity === "opponent_sync"
-                                        ? opponent.sync
-                                        : 0;
+                                : rule.quantity === "your_bandwidth"
+                                    ? player.bandwidth
+                                    : rule.quantity === "your_sync"
+                                        ? player.sync
+                                        : rule.quantity === "opponent_sync"
+                                            ? opponent.sync
+                                            : 0;
         const condition = rule.condition_type === "if_able"
             ? true
             : rule.condition_type === "card_in_hand"
@@ -749,6 +966,7 @@ export class Battle {
                 player.cardsPlayedThisTurn = 0;
                 this.note(`${player.id} | ${extraTurnSource ? `turn_start:extra_turn:${extraTurnSource}` : "turn_start"}`);
                 this.gainUplink(player, 1);
+                this.increaseBandwidthMaxAndRestore(player, 1);
                 this.snapshot(player, "start");
             }
             else if (phase === "draw") {
@@ -835,6 +1053,8 @@ export class Battle {
         };
         if (this.captureLog) {
             record.turnSnapshots = this.turnSnapshots;
+            record.deckSnapshots = this.deckSnapshots;
+            record.drawEvents = this.drawEvents;
         }
         return record;
     }
