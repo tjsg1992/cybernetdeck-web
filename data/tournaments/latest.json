@@ -1,5 +1,5 @@
 {
-  "snapshot_id": "tournament-20260805T033629Z",
+  "snapshot_id": "tournament-20260808T060113Z",
   "manifest": {
     "cards": [
       {
@@ -175,55 +175,49 @@
         "effect": "Gain 1 Sync. Then, your opponent plays the top card of their deck."
       }
     ],
-    "created_at": "2026-08-05T03:36:29.305976+00:00",
+    "created_at": "2026-08-08T06:01:13.429161+00:00",
     "format_fingerprint": "803b8d1d5a5327ba1485ed52a5412c72a3b44c8b05cd5b4ea27cabb7f4c4a540",
     "format_id": "seal-card-display-1",
     "format_version": "cd-ts-1",
-    "id": "tournament-20260805T033629Z",
+    "id": "tournament-20260808T060113Z",
     "published": true,
     "replay_assets": {
       "cards": "cards.js",
       "engine": "engine.js"
     },
     "rules_fingerprint": "bcffc5443cb236d58cd74ccd1af2cd17272fe58c2504f4c007c4c557ebc17078",
-    "tournament_seed": 323404910
+    "tournament_seed": 3580494372
   },
   "standings": [
     {
-      "deck_name": "Matt Daemon combo",
-      "discord_user_id": "173986825889644544",
-      "player_name": "Colin",
-      "total_wins": 3873
-    },
-    {
-      "deck_name": "Cursed Seal",
+      "deck_name": "Cursed Seal (even more cursed)",
       "discord_user_id": "184439858255626240",
       "player_name": "Taylor",
-      "total_wins": 3653
+      "total_wins": 2859
     },
     {
-      "deck_name": "Jesus Christ That's Jason Bourne",
+      "deck_name": "Three Matt Daemons walk into a bar",
+      "discord_user_id": "173986825889644544",
+      "player_name": "Colin",
+      "total_wins": 2336
+    },
+    {
+      "deck_name": "Oops tournament go",
       "discord_user_id": "221460738928017408",
       "player_name": "Stella",
-      "total_wins": 3327
+      "total_wins": 1953
     },
     {
-      "deck_name": "That movie that was only made because Armageddon did well",
+      "deck_name": "The Martian",
       "discord_user_id": "173981293229506561",
       "player_name": "Alex",
-      "total_wins": 2528
+      "total_wins": 1816
     },
     {
-      "deck_name": "Hank Hill",
-      "discord_user_id": "163009224090058753",
-      "player_name": "Noonan",
-      "total_wins": 1128
-    },
-    {
-      "deck_name": "SyncWithMe",
+      "deck_name": "Sync dixie nuts",
       "discord_user_id": "134208646606356480",
       "player_name": "Eli",
-      "total_wins": 491
+      "total_wins": 1036
     }
   ],
   "decks": [
@@ -231,14 +225,14 @@
       "discord_user_id": "134208646606356480",
       "player_name": "Eli",
       "submission": {
-        "name": "SyncWithMe",
+        "name": "Sync dixie nuts",
         "owner_name": "Rawhide Kobayashi",
         "decklist": {
           "threefold_siphon": 5,
           "cursed_seal": 1,
-          "five_l": 6,
-          "dixie_flatline": 2,
-          "air_five_l": 11,
+          "five_l": 5,
+          "dixie_flatline": 4,
+          "air_five_l": 10,
           "admin_override": 5
         },
         "program": [
@@ -265,12 +259,12 @@
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "air_five_l"
+            "action_card_id": "admin_override"
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "admin_override"
+            "action_card_id": "air_five_l"
           },
           {
             "condition_type": "if_able",
@@ -287,63 +281,16 @@
       }
     },
     {
-      "discord_user_id": "163009224090058753",
-      "player_name": "Noonan",
-      "submission": {
-        "name": "Hank Hill",
-        "owner_name": "NNBJ",
-        "decklist": {
-          "one_more_roll": 1,
-          "farmer_with_shotgun": 4,
-          "garbage_collection": 3,
-          "admin_override": 22
-        },
-        "program": [
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "your_bandwidth",
-            "comparison_operator": ">=",
-            "quantity_threshold": 2,
-            "action_card_id": "garbage_collection"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_in_your_hand",
-            "comparison_operator": "=",
-            "quantity_threshold": 1,
-            "action_card_id": "one_more_roll"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "farmer_with_shotgun"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "admin_override"
-          }
-        ],
-        "default_action": "end_turn",
-        "random_card_ids": [],
-        "format_id": "seal-card-display-1"
-      }
-    },
-    {
       "discord_user_id": "173981293229506561",
       "player_name": "Alex",
       "submission": {
-        "name": "That movie that was only made because Armageddon did well",
+        "name": "The Martian",
         "owner_name": "\"Hope you're toe\" Johnson",
         "decklist": {
-          "victory_point_1": 8,
-          "sparkleback_totem": 8,
-          "download_scan": 5,
+          "sparkleback_totem": 7,
           "one_more_roll": 1,
-          "core_a_core": 4,
-          "two_cores_in_a_box": 4
+          "matt_daemon": 15,
+          "core_a_core": 7
         },
         "program": [
           {
@@ -354,7 +301,7 @@
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "download_scan"
+            "action_card_id": "matt_daemon"
           },
           {
             "condition_type": "card_is",
@@ -369,11 +316,6 @@
             "condition_card_id": "sparkleback_totem",
             "card_condition": "on_your_side_of_board",
             "action_card_id": "core_a_core"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "two_cores_in_a_box"
           },
           {
             "condition_type": "quantity_compare",
@@ -393,12 +335,13 @@
       "discord_user_id": "173986825889644544",
       "player_name": "Colin",
       "submission": {
-        "name": "Matt Daemon combo",
+        "name": "Three Matt Daemons walk into a bar",
         "owner_name": "Phen",
         "decklist": {
-          "victory_point_2": 7,
+          "victory_point_2": 6,
           "sparkleback_totem": 3,
           "overcharge_gambit": 2,
+          "five_l": 1,
           "matt_daemon": 13
         },
         "program": [
@@ -409,6 +352,14 @@
             "comparison_operator": ">",
             "quantity_threshold": 2,
             "action_card_id": "matt_daemon"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity": "opponent_sync",
+            "comparison_operator": "=",
+            "quantity_threshold": 1,
+            "action_card_id": "five_l"
           },
           {
             "condition_type": "quantity_compare",
@@ -444,14 +395,14 @@
       "discord_user_id": "184439858255626240",
       "player_name": "Taylor",
       "submission": {
-        "name": "Cursed Seal",
+        "name": "Cursed Seal (even more cursed)",
         "owner_name": "Loth",
         "decklist": {
-          "victory_point_2": 10,
-          "sparkleback_totem": 5,
-          "overcharge_gambit": 4,
-          "cursed_seal": 7,
-          "time_walk": 4
+          "victory_point_2": 11,
+          "sparkleback_totem": 4,
+          "overcharge_gambit": 3,
+          "cursed_seal": 9,
+          "time_walk": 3
         },
         "program": [
           {
@@ -482,7 +433,7 @@
             "action_type": "play_named_card",
             "quantity": "your_flux",
             "comparison_operator": "<=",
-            "quantity_threshold": 8,
+            "quantity_threshold": 13,
             "action_card_id": "cursed_seal"
           }
         ],
@@ -495,26 +446,17 @@
       "discord_user_id": "221460738928017408",
       "player_name": "Stella",
       "submission": {
-        "name": "Jesus Christ That's Jason Bourne",
+        "name": "Oops tournament go",
         "owner_name": "Stella",
         "decklist": {
-          "sparkleback_totem": 2,
+          "sparkleback_totem": 5,
+          "cursed_seal": 4,
+          "time_walk": 5,
           "dixie_flatline": 1,
           "farmer_with_shotgun": 3,
-          "matt_daemon": 14,
-          "core_a_core": 10
+          "core_a_core": 12
         },
         "program": [
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "sparkleback_totem"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "throttle"
-          },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
@@ -524,6 +466,18 @@
             "condition_type": "if_able",
             "action_type": "play_named_card",
             "action_card_id": "dixie_flatline"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "sparkleback_totem"
+          },
+          {
+            "condition_type": "card_is",
+            "action_type": "play_named_card",
+            "condition_card_id": "sparkleback_totem",
+            "card_condition": "on_your_side_of_board",
+            "action_card_id": "overcharge_gambit"
           },
           {
             "condition_type": "card_is",
@@ -542,7 +496,12 @@
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "matt_daemon"
+            "action_card_id": "time_walk"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "cursed_seal"
           }
         ],
         "default_action": "end_turn",
@@ -555,181 +514,121 @@
     {
       "matchup_id": "matchup-001",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "163009224090058753",
+      "second_discord_user_id": "173981293229506561",
       "summary": {
-        "average_turns": 10.4,
+        "average_turns": 5.7,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 1,
-        "second_wins": 999
+        "first_wins": 68,
+        "second_wins": 932
       }
     },
     {
       "matchup_id": "matchup-002",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 10.0,
+        "average_turns": 5.4,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 43,
-        "second_wins": 957
+        "first_wins": 26,
+        "second_wins": 974
       }
     },
     {
       "matchup_id": "matchup-003",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "173986825889644544",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 5.2,
+        "average_turns": 3.1,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 13,
-        "second_wins": 987
+        "first_wins": 452,
+        "second_wins": 548
       }
     },
     {
       "matchup_id": "matchup-004",
       "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "184439858255626240",
+      "second_discord_user_id": "221460738928017408",
       "summary": {
-        "average_turns": 4.7,
+        "average_turns": 5.4,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 421,
-        "second_wins": 579
+        "first_wins": 490,
+        "second_wins": 510
       }
     },
     {
       "matchup_id": "matchup-005",
-      "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "221460738928017408",
+      "first_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 6.2,
+        "average_turns": 5.1,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 13,
-        "second_wins": 987
+        "first_wins": 472,
+        "second_wins": 528
       }
     },
     {
       "matchup_id": "matchup-006",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "173981293229506561",
+      "first_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 6.1,
+        "average_turns": 3.7,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 0,
-        "second_wins": 1000
+        "first_wins": 70,
+        "second_wins": 930
       }
     },
     {
       "matchup_id": "matchup-007",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "173986825889644544",
-      "summary": {
-        "average_turns": 5.6,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 104,
-        "second_wins": 896
-      }
-    },
-    {
-      "matchup_id": "matchup-008",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "184439858255626240",
-      "summary": {
-        "average_turns": 4.3,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 14,
-        "second_wins": 986
-      }
-    },
-    {
-      "matchup_id": "matchup-009",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "221460738928017408",
-      "summary": {
-        "average_turns": 6.3,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 11,
-        "second_wins": 989
-      }
-    },
-    {
-      "matchup_id": "matchup-010",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "173986825889644544",
-      "summary": {
-        "average_turns": 5.5,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 134,
-        "second_wins": 866
-      }
-    },
-    {
-      "matchup_id": "matchup-011",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "184439858255626240",
-      "summary": {
-        "average_turns": 6.0,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 233,
-        "second_wins": 767
-      }
-    },
-    {
-      "matchup_id": "matchup-012",
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "221460738928017408",
-      "summary": {
-        "average_turns": 6.5,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 204,
-        "second_wins": 796
-      }
-    },
-    {
-      "matchup_id": "matchup-013",
-      "first_discord_user_id": "173986825889644544",
-      "second_discord_user_id": "184439858255626240",
       "summary": {
         "average_turns": 4.5,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 354,
-        "second_wins": 646
+        "first_wins": 342,
+        "second_wins": 658
       }
     },
     {
-      "matchup_id": "matchup-014",
+      "matchup_id": "matchup-008",
+      "first_discord_user_id": "173986825889644544",
+      "second_discord_user_id": "184439858255626240",
+      "summary": {
+        "average_turns": 3.4,
+        "battle_count": 1000,
+        "draws": 0,
+        "first_wins": 303,
+        "second_wins": 697
+      }
+    },
+    {
+      "matchup_id": "matchup-009",
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "average_turns": 5.5,
+        "average_turns": 4.3,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 770,
-        "second_wins": 230
+        "first_wins": 531,
+        "second_wins": 469
       }
     },
     {
-      "matchup_id": "matchup-015",
+      "matchup_id": "matchup-010",
       "first_discord_user_id": "184439858255626240",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "average_turns": 5.0,
+        "average_turns": 3.5,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 675,
-        "second_wins": 325
+        "first_wins": 684,
+        "second_wins": 316
       }
     }
   ]
