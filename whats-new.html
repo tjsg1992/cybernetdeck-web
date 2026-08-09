@@ -1,23 +1,105 @@
 <!doctype html>
 <html data-card-style="holographic-glass"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What's New? · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=771697ba9197"></head>
+<title>What's New? · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=9207d409d309"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
 <article class="rules-reference"><p class="eyebrow">What&#x27;s New?</p><h1>What&#x27;s New?</h1>
-<p>These mechanics are now part of CyberNetDeck&#x27;s current format.</p>
-<h2>Immutable Cards</h2>
-<p>Immutable cards always begin in your hand, then enter the battlefield before the game starts. They give your deck a unique mechanic to build around. The current Immutable card is <strong>Charge Ki</strong>: activate it to power up for the turn and unlock cards that need Ki.</p>
-<h2>Agent Cards</h2>
-<p>Agent cards are characters that remain on the battlefield. They can take damage, and their <strong>Integrity</strong> works like hit points. An Agent is deleted when its Integrity reaches 0.</p>
-<h2>Damage</h2>
-<p>Damage is dealt to Agents first. If the opposing player has no Agents, the damage is dealt to their Sync instead. See the Rules Reference for the complete automatic targeting order when more than one Agent is in play.</p>
-<h2>Uplink</h2>
-<p>Your Uplink increases by 1 at the start of each of your turns. <strong>One For All</strong> now requires Uplink 2, so it cannot be played until your second turn. Uplink is a requirement, not a cost: reaching 2 does not spend it.</p>
-<h2>Bandwidth</h2>
-<p>Bandwidth is a spendable resource. Each player starts with 0 current Bandwidth and a maximum of 0. At the start of each of your turns, your maximum increases by 1 and your current Bandwidth is restored to that new maximum. A card marked <strong>Bandwidth N</strong> costs N Bandwidth to play; unlike Uplink, spent Bandwidth is gone until your next Start phase.</p>
-<p>The current Bandwidth value is available to programs through the <strong>Your Bandwidth</strong> quantity condition. <strong>Matt Daemon</strong> and <strong>Scrappy Kamehameha</strong> each cost Bandwidth 1. <strong>Seal</strong> now has <strong>Sync cost 2</strong>.</p>
-<h2>Activating Charge Ki</h2>
-<p>You can activate Charge Ki by setting up a condition like this. Make sure Charge Ki is in your deck, then set Action to <strong>Activate</strong>.</p>
-<figure class="charge-ki-setup"><img src="card-art/charge-ki-activation-setup.png" alt="Program rule configured to activate Charge Ki when your Ki is exactly 0."></figure>
-<h2>New Cards</h2><div class="whats-new-card-grid"><div class="card-selection"><article class="builder-card"><div class="card-titlebar"><h4>One More Roll</h4></div><div class="card-art-frame"><img src="card-art/one_more_roll.jpg" alt="Placeholder artwork for One More Roll" style="object-position:31% 0%"></div><div class="card-typebar"><span>Pulse</span></div><div class="card-rules"><p>If your hand is empty, draw two cards. Otherwise, discard a card at random.</p></div></article></div><div class="card-selection"><article class="builder-card"><div class="card-titlebar"><h4>Air 5L</h4></div><div class="card-art-frame"><img src="card-art/air_five_l.png" alt="Placeholder artwork for Air 5L" style="object-position:84% 44%"></div><div class="card-typebar"><span>Pulse</span></div><div class="card-rules"><p>Your opponent loses 2 Sync. You lose 1 Sync.</p></div></article></div><div class="card-selection"><article class="builder-card"><div class="card-titlebar"><h4>Charge Ki</h4></div><div class="card-art-frame"><img src="card-art/charge_ki.png" alt="Temporary placeholder artwork for Charge Ki" style="object-position:49% 0%"></div><div class="card-typebar"><span>Daemon • Immutable</span></div><div class="card-rules"><p>Activate this card only if you haven&#x27;t played a card this turn. Gain 1 Ki. End your turn.</p></div></article></div><div class="card-selection"><article class="builder-card"><div class="card-titlebar"><h4>Scrappy Kamehameha</h4></div><div class="card-art-frame"><img src="card-art/scrappy_kamehameha.jpg" alt="Temporary placeholder artwork for Scrappy Kamehameha" style="object-position:54% 0%"></div><div class="card-typebar"><span>Pulse</span></div><div class="card-rules"><p>Play this card only if you have 1 or more Ki. When it enters play, it deals 3 damage.</p></div></article></div><div class="card-selection"><article class="builder-card"><div class="card-titlebar"><h4>Farmer With Shotgun</h4></div><div class="card-art-frame"><img src="card-art/farmer_with_shotgun.png" alt="Temporary placeholder artwork for Farmer With Shotgun" style="object-position:50% 0%"></div><div class="card-typebar"><span>Agent</span></div><div class="card-rules"><p></p></div></article></div></div></article>
-</main></body></html>
+<p>Here is the quick player-facing summary of the latest additions.</p>
+<h2>Jutsu</h2>
+<p>Jutsu are special cards that build up before they resolve. <strong>Ninjutsu</strong> is the Immutable card that lets you place one Jutsu face up beneath it as a Prepared Jutsu. Pay the Jutsu&#x27;s non-Sign costs when you prepare it; it does not resolve yet, and you cannot prepare a second one until the first is finished.</p>
+<h3>Prepared Jutsu</h3>
+<p>A Prepared Jutsu stays beneath Ninjutsu while you work through its Signs. When the full sequence is complete, the Jutsu resolves without paying its costs again, then goes to your Discard.</p>
+<h3>Signs</h3>
+<p>Signs are completed in order, one at a time, whenever you play a non-Jutsu card. The card&#x27;s type can also form one matching extra Sign when possible:</p>
+<ul>
+<li><strong>Agent</strong> cards form <strong>Ram</strong>.</li>
+<li><strong>Daemon</strong> cards form <strong>Ox</strong>.</li>
+<li><strong>Pulse</strong> cards form <strong>Tiger</strong>.</li>
+<li><strong>Glitch</strong> cards form <strong>Snake</strong>.</li>
+</ul>
+<p>Starting a Jutsu counts as playing a card, but it does not form a Sign. See <strong>Ninjutsu</strong> in the New Cards section below for the card that starts this engine.</p>
+<h2>Breach</h2>
+<p><strong>Breach X</strong> makes an Agent deal X damage during the opponent&#x27;s End phase. Damage hits opposing Agents first; if there are no Agents left, it reduces Sync. Multiple Breaches resolve in the order their Agents are on the board.</p>
+<h2>Signature Cards</h2>
+<p><strong>Signature</strong> cards cannot be included in a deck. A Signature provider creates its named Signature in your hand during your End phase, and you play that card normally. For example, <strong>Raditz, Invader</strong> supplies <strong>Double Sunday</strong>.</p>
+<h2>Combo Conditions</h2>
+<p>The Combo condition lets you choose several cards in a play order. Each card keeps its normal costs and restrictions. Cards that are unavailable are skipped unless you turn on the <strong>Cancel if card isn&#x27;t played</strong> checkbox; with that box checked, the Combo stops at the first card that cannot be played.</p>
+<p>When a card in the Combo is marked <strong>∞ (all)</strong>, the program keeps trying that card while another copy is available and playable, then continues to the next card in the list.</p>
+<div class="whats-new-combo-example" aria-label="Combo condition controls"><label><input type="checkbox" checked disabled> Cancel if card isn't played</label><span class="combo-infinity">∞</span><span>Repeat this card while it is playable</span></div>
+<h2>New Cards</h2><div class="whats-new-card-grid"><div class="card-selection"><article class="builder-card whats-new-card-face"><div class="card-titlebar"><h4>Raditz, Invader</h4></div><div class="card-art-frame"><img src="card-art/raditz_invader.png" alt="Raditz, Invader standing on a beach in Saiyan armor" style="object-position:50% 0%"></div><div class="card-typebar"><span><span class="card-term" tabindex="0" data-term-title="Agent" data-term-definition="A card type that remains on the battlefield and takes damage using its Integrity.">Agent</span></span></div><div class="card-rules"><p class="card-keyword"><strong><span class="card-term" tabindex="0" data-term-title="Bandwidth" data-term-definition="A spendable resource used for Bandwidth costs. At each Start, it refreshes to a maximum that increases by 1.">Bandwidth</span> 2 • <span class="card-term" tabindex="0" data-term-title="Integrity" data-term-definition="An Agent&#x27;s durability. An Agent at 0 Integrity is deleted.">Integrity</span> 4 • <span class="card-term" tabindex="0" data-term-title="Breach" data-term-definition="During your opponent&#x27;s End Phase, this Agent deals the listed amount of damage. Damage targets opposing Agents first, then Sync if no Agent remains.">Breach</span> 1 • <span class="card-term" tabindex="0" data-term-title="Signature" data-term-definition="A card subtype that cannot be included in decks. An Agent may add its named Signature card to its controller&#x27;s hand during that player&#x27;s End Phase; Signature cards are played normally from hand.">Signature</span>: Double Sunday</strong></p><p>During your opponent&#x27;s End Phase, this <span class="card-term" tabindex="0" data-term-title="Agent" data-term-definition="A card type that remains on the battlefield and takes damage using its Integrity.">Agent</span> deals 1 <span class="card-term" tabindex="0" data-term-title="Damage" data-term-definition="Damage hits an opposing Agent when possible; only a player with no Agents loses Sync from it.">damage</span>.</p></div></article></div><div class="card-selection"><article class="builder-card whats-new-card-face"><div class="card-titlebar"><h4>Double Sunday</h4></div><div class="card-art-frame"><img src="card-art/double_sunday.jpg" alt="Raditz firing the Double Sunday attack" style="object-position:50% 0%"></div><div class="card-typebar"><span><span class="card-term" tabindex="0" data-term-title="Pulse" data-term-definition="A card type that resolves, then moves from the battlefield to its controller&#x27;s Discard.">Pulse</span> • <span class="card-term" tabindex="0" data-term-title="Signature" data-term-definition="A card subtype that cannot be included in decks. An Agent may add its named Signature card to its controller&#x27;s hand during that player&#x27;s End Phase; Signature cards are played normally from hand.">Signature</span></span></div><div class="card-rules"><p class="card-keyword"><strong><span class="card-term" tabindex="0" data-term-title="Ki" data-term-definition="A resource that starts at 0 and is not spent unless a card says to spend it.">Ki</span> 1 • <span class="card-term" tabindex="0" data-term-title="Signature" data-term-definition="A card subtype that cannot be included in decks. An Agent may add its named Signature card to its controller&#x27;s hand during that player&#x27;s End Phase; Signature cards are played normally from hand.">Signature</span></strong></p><p>Deal 1 <span class="card-term" tabindex="0" data-term-title="Damage" data-term-definition="Damage hits an opposing Agent when possible; only a player with no Agents loses Sync from it.">damage</span>. Then deal 1 <span class="card-term" tabindex="0" data-term-title="Damage" data-term-definition="Damage hits an opposing Agent when possible; only a player with no Agents loses Sync from it.">damage</span>.</p></div></article></div><div class="card-selection"><article class="builder-card whats-new-card-face"><div class="card-titlebar"><h4>Ninjutsu</h4></div><div class="card-art-frame"><img src="card-art/ninjutsu.jpg" alt="Naruto forms hand seals as shadow clones begin to appear" style="object-position:50% 40%"></div><div class="card-typebar"><span><span class="card-term" tabindex="0" data-term-title="Daemon" data-term-definition="A card type that remains on its controller&#x27;s battlefield after it resolves.">Daemon</span> • <span class="card-term" tabindex="0" data-term-title="Immutable" data-term-definition="A singleton card played before turn one without activating. Once on the battlefield, it cannot be moved, removed, deleted, or targeted.">Immutable</span></span></div><div class="card-rules"><p class="card-keyword"><strong><span class="card-term" tabindex="0" data-term-title="Passive" data-term-definition="A passive Immutable has no activation and cannot be selected by an Activate action.">Passive</span> • <span class="card-term" tabindex="0" data-term-title="Agent" data-term-definition="A card type that remains on the battlefield and takes damage using its Integrity.">Agent</span>—<span class="card-term" tabindex="0" data-term-title="Ram" data-term-definition="A Sign. Affiliated with Agent cards.">Ram</span> • <span class="card-term" tabindex="0" data-term-title="Daemon" data-term-definition="A card type that remains on its controller&#x27;s battlefield after it resolves.">Daemon</span>—<span class="card-term" tabindex="0" data-term-title="Ox" data-term-definition="A Sign. Affiliated with Daemon cards.">Ox</span> • <span class="card-term" tabindex="0" data-term-title="Pulse" data-term-definition="A card type that resolves, then moves from the battlefield to its controller&#x27;s Discard.">Pulse</span>—<span class="card-term" tabindex="0" data-term-title="Tiger" data-term-definition="A Sign. Affiliated with Pulse cards.">Tiger</span> • <span class="card-term" tabindex="0" data-term-title="Glitch" data-term-definition="A reaction card played from hand on either turn for its specified event, then moved directly to Discard.">Glitch</span>—<span class="card-term" tabindex="0" data-term-title="Snake" data-term-definition="A Sign. Affiliated with Glitch cards.">Snake</span></strong></p><p>You may play a <span class="card-term" tabindex="0" data-term-title="Jutsu" data-term-definition="This card can be played only as a Prepared Jutsu.
+
+To resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.
+
+Whenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.
+
+Agent — Ram
+Daemon — Ox
+Pulse — Tiger
+Glitch — Snake">Jutsu</span> as a <span class="card-term" tabindex="0" data-term-title="Prepared Jutsu" data-term-definition="A Jutsu placed face up beneath Ninjutsu. To resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.">Prepared Jutsu</span> by paying its non-<span class="card-term" tabindex="0" data-term-title="Signs" data-term-definition="A sequence that must be completed in order to resolve a Prepared Jutsu.">Sign</span> costs and putting it beneath this card instead of resolving it. You can&#x27;t have more than one <span class="card-term" tabindex="0" data-term-title="Prepared Jutsu" data-term-definition="A Jutsu placed face up beneath Ninjutsu. To resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.">Prepared Jutsu</span> beneath this card at a time.</p></div></article></div><div class="card-selection"><article class="builder-card whats-new-card-face"><div class="card-titlebar"><h4>Clone Jutsu</h4></div><div class="card-art-frame"><img src="card-art/clone_jutsu.png" alt="Naruto creates shadow clones in a rocky training area" style="object-position:0% 100%"></div><div class="card-typebar"><span><span class="card-term" tabindex="0" data-term-title="Pulse" data-term-definition="A card type that resolves, then moves from the battlefield to its controller&#x27;s Discard.">Pulse</span> • <span class="card-term" tabindex="0" data-term-title="Jutsu" data-term-definition="This card can be played only as a Prepared Jutsu.
+
+To resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.
+
+Whenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.
+
+Agent — Ram
+Daemon — Ox
+Pulse — Tiger
+Glitch — Snake">Jutsu</span></span></div><div class="card-rules"><p class="card-keyword"><strong><span class="card-term" tabindex="0" data-term-title="Signs" data-term-definition="A sequence that must be completed in order to resolve a Prepared Jutsu.">Signs</span> — <span class="card-term" tabindex="0" data-term-title="Ram" data-term-definition="A Sign. Affiliated with Agent cards.">Ram</span>, <span class="card-term" tabindex="0" data-term-title="Ram" data-term-definition="A Sign. Affiliated with Agent cards.">Ram</span></strong></p><p>Create two Clone <span class="card-term" tabindex="0" data-term-title="Agent" data-term-definition="A card type that remains on the battlefield and takes damage using its Integrity.">Agents</span>, each with <span class="card-term" tabindex="0" data-term-title="Integrity" data-term-definition="An Agent&#x27;s durability. An Agent at 0 Integrity is deleted.">Integrity</span> 1.</p></div></article></div><div class="card-selection"><article class="builder-card whats-new-card-face"><div class="card-titlebar"><h4>Fire Release: Great Fireball Technique</h4></div><div class="card-art-frame"><img src="card-art/fire_release_great_fireball.jpg" alt="Sasuke unleashes a Great Fireball Technique" style="object-position:50% 42%"></div><div class="card-typebar"><span><span class="card-term" tabindex="0" data-term-title="Pulse" data-term-definition="A card type that resolves, then moves from the battlefield to its controller&#x27;s Discard.">Pulse</span> • <span class="card-term" tabindex="0" data-term-title="Jutsu" data-term-definition="This card can be played only as a Prepared Jutsu.
+
+To resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.
+
+Whenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.
+
+Agent — Ram
+Daemon — Ox
+Pulse — Tiger
+Glitch — Snake">Jutsu</span></span></div><div class="card-rules"><p class="card-keyword"><strong><span class="card-term" tabindex="0" data-term-title="Bandwidth" data-term-definition="A spendable resource used for Bandwidth costs. At each Start, it refreshes to a maximum that increases by 1.">Bandwidth</span> 2 • <span class="card-term" tabindex="0" data-term-title="Signs" data-term-definition="A sequence that must be completed in order to resolve a Prepared Jutsu.">Signs</span> — <span class="card-term" tabindex="0" data-term-title="Tiger" data-term-definition="A Sign. Affiliated with Pulse cards.">Tiger</span>, <span class="card-term" tabindex="0" data-term-title="Ox" data-term-definition="A Sign. Affiliated with Daemon cards.">Ox</span>, <span class="card-term" tabindex="0" data-term-title="Tiger" data-term-definition="A Sign. Affiliated with Pulse cards.">Tiger</span></strong></p><p>When this <span class="card-term" tabindex="0" data-term-title="Jutsu" data-term-definition="This card can be played only as a Prepared Jutsu.
+
+To resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.
+
+Whenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.
+
+Agent — Ram
+Daemon — Ox
+Pulse — Tiger
+Glitch — Snake">Jutsu</span> is completed, deal 6 <span class="card-term" tabindex="0" data-term-title="Damage" data-term-definition="Damage hits an opposing Agent when possible; only a player with no Agents loses Sync from it.">damage</span> to your opponent.</p></div></article></div><div class="card-selection"><article class="builder-card whats-new-card-face"><div class="card-titlebar"><h4>Virus Beetle</h4></div><div class="card-art-frame"><img src="card-art/virus_beetle.webp" alt="Temporary placeholder artwork for Virus Beetle" style="object-position:61% 46%"></div><div class="card-typebar"><span><span class="card-term" tabindex="0" data-term-title="Pulse" data-term-definition="A card type that resolves, then moves from the battlefield to its controller&#x27;s Discard.">Pulse</span></span></div><div class="card-rules"><p>Your opponent discards a card at random.</p></div></article></div></div></article>
+</main><script>
+const whatsNewTooltipState={trigger:null,tooltip:null};
+function positionWhatsNewTooltip(){
+  if(!whatsNewTooltipState.tooltip)return;
+  const trigger=whatsNewTooltipState.trigger,tooltip=whatsNewTooltipState.tooltip;
+  const rect=trigger.getBoundingClientRect(),gap=8,width=tooltip.offsetWidth,height=tooltip.offsetHeight;
+  tooltip.style.left=Math.min(Math.max(12,rect.left),window.innerWidth-width-12)+"px";
+  tooltip.style.top=(rect.bottom+height+gap<=window.innerHeight-12?rect.bottom+gap:Math.max(12,rect.top-height-gap))+"px";
+}
+function hideWhatsNewTooltip(){
+  if(!whatsNewTooltipState.trigger)return;
+  whatsNewTooltipState.trigger.removeAttribute("aria-describedby");
+  whatsNewTooltipState.tooltip?.remove();
+  whatsNewTooltipState.trigger=null;
+  whatsNewTooltipState.tooltip=null;
+}
+function showWhatsNewTooltip(trigger){
+  if(whatsNewTooltipState.trigger===trigger){positionWhatsNewTooltip();return;}
+  hideWhatsNewTooltip();
+  const tooltip=document.createElement("div");
+  tooltip.className="card-term-tooltip";
+  tooltip.id="whats-new-card-term-tooltip";
+  tooltip.setAttribute("role","tooltip");
+  const heading=document.createElement("strong"),definition=document.createElement("span");
+  heading.textContent=trigger.dataset.termTitle||trigger.textContent;
+  definition.textContent=trigger.dataset.termDefinition||"";
+  tooltip.append(heading,definition);
+  document.body.append(tooltip);
+  trigger.setAttribute("aria-describedby",tooltip.id);
+  whatsNewTooltipState.trigger=trigger;
+  whatsNewTooltipState.tooltip=tooltip;
+  requestAnimationFrame(positionWhatsNewTooltip);
+}
+document.addEventListener("pointerover",event=>{const term=event.target.closest?.(".whats-new-card-grid .card-term");if(term)showWhatsNewTooltip(term);});
+document.addEventListener("pointerout",event=>{const term=event.target.closest?.(".whats-new-card-grid .card-term");if(term&&!term.contains(event.relatedTarget))hideWhatsNewTooltip();});
+document.addEventListener("focusin",event=>{const term=event.target.closest?.(".whats-new-card-grid .card-term");if(term)showWhatsNewTooltip(term);});
+document.addEventListener("focusout",event=>{const term=event.target.closest?.(".whats-new-card-grid .card-term");if(term&&!term.contains(event.relatedTarget))hideWhatsNewTooltip();});
+window.addEventListener("resize",positionWhatsNewTooltip);
+window.addEventListener("scroll",positionWhatsNewTooltip,true);
+</script></body></html>

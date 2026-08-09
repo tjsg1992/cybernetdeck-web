@@ -33,6 +33,18 @@ export class Rng {
     }
 }
 const OPERATORS = ["<", "<=", "=", ">=", ">"];
+const CARD_KIND_SIGN = {
+    agent: "ram",
+    daemon: "ox",
+    pulse: "tiger",
+    glitch: "snake",
+};
+const SIGN_LABELS = {
+    ram: "Ram",
+    ox: "Ox",
+    tiger: "Tiger",
+    snake: "Snake",
+};
 const compare = (value, operator, threshold) => operator === "<"
     ? value < threshold
     : operator === "<="
@@ -51,6 +63,9 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
     for (const [id, count] of Object.entries(submission.decklist)) {
         if (!cards[id] || !Number.isSafeInteger(count) || count <= 0) {
             throw Error(`Invalid card quantity for ${id}.`);
+        }
+        if (cards[id].jutsu && (!cards[id].signs?.length || cards[id].signs.some((sign) => !SIGN_LABELS[sign]))) {
+            throw Error(`Jutsu ${id} must have at least one valid Sign.`);
         }
         if (cards[id].immutable && count > 1) {
             throw Error(`Immutable card quantity for ${id} cannot exceed one.`);
@@ -201,11 +216,13 @@ export class Battle {
                     ...(definition.card_kind === "agent"
                         ? { remaining_integrity: definition.integrity }
                         : {}),
+                    ...(definition.jutsu ? { formed_signs: 0 } : {}),
                 };
             });
             player.deck = makeCards(playerSetup.deck, "deck");
             player.hand = makeCards(playerSetup.hand, "hand");
             player.battlefield = makeCards(playerSetup.battlefield, "battlefield");
+            player.preparedJutsu = makeCards(playerSetup.prepared_jutsu ? [playerSetup.prepared_jutsu] : [], "prepared");
             player.discard = makeCards(playerSetup.discard, "discard");
             player.void = makeCards(playerSetup.void, "void");
             player.points = playerSetup.flux ?? 0;
@@ -231,6 +248,7 @@ export class Battle {
                     ...(definition.card_kind === "agent"
                         ? { remaining_integrity: definition.integrity }
                         : {}),
+                    ...(definition.jutsu ? { formed_signs: 0 } : {}),
                 });
             }
         }
@@ -243,6 +261,7 @@ export class Battle {
             discard: [],
             void: [],
             battlefield: [],
+            preparedJutsu: [],
             points: 0,
             sync: 20,
             ki: 0,
@@ -394,16 +413,22 @@ export class Battle {
         }
         return true;
     }
-    canPlay(player, card) {
+    canPlayRestrictions(player, card) {
         return (card.definition.card_kind !== "glitch" &&
             (this.phase === "main" || this.phase === "pregame") &&
-            this.canPayCosts(player, card.definition) &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
             player.ki >= (card.definition.minimum_ki ?? 0) &&
-            (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0));
+            (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0) &&
+            (!card.definition.jutsu ||
+                (player.preparedJutsu.length === 0 &&
+                    player.battlefield.some((installed) => installed.definition.supports_jutsu_preparation))));
+    }
+    canPlay(player, card) {
+        return this.canPlayRestrictions(player, card) && this.canPayCosts(player, card.definition);
     }
     canActivate(player, card) {
         return (card.definition.immutable === true &&
+            card.definition.activation !== "passive" &&
             this.phase === "main" &&
             this.canPayCosts(player, card.definition) &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
@@ -572,6 +597,89 @@ export class Battle {
             this.note(`${target.id} | agent_deleted:${agent.definition.card_id}`);
         }
     }
+    formPreparedSign(player, prepared, reason) {
+        const signs = prepared.definition.signs ?? [];
+        const formed = prepared.formed_signs ?? 0;
+        const sign = signs[formed];
+        if (!sign) {
+            return;
+        }
+        prepared.formed_signs = formed + 1;
+        this.note(`${player.id} | handseal:${prepared.definition.card_id}:${SIGN_LABELS[sign]}:${prepared.formed_signs}:${signs.length}:${reason}`);
+    }
+    formPreparedSigns(player, source) {
+        if (source.definition.jutsu || !player.preparedJutsu.length) {
+            return;
+        }
+        const prepared = player.preparedJutsu[0];
+        const signs = prepared.definition.signs ?? [];
+        const formed = prepared.formed_signs ?? 0;
+        if (!signs[formed]) {
+            return;
+        }
+        const matchingSign = CARD_KIND_SIGN[source.definition.card_kind];
+        if (signs[formed] === matchingSign) {
+            this.formPreparedSign(player, prepared, "matching");
+            if (player.preparedJutsu[0] === prepared && this.winner === undefined) {
+                this.formPreparedSign(player, prepared, "base");
+            }
+        }
+        else {
+            this.formPreparedSign(player, prepared, "base");
+            if (player.preparedJutsu[0] === prepared &&
+                this.winner === undefined &&
+                signs[prepared.formed_signs ?? 0] === matchingSign) {
+                this.formPreparedSign(player, prepared, "matching");
+            }
+        }
+        if (player.preparedJutsu[0] === prepared &&
+            this.winner === undefined &&
+            (prepared.formed_signs ?? 0) >= signs.length) {
+            this.resolvePreparedJutsu(player, prepared);
+        }
+    }
+    resolvePreparedJutsu(player, prepared) {
+        if (player.preparedJutsu[0] !== prepared || this.winner !== undefined) {
+            return;
+        }
+        this.note(`${player.id} | prepared_jutsu_complete:${prepared.definition.card_id}`);
+        if (!this.move(player, prepared, player.preparedJutsu, player.battlefield, "prepared", "battlefield") ||
+            !this.act(player, `resolve prepared ${prepared.definition.card_id}`)) {
+            return;
+        }
+        this.resolve(player, prepared);
+        if (this.winner === undefined) {
+            this.move(player, prepared, player.battlefield, player.discard, "battlefield", "discard");
+        }
+    }
+    createAgents(player, amount, displayName, integrity, source) {
+        const count = Math.max(0, amount);
+        const startingIntegrity = Math.max(0, integrity);
+        let created = 0;
+        const tokenId = `token:${displayName.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`;
+        const definition = {
+            card_id: tokenId,
+            display_name: displayName,
+            effect: "",
+            card_kind: "agent",
+            integrity: startingIntegrity,
+        };
+        for (let index = 0; index < count && this.winner === undefined; index++) {
+            if (!this.act(player, `create ${displayName} Agent`)) {
+                break;
+            }
+            this.generatedCardCount++;
+            player.battlefield.push({
+                uid: `generated:${player.id}:${this.generatedCardCount}:${tokenId}`,
+                definition,
+                remaining_integrity: startingIntegrity,
+            });
+            created++;
+        }
+        if (created) {
+            this.note(`${player.id} | agents_created:${created}:${displayName}:${startingIntegrity}:${source}`);
+        }
+    }
     preventersFor(event) {
         return this.opponent(event.recipient).battlefield.filter((card) => card.definition.mechanics?.some((mechanic) => mechanic.type === "prevent_next_opponent_flux_gain"));
     }
@@ -599,6 +707,7 @@ export class Battle {
                 event.prevented = true;
                 this.note(`${event.recipient.id} | flux_gain_prevented:${event.amount}:${card.definition.card_id}:discarded`);
             }
+            this.formPreparedSigns(player, card);
             return true;
         }
         return false;
@@ -695,6 +804,12 @@ export class Battle {
             }
             return;
         }
+        this.discardRandomCard(player);
+    }
+    discardRandomCard(player) {
+        if (!player.hand.length) {
+            return;
+        }
         const discarded = player.hand[this.rng.int(player.hand.length)];
         if (discarded && this.move(player, discarded, player.hand, player.discard, "hand", "discard")) {
             this.note(`${player.id} | discard_random:${discarded.definition.card_id}`);
@@ -731,14 +846,19 @@ export class Battle {
     playTopCardOfDeck(player, source) {
         const opponent = this.opponent(player);
         const card = opponent.deck[0];
-        if (!card || !this.canPlay(opponent, card)) {
+        if (!card || !this.canPlayRestrictions(opponent, card)) {
             return;
         }
         if (!this.move(opponent, card, opponent.deck, opponent.hand, "deck", "hand")) {
             return;
         }
-        this.note(`${opponent.id} | play_top_card:${card.definition.card_id}:${source}`);
         this.snapshotDeck(opponent);
+        if (!this.canPayCosts(opponent, card.definition)) {
+            this.note(`${opponent.id} | forced_play_discarded:${card.definition.card_id}:${source}`);
+            this.move(opponent, card, opponent.hand, opponent.discard, "hand", "discard");
+            return;
+        }
+        this.note(`${opponent.id} | play_top_card:${card.definition.card_id}:${source}`);
         this.play(opponent, card, true);
     }
     resolve(player, card) {
@@ -777,6 +897,9 @@ export class Battle {
             }
             else if (mechanic.type === "draw_two_if_hand_empty_otherwise_discard_random") {
                 this.resolveConditionalHandEffect(player);
+            }
+            else if (mechanic.type === "discard_random_card") {
+                this.discardRandomCard(mechanic.target === "opponent" ? this.opponent(player) : player);
             }
             else if (mechanic.type === "set_own_sync_and_draw_half_deck") {
                 this.setSync(player, mechanic.sync);
@@ -825,6 +948,9 @@ export class Battle {
             else if (mechanic.type === "play_top_card_of_opponent_deck") {
                 this.playTopCardOfDeck(player, card.definition.card_id);
             }
+            else if (mechanic.type === "create_agents") {
+                this.createAgents(player, mechanic.amount, mechanic.display_name, mechanic.integrity, card.definition.card_id);
+            }
         }
     }
     play(player, card, fromDeck = false) {
@@ -834,8 +960,20 @@ export class Battle {
         if (!fromDeck) {
             this.note(`${player.id} | play:${card.definition.card_id}`);
         }
-        if (!this.payCosts(player, card.definition) ||
-            !this.move(player, card, player.hand, player.battlefield, "hand", "battlefield")) {
+        if (!this.payCosts(player, card.definition)) {
+            return false;
+        }
+        if (card.definition.jutsu) {
+            if (!this.move(player, card, player.hand, player.preparedJutsu, "hand", "prepared")) {
+                return false;
+            }
+            if (this.phase === "main") {
+                player.cardsPlayedThisTurn++;
+            }
+            this.note(`${player.id} | jutsu_prepared:${card.definition.card_id}`);
+            return this.winner === undefined;
+        }
+        if (!this.move(player, card, player.hand, player.battlefield, "hand", "battlefield")) {
             return false;
         }
         if (this.phase === "main") {
@@ -844,6 +982,7 @@ export class Battle {
         this.act(player, `resolve ${card.definition.card_id}`);
         this.resolve(player, card);
         this.resolvePlayTriggers(player, card);
+        this.formPreparedSigns(player, card);
         if (card.definition.card_kind === "pulse") {
             this.move(player, card, player.battlefield, player.discard, "battlefield", "discard");
         }
@@ -1059,8 +1198,8 @@ export class Battle {
         return record;
     }
 }
-export function replayBattle(first, second, cards, seed, config = DEFAULT_CONFIG, startingPlayer = 0, scenarioSetup) {
-    const battle = new Battle(first, second, cards, config, new Rng(seed), true, scenarioSetup);
+export function replayBattle(first, second, cards, seed, config = DEFAULT_CONFIG, startingPlayer = 0, scenarioSetup, captureLog = true) {
+    const battle = new Battle(first, second, cards, config, new Rng(seed), captureLog, scenarioSetup);
     battle.active = scenarioSetup?.active_player ?? startingPlayer;
     battle.starting_player = startingPlayer;
     return battle.run();

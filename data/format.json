@@ -1,5 +1,5 @@
 {
-  "format_id": "seal-card-display-1",
+  "format_id": "naruto-ninjutsu-qa-1",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -242,6 +242,52 @@
       "art_url": "card-art/admin_override.webp",
       "art_alt": "Temporary placeholder artwork for Admin Override",
       "art_position": "50% 18%"
+    },
+    {
+      "card_id": "virus_beetle",
+      "display_name": "Virus Beetle",
+      "effect": "Your opponent discards a card at random.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/virus_beetle.webp",
+      "art_alt": "Temporary placeholder artwork for Virus Beetle",
+      "art_position": "61% 46%"
+    },
+    {
+      "card_id": "ninjutsu",
+      "display_name": "Ninjutsu",
+      "effect": "You may play a Jutsu without meeting its printed Signs if you have no Prepared Jutsu. Pay its costs and put it face up beneath this card as your Prepared Jutsu; it doesn't resolve. Whenever another non-Jutsu card you play resolves, form its base Sign on your Prepared Jutsu. If that card's type matches the next printed Sign, form one matching Sign before the base Sign if possible; otherwise, form it after the base Sign if possible. A card can form only one matching Sign this way. When all Signs are formed, resolve the Jutsu without paying its costs, then discard it. You can have only one Prepared Jutsu. Playing a Jutsu counts as playing a card; forming a Sign doesn't.",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon \u2022 Immutable",
+      "immutable": true,
+      "activation": "passive",
+      "keyword_line": "Passive \u2022 Agent\u2014Ram \u2022 Daemon\u2014Ox \u2022 Pulse\u2014Tiger \u2022 Glitch\u2014Snake",
+      "supports_jutsu_preparation": true,
+      "art_url": "card-art/ninjutsu.jpg",
+      "art_alt": "Naruto forms hand seals as shadow clones begin to appear",
+      "art_position": "50% 40%"
+    },
+    {
+      "card_id": "clone_jutsu",
+      "display_name": "Clone Jutsu",
+      "effect": "When this Jutsu is completed, create two Clone Agents with 1 Integrity.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu",
+      "keyword_line": "Signs \u2014 Ram, Ram",
+      "art_url": "card-art/clone_jutsu.png",
+      "art_alt": "Naruto creates shadow clones in a rocky training area",
+      "art_position": "0% 100%"
+    },
+    {
+      "card_id": "fire_release_great_fireball",
+      "display_name": "Fire Release: Great Fireball Technique",
+      "effect": "When this Jutsu is completed, deal 6 damage to your opponent.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu",
+      "keyword_line": "Bandwidth 2 \u2022 Signs \u2014 Tiger, Ox, Tiger",
+      "art_url": "card-art/fire_release_great_fireball.jpg",
+      "art_alt": "Sasuke unleashes a Great Fireball Technique",
+      "art_position": "50% 42%"
     }
   ],
   "card_ids": [
@@ -267,11 +313,228 @@
     "garbage_collection",
     "core_a_core",
     "two_cores_in_a_box",
-    "admin_override"
+    "admin_override",
+    "virus_beetle",
+    "ninjutsu",
+    "clone_jutsu",
+    "fire_release_great_fireball"
   ],
   "config": {
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "803b8d1d5a5327ba1485ed52a5412c72a3b44c8b05cd5b4ea27cabb7f4c4a540"
+  "fingerprint": "7b6f079fefe79e63dd2dc066ad8f6e48ab493a1f6b97175e1c8e507452bd42c6",
+  "keyword_definitions": [
+    {
+      "title": "Flux",
+      "aliases": [
+        "Flux"
+      ],
+      "definition": "Your score. You win when you reach 20 Flux after a card fully resolves."
+    },
+    {
+      "title": "Sync",
+      "aliases": [
+        "Sync"
+      ],
+      "definition": "Your remaining integrity. You lose if it stays at 0 after reactions and triggered effects finish."
+    },
+    {
+      "title": "Bandwidth",
+      "aliases": [
+        "Bandwidth"
+      ],
+      "definition": "A spendable resource used for Bandwidth costs. At each Start, it refreshes to a maximum that increases by 1."
+    },
+    {
+      "title": "Ki",
+      "aliases": [
+        "Ki"
+      ],
+      "definition": "A resource that starts at 0 and is not spent unless a card says to spend it."
+    },
+    {
+      "title": "Uplink",
+      "aliases": [
+        "Uplink"
+      ],
+      "definition": "A non-spent threshold that starts at 0 and increases by 1 at each of your Start phases."
+    },
+    {
+      "title": "Pulse",
+      "aliases": [
+        "Pulse",
+        "Pulses"
+      ],
+      "definition": "A card type that resolves, then moves from the battlefield to its controller's Discard."
+    },
+    {
+      "title": "Daemon",
+      "aliases": [
+        "Daemon",
+        "Daemons"
+      ],
+      "definition": "A card type that remains on its controller's battlefield after it resolves."
+    },
+    {
+      "title": "Agent",
+      "aliases": [
+        "Agent",
+        "Agents"
+      ],
+      "definition": "A card type that remains on the battlefield and takes damage using its Integrity."
+    },
+    {
+      "title": "Integrity",
+      "aliases": [
+        "Integrity"
+      ],
+      "definition": "An Agent's durability. An Agent at 0 Integrity is deleted."
+    },
+    {
+      "title": "Named Agent",
+      "aliases": [
+        "Named Agent",
+        "Named Agents"
+      ],
+      "definition": "An Agent whose card name is formatted as Name, Title. You cannot play another Named Agent with the same Name while you control one."
+    },
+    {
+      "title": "Breach",
+      "aliases": [
+        "Breach"
+      ],
+      "definition": "During your opponent's End Phase, this Agent deals the listed amount of damage. Damage targets opposing Agents first, then Sync if no Agent remains."
+    },
+    {
+      "title": "Signature",
+      "aliases": [
+        "Signature",
+        "Signatures"
+      ],
+      "definition": "A card subtype that cannot be included in decks. An Agent may add its named Signature card to its controller's hand during that player's End Phase; Signature cards are played normally from hand."
+    },
+    {
+      "title": "Immutable",
+      "aliases": [
+        "Immutable"
+      ],
+      "definition": "A singleton card played before turn one without activating. Once on the battlefield, it cannot be moved, removed, deleted, or targeted."
+    },
+    {
+      "title": "Glitch",
+      "aliases": [
+        "Glitch",
+        "Glitches"
+      ],
+      "definition": "A reaction card played from hand on either turn for its specified event, then moved directly to Discard."
+    },
+    {
+      "title": "Jutsu",
+      "aliases": [
+        "Jutsu"
+      ],
+      "definition": "This card can be played only as a Prepared Jutsu.\n\nTo resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.\n\nWhenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.\n\nAgent \u2014 Ram\nDaemon \u2014 Ox\nPulse \u2014 Tiger\nGlitch \u2014 Snake"
+    },
+    {
+      "title": "Prepared Jutsu",
+      "aliases": [
+        "Prepared Jutsu"
+      ],
+      "definition": "A Jutsu placed face up beneath Ninjutsu. To resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it."
+    },
+    {
+      "title": "Signs",
+      "aliases": [
+        "Sign",
+        "Signs"
+      ],
+      "definition": "A sequence that must be completed in order to resolve a Prepared Jutsu."
+    },
+    {
+      "title": "Ram",
+      "aliases": [
+        "Ram"
+      ],
+      "definition": "A Sign. Affiliated with Agent cards."
+    },
+    {
+      "title": "Ox",
+      "aliases": [
+        "Ox"
+      ],
+      "definition": "A Sign. Affiliated with Daemon cards."
+    },
+    {
+      "title": "Tiger",
+      "aliases": [
+        "Tiger"
+      ],
+      "definition": "A Sign. Affiliated with Pulse cards."
+    },
+    {
+      "title": "Snake",
+      "aliases": [
+        "Snake"
+      ],
+      "definition": "A Sign. Affiliated with Glitch cards."
+    },
+    {
+      "title": "Delete",
+      "aliases": [
+        "Delete",
+        "delete",
+        "deletes",
+        "deleted"
+      ],
+      "definition": "Move a card from its controller's battlefield to that player's Discard without resolving it again."
+    },
+    {
+      "title": "Wipe",
+      "aliases": [
+        "Wipe",
+        "wipe",
+        "wipes",
+        "wiped"
+      ],
+      "definition": "Move a card to its controller's Void instead of its Discard."
+    },
+    {
+      "title": "Discard",
+      "aliases": [
+        "Discard"
+      ],
+      "definition": "A public zone that holds discarded cards and most cards after they resolve or are deleted."
+    },
+    {
+      "title": "Void",
+      "aliases": [
+        "Void"
+      ],
+      "definition": "A zone separate from Discard. Effects that target Discard cannot target cards in the Void."
+    },
+    {
+      "title": "Damage",
+      "aliases": [
+        "Damage",
+        "damage"
+      ],
+      "definition": "Damage hits an opposing Agent when possible; only a player with no Agents loses Sync from it."
+    },
+    {
+      "title": "Activate",
+      "aliases": [
+        "Activate"
+      ],
+      "definition": "Resolve an eligible Immutable card's activation from the battlefield without moving it."
+    },
+    {
+      "title": "Passive",
+      "aliases": [
+        "Passive",
+        "passive"
+      ],
+      "definition": "A passive Immutable has no activation and cannot be selected by an Activate action."
+    }
+  ]
 }

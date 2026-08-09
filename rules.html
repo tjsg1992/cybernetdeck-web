@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=771697ba9197"></head>
+<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=9207d409d309"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
 <article class="rules-reference"><p class="eyebrow">Rules Reference</p><h1>CyberNetDeck Rules</h1>
@@ -15,14 +15,31 @@
 <p>Reactions and triggered card effects resolve before the game checks for a winning or losing state caused by that event.</p>
 <h2>Decks and cards</h2>
 <p>Each deck contains 20–30 cards and may include any number of each card in the current format. A card with <strong>Bandwidth N</strong> costs N Bandwidth to play. A card with <strong>Sync cost N</strong> reduces its controller&#x27;s Sync by N when played.</p>
+<h3>Card types and properties</h3>
 <ul>
 <li><strong>Pulse</strong> cards resolve their effects and then go to the discard pile.</li>
 <li><strong>Daemon</strong> cards remain on the battlefield with their ongoing effects active.</li>
 <li><strong>Agent</strong> cards remain on the battlefield with a printed <strong>Integrity</strong> value. Agents take damage from attacks; an Agent at 0 Integrity is deleted.</li>
+<li><strong>Named Agent:</strong> An Agent named `Name, Title` is Named, using the text before the comma as its Name. You cannot play a Named Agent while you control another Named Agent with the same Name. This also applies to forced plays.</li>
+<li><strong>Signature</strong> cards cannot be included in decks. An Agent may supply its named Signature card to your hand during your End phase; it then plays as a normal card. Signature cards are available in the program builder when a deck card supplies them.</li>
 <li><strong>Immutable</strong> cards are limited to one copy, searched into the opening hand before ordinary draws, and played onto the battlefield before the first turn without activating their effects. They cannot be removed from the battlefield or targeted by effects.</li>
-<li><strong>Glitch</strong> cards can be played from the hand on either turn as a reaction to a specified event, then go directly to the discard pile. They are not deleted; deletion moves a Daemon from the battlefield to its discard pile.</li>
+<li><strong>Glitch</strong> cards can be played from the hand on either turn as a reaction to a specified event, then go directly to the discard pile. They are not deleted; deletion moves a card from the battlefield to its discard pile.</li>
 </ul>
-<p><strong>Delete</strong> moves a Daemon from the battlefield to its controller&#x27;s Discard; it does not resolve that card again. <strong>Wipe</strong> moves a card to the separate Void zone. The Void is not the Discard, so effects that target the Discard cannot target cards in the Void.</p>
+<h3>Card zones and movement</h3>
+<p><strong>Delete</strong> moves a card from its controller&#x27;s battlefield to that player&#x27;s Discard; it does not resolve that card again. <strong>Wipe</strong> moves a card to the separate Void zone. The Void is not the Discard, so effects that target the Discard cannot target cards in the Void.</p>
+<p>When an effect says a player discards a card at random, one card instance is chosen from that player&#x27;s hand and moved to that player&#x27;s Discard. If that player&#x27;s hand is empty, nothing is discarded.</p>
+<h2>Jutsu</h2>
+<p>A Jutsu can be played only as a <strong>Prepared Jutsu</strong>. A Prepared Jutsu is a Jutsu placed face up beneath the card that prepared it after its non-Sign costs are paid. It is public, cannot be affected by other cards, and only one Prepared Jutsu can be held at a time.</p>
+<p><strong>Signs</strong> are a sequence that must be formed in order, over any number of turns, before the Prepared Jutsu can resolve. Whenever you play a non-Jutsu card, form the next Sign. The card&#x27;s type can form one additional matching Sign, first if able and otherwise second:</p>
+<ul>
+<li>An <strong>Agent</strong> forms <strong>Ram</strong>.</li>
+<li>A <strong>Daemon</strong> forms <strong>Ox</strong>.</li>
+<li>A <strong>Pulse</strong> forms <strong>Tiger</strong>.</li>
+<li>A <strong>Glitch</strong> forms <strong>Snake</strong>.</li>
+</ul>
+<p>A played card can provide at most one additional Sign. Starting a Jutsu is a card play but does not form a Sign; forming a Sign is not playing a card.</p>
+<p>When all Signs are formed, resolve the Prepared Jutsu as a Pulse without paying its costs again, then delete it to its controller&#x27;s Discard. Its own resolution does not form another Sign.</p>
+<p><strong>Ninjutsu</strong> lets you place one Jutsu as a Prepared Jutsu instead of resolving it, after paying its non-Sign costs.</p>
 <h2>Damage targeting</h2>
 <p>Damage is dealt to the opposing player. You do not choose a particular Agent; the game applies the following order every time an effect deals damage.</p>
 <ol>
@@ -37,14 +54,17 @@
 <li><strong>Start:</strong> The turn begins and its player gains 1 Uplink. Their Bandwidth maximum increases by 1, and their current Bandwidth is restored to that new maximum. Uplink requirements are thresholds, not costs.</li>
 <li><strong>Draw:</strong> Draw one card. Drawing from an empty deck loses the battle.</li>
 <li><strong>Main:</strong> Follow the program while playable cards remain in hand.</li>
-<li><strong>End:</strong> The turn ends and the other player begins their turn.</li>
+<li><strong>End:</strong> End-phase effects resolve in their normal order. The turn then ends and the other player begins their turn.</li>
 </ul>
 <p>Bandwidth is a spendable resource. Playing a card with <strong>Bandwidth N</strong> reduces your current Bandwidth by N; it cannot be spent below 0. Unspent Bandwidth does not carry through the next Start phase. Programs can compare your current Bandwidth with the quantity condition; that condition does not compare the maximum.</p>
+<p>When an effect forces a player to play the top card of their deck, the card still pays all of its listed Flux, Bandwidth, and Sync costs. If its costs cannot be paid, it goes to that player&#x27;s Discard without resolving. Other play restrictions retain their normal behavior.</p>
 <p>Sync costs reduce your current Sync when the card is played. You cannot pay more Sync than you have. For a reaction with a cost, the game confirms that the cost can be paid, announces the reaction, then pays the cost before the card moves or resolves. If paying a Sync cost reaches 0 Sync, zero-Sync effects resolve before the loss check; if Sync remains 0, the battle ends before the card moves or resolves.</p>
 <h2>Programs</h2>
 <p>An Action program is an ordered list of rules. During Main, the rules are checked from top to bottom. The first rule whose condition is true and whose action can be performed is used.</p>
-<p>Quantity conditions can compare cards in either deck or hand, either player&#x27;s Flux or Sync, your Ki, or your current Bandwidth using fewer than, at most, exactly, at least, or more than a whole-number threshold.</p>
-<p>Actions can play a named card, activate an Immutable card, play a random card, or end the turn. If no Action rule is selected, the default action is used. When your deck contains a card that can add another named card to your deck, the added card is also available in the condition and named-action selectors; it still cannot be played until a copy is actually in your hand.</p>
+<p>`A card is...` conditions can check whether a named card is in your hand, on your side of the board, or on your opponent&#x27;s side of the board. Quantity conditions first choose <strong>Your</strong> or <strong>Opponent&#x27;s</strong>, then compare <strong>Cards in deck</strong>, <strong>Cards in hand</strong>, <strong>Cards on board</strong>, <strong>Flux</strong>, <strong>Ki</strong>, <strong>Bandwidth</strong>, or <strong>Sync</strong> using fewer than, at most, exactly, at least, or more than a whole-number threshold. Board counts include only cards in the selected player&#x27;s battlefield; Prepared Jutsu are not on the board. Bandwidth compares current spendable Bandwidth, not its maximum.</p>
+<p><strong>Play a Combo</strong> is an ordered list of named card choices. When the rule is selected, the engine attempts those choices from first to last. Unavailable choices are skipped by default. A choice marked <strong>(all)</strong> with the infinity marker is attempted repeatedly while another copy is in hand and legally playable; an unmarked choice is attempted once. Each card uses its normal play timing, costs, restrictions, and effects; the Combo is programming metadata only and does not appear as a separate battle event or log entry. The optional <strong>Cancel if card isn&#x27;t played</strong> setting changes this fallback: if a choice cannot be played at all, or its ordinary play operation fails before any copy of that card type succeeds, the Combo stops without trying later choices. Programming then checks the next available Action rule, or the default action if none remains. If an <strong>(all)</strong> choice plays at least one copy, a later copy that cannot play does not cancel the Combo; the next sequence choice is tried. The setting is off by default.</p>
+<p>Actions can play a named card, play a Combo, activate an Immutable card, play a random card, or end the turn. If no Action rule is selected, the default action is used. When your deck contains a card that can add another named card to your deck, the added card is also available in the condition and named-action selectors; it still cannot be played until a copy is actually in your hand.</p>
+<p>An Agent&#x27;s named Signature is also available in those selectors, even though it cannot be added to the deck. It becomes playable only after the Agent supplies a fresh copy to your hand. The Combo card picker uses this same deck-derived availability set, showing the cards while they are unselected and numbering them in the order you select them.</p>
 <h2>Reactions</h2>
 <p>A Reaction program is separate from the Action program and has no default action. Whenever an event in the game occurs, the Reaction rules are checked in order. The current turn player gets priority first, followed by the other player, alternating until both players have no eligible Reaction to the event. The first eligible Glitch for the player with priority is played. If no reaction is eligible or its costs cannot be paid, nothing happens.</p>
 <p>A reaction window belongs to one pending event. If a reaction prevents that event, the reaction window closes immediately; no other matching Glitch can be played for that same event. If a reaction resolves without preventing the event and the event remains pending, priority continues to alternate until both players pass.</p>

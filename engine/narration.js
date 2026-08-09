@@ -40,9 +40,33 @@ export function narrateBattleEvent(event, context) {
         return `${player} discards ${context.card(detail.split(":")[1])} at random.`;
     if (detail === "discard_random")
         return `${player} discards a card at random.`;
+    if (detail.startsWith("forced_play_discarded:")) {
+        const [, cardId, source] = detail.split(":");
+        return `${player} cannot pay the cost of ${context.card(cardId)} forced by ${context.card(source)}, so it is discarded.`;
+    }
     if (detail.startsWith("play_top_card:")) {
         const [, cardId, source] = detail.split(":");
         return `${player} plays the top card of their ${deck(context, actor)}, ${context.card(cardId)}, from ${context.card(source)}.`;
+    }
+    if (detail.startsWith("signature_added_to_hand:")) {
+        const [, cardId, source] = detail.split(":");
+        return `${player} adds ${context.card(cardId)} to their hand from ${context.card(source)}.`;
+    }
+    if (detail.startsWith("breach:")) {
+        const [, source, amount] = detail.split(":");
+        return `${player}'s ${context.card(source)} resolves Breach ${amount}.`;
+    }
+    if (detail.startsWith("jutsu_prepared:"))
+        return `${player} prepares ${context.card(detail.split(":")[1])} beneath Ninjutsu.`;
+    if (detail.startsWith("handseal:")) {
+        const [, cardId, sign, formed, total] = detail.split(":");
+        return `${player} forms ${sign} for ${context.card(cardId)} (${formed}/${total} Signs).`;
+    }
+    if (detail.startsWith("prepared_jutsu_complete:"))
+        return `${player} completes ${context.card(detail.split(":")[1])}.`;
+    if (detail.startsWith("agents_created:")) {
+        const [, amount, name, integrity] = detail.split(":");
+        return `${player} creates ${amount} ${name} Agents with ${integrity} Integrity.`;
     }
     if (detail.startsWith("play:"))
         return `${player} plays ${context.card(detail.split(":")[1])}.`;
@@ -87,6 +111,10 @@ export function narrateBattleEvent(event, context) {
         const [, amount, cardId, source, order] = detail.split(":"), targetDeck = deck(context, actor);
         return `${player} uses ${context.card(source)} to add ${amount} ${context.card(cardId)} ${plural(amount, "card")} to their ${targetDeck}${order === "shuffled" ? ` and shuffles their ${targetDeck}` : ""}.`;
     }
+    if (detail.startsWith("add_to_deck_rejected_signature:")) {
+        const [, cardId, source] = detail.split(":");
+        return `${player} cannot add Signature ${context.card(cardId)} to their Deck from ${context.card(source)}.`;
+    }
     if (detail.startsWith("discard_recovered:")) {
         const [, amount] = detail.split(":");
         return `${player} shuffles ${amount} ${plural(amount, "card")} from their Discard into their ${deck(context, actor)}.`;
@@ -124,10 +152,11 @@ export function narrateBattleEvent(event, context) {
         return `${player} ${sentence} <span class="log-total">(${current}/20)</span>`;
     }
     if (detail.startsWith("sync:")) {
-        const [, amount, current] = detail.split(":"), value = Number(amount);
+        const [, amount, current, source] = detail.split(":"), value = Number(amount);
         if (!value)
             return "";
-        return `${player} ${value > 0 ? "gains " : "loses "}${Math.abs(value)} Sync. <span class="log-total">(${current}/20)</span>`;
+        const sentence = source === "bonus" ? `${value > 0 ? "gains " : "loses "}${Math.abs(value)} additional Sync from ${context.card(detail.split(":")[4])}.` : `${value > 0 ? "gains " : "loses "}${Math.abs(value)} Sync.`;
+        return `${player} ${sentence} <span class="log-total">(${current}/20)</span>`;
     }
     if (detail === "end_turn_effect")
         return `${player} ended their turn from a card effect.`;
