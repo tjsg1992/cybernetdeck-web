@@ -1,5 +1,5 @@
 {
-  "format_id": "next-set-1",
+  "format_id": "next-set-2",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -178,7 +178,7 @@
     {
       "card_id": "raditz_invader",
       "display_name": "Raditz, Invader",
-      "effect": "During your opponent's End Phase, this Agent deals 1 damage.",
+      "effect": "",
       "card_kind": "agent",
       "card_kind_label": "Agent",
       "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Double Sunday",
@@ -282,7 +282,6 @@
       "effect": "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon \u2022 Immutable",
-      "keyword_line": "Passive \u2022 Agent\u2014Ram \u2022 Daemon\u2014Ox \u2022 Pulse\u2014Tiger \u2022 Glitch\u2014Snake",
       "immutable": true,
       "activation": "passive",
       "supports_jutsu_preparation": true,
@@ -304,7 +303,7 @@
     {
       "card_id": "fire_release_great_fireball",
       "display_name": "Fire Release: Great Fireball Technique",
-      "effect": "When this Jutsu is completed, deal 6 damage to your opponent.",
+      "effect": "Deal 6 damage to your opponent.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse \u2022 Jutsu",
       "keyword_line": "Bandwidth 2 \u2022 Signs \u2014 Tiger, Ox, Tiger",
@@ -359,7 +358,7 @@
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "8f6139857ad85630739ed6181b4fad2fb3029d89cff1d79bd0ca397bb4b8f714",
+  "fingerprint": "320e74b88b0c586c643661825a9bcbde11ccfa6b4813ed50ff857101aab31066",
   "keyword_definitions": [
     {
       "title": "Flux",
