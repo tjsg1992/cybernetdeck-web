@@ -1,217 +1,270 @@
 [
   {
-    "name": "Spirit Arsenal",
-    "owner_name": "Avery",
+    "name": "Sync dixie nuts",
+    "owner_name": "Eli",
     "decklist": {
-      "victory_point_1": 6,
-      "victory_point_2": 4,
-      "threefold_siphon": 4,
-      "sparkleback_totem": 3,
-      "overcharge_gambit": 3
-    },
-    "program": [
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "sparkleback_totem",
-        "action_type": "play_named_card",
-        "action_card_id": "sparkleback_totem"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "overcharge_gambit",
-        "action_type": "play_named_card",
-        "action_card_id": "overcharge_gambit"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "threefold_siphon",
-        "action_type": "play_named_card",
-        "action_card_id": "threefold_siphon"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_2",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_2"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_1",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_1"
-      }
-    ]
-  },
-  {
-    "name": "Power of Friendship",
-    "owner_name": "Blake",
-    "decklist": {
-      "victory_point_1": 4,
-      "victory_point_2": 6,
-      "threefold_siphon": 2,
-      "sparkleback_totem": 4,
-      "overcharge_gambit": 4
-    },
-    "program": [
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "overcharge_gambit",
-        "action_type": "play_named_card",
-        "action_card_id": "overcharge_gambit"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "sparkleback_totem",
-        "action_type": "play_named_card",
-        "action_card_id": "sparkleback_totem"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_2",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_2"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "threefold_siphon",
-        "action_type": "play_named_card",
-        "action_card_id": "threefold_siphon"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_1",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_1"
-      }
-    ]
-  },
-  {
-    "name": "Limit Breakers",
-    "owner_name": "Casey",
-    "decklist": {
-      "victory_point_1": 2,
-      "victory_point_2": 3,
-      "threefold_siphon": 3,
-      "sparkleback_totem": 4,
-      "overcharge_gambit": 8
-    },
-    "program": [
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "overcharge_gambit",
-        "action_type": "play_named_card",
-        "action_card_id": "overcharge_gambit"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "sparkleback_totem",
-        "action_type": "play_named_card",
-        "action_card_id": "sparkleback_totem"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "threefold_siphon",
-        "action_type": "play_named_card",
-        "action_card_id": "threefold_siphon"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_2",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_2"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_1",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_1"
-      }
-    ]
-  },
-  {
-    "name": "Balanced Victory",
-    "owner_name": "Drew",
-    "decklist": {
-      "victory_point_1": 5,
-      "victory_point_2": 5,
-      "threefold_siphon": 4,
-      "sparkleback_totem": 4,
-      "overcharge_gambit": 2
-    },
-    "program": [
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "threefold_siphon",
-        "action_type": "play_named_card",
-        "action_card_id": "threefold_siphon"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "sparkleback_totem",
-        "action_type": "play_named_card",
-        "action_card_id": "sparkleback_totem"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_2",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_2"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "overcharge_gambit",
-        "action_type": "play_named_card",
-        "action_card_id": "overcharge_gambit"
-      },
-      {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_1",
-        "action_type": "play_named_card",
-        "action_card_id": "victory_point_1"
-      }
-    ]
-  },
-  {
-    "name": "Wild Mix",
-    "owner_name": "Emery",
-    "decklist": {
-      "victory_point_1": 8,
-      "victory_point_2": 2,
       "threefold_siphon": 5,
-      "sparkleback_totem": 2,
-      "overcharge_gambit": 3
+      "cursed_seal": 1,
+      "five_l": 5,
+      "dixie_flatline": 4,
+      "air_five_l": 10,
+      "admin_override": 5
     },
     "program": [
       {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "threefold_siphon",
+        "condition_type": "opponent_victory_points_at_least",
         "action_type": "play_named_card",
+        "victory_points_threshold": 10,
         "action_card_id": "threefold_siphon"
       },
       {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_1",
+        "condition_type": "card_is",
         "action_type": "play_named_card",
-        "action_card_id": "victory_point_1"
+        "condition_card_id": "dixie_flatline",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "cursed_seal"
       },
       {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "overcharge_gambit",
+        "condition_type": "card_is",
         "action_type": "play_named_card",
-        "action_card_id": "overcharge_gambit"
+        "condition_card_id": "dixie_flatline",
+        "card_condition": "in_your_hand",
+        "action_card_id": "dixie_flatline"
       },
       {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "sparkleback_totem",
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "admin_override"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "air_five_l"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "five_l"
+      }
+    ],
+    "default_action": "play_random_card",
+    "random_card_ids": [
+      "cursed_seal",
+      "five_l"
+    ],
+    "format_id": "seal-card-display-1"
+  },
+  {
+    "name": "The Martian",
+    "owner_name": "Alex",
+    "decklist": {
+      "sparkleback_totem": 7,
+      "one_more_roll": 1,
+      "matt_daemon": 15,
+      "core_a_core": 7
+    },
+    "program": [
+      {
+        "condition_type": "if_able",
         "action_type": "play_named_card",
         "action_card_id": "sparkleback_totem"
       },
       {
-        "condition_type": "card_in_hand",
-        "condition_card_id": "victory_point_2",
+        "condition_type": "if_able",
         "action_type": "play_named_card",
+        "action_card_id": "matt_daemon"
+      },
+      {
+        "condition_type": "card_is",
+        "action_type": "play_named_card",
+        "condition_card_id": "sparkleback_totem",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "victory_point_1"
+      },
+      {
+        "condition_type": "card_is",
+        "action_type": "play_named_card",
+        "condition_card_id": "sparkleback_totem",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "core_a_core"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "cards_in_your_hand",
+        "comparison_operator": "<",
+        "quantity_threshold": 1,
+        "action_card_id": "one_more_roll"
+      }
+    ],
+    "default_action": "end_turn",
+    "random_card_ids": [],
+    "format_id": "seal-card-display-1"
+  },
+  {
+    "name": "Three Matt Daemons walk into a bar",
+    "owner_name": "Colin",
+    "decklist": {
+      "victory_point_2": 6,
+      "sparkleback_totem": 3,
+      "overcharge_gambit": 2,
+      "five_l": 1,
+      "matt_daemon": 13
+    },
+    "program": [
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "cards_in_your_deck",
+        "comparison_operator": ">",
+        "quantity_threshold": 2,
+        "action_card_id": "matt_daemon"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "opponent_sync",
+        "comparison_operator": "=",
+        "quantity_threshold": 1,
+        "action_card_id": "five_l"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "cards_in_your_deck",
+        "comparison_operator": "<",
+        "quantity_threshold": 3,
+        "action_card_id": "sparkleback_totem"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "cards_in_your_deck",
+        "comparison_operator": "<",
+        "quantity_threshold": 3,
+        "action_card_id": "overcharge_gambit"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "cards_in_your_deck",
+        "comparison_operator": "<",
+        "quantity_threshold": 3,
         "action_card_id": "victory_point_2"
       }
-    ]
+    ],
+    "default_action": "play_random_card",
+    "random_card_ids": [],
+    "format_id": "seal-card-display-1"
+  },
+  {
+    "name": "Cursed Seal (even more cursed)",
+    "owner_name": "Taylor",
+    "decklist": {
+      "victory_point_2": 11,
+      "sparkleback_totem": 4,
+      "overcharge_gambit": 3,
+      "cursed_seal": 9,
+      "time_walk": 3
+    },
+    "program": [
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "sparkleback_totem"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "your_flux",
+        "comparison_operator": "<=",
+        "quantity_threshold": 5,
+        "action_card_id": "overcharge_gambit"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "victory_point_2"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "time_walk"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "your_flux",
+        "comparison_operator": "<=",
+        "quantity_threshold": 13,
+        "action_card_id": "cursed_seal"
+      }
+    ],
+    "default_action": "end_turn",
+    "random_card_ids": [],
+    "format_id": "seal-card-display-1"
+  },
+  {
+    "name": "Oops tournament go",
+    "owner_name": "Stella",
+    "decklist": {
+      "sparkleback_totem": 5,
+      "cursed_seal": 4,
+      "time_walk": 5,
+      "dixie_flatline": 1,
+      "farmer_with_shotgun": 3,
+      "core_a_core": 12
+    },
+    "program": [
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "farmer_with_shotgun"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "dixie_flatline"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "sparkleback_totem"
+      },
+      {
+        "condition_type": "card_is",
+        "action_type": "play_named_card",
+        "condition_card_id": "sparkleback_totem",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "overcharge_gambit"
+      },
+      {
+        "condition_type": "card_is",
+        "action_type": "play_named_card",
+        "condition_card_id": "sparkleback_totem",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "core_a_core"
+      },
+      {
+        "condition_type": "card_is",
+        "action_type": "play_named_card",
+        "condition_card_id": "sparkleback_totem",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "victory_point_1"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "time_walk"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "cursed_seal"
+      }
+    ],
+    "default_action": "end_turn",
+    "random_card_ids": [],
+    "format_id": "seal-card-display-1"
   }
 ]

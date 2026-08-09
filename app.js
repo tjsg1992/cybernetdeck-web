@@ -8,7 +8,7 @@ const deckStorageKey='cybernet-decks-v1';
 function loadSavedDecks(){try{return JSON.parse(localStorage.getItem(deckStorageKey)||'[]')}catch(_error){return []}}
 function saveSavedDecks(decks){localStorage.setItem(deckStorageKey,JSON.stringify(decks))}
 function savedDeckKey(owner,name){return owner+'::'+name}
-function renderSavedDecks(){const owner=$('owner').value.trim(),select=$('saved-decks'),chosen=select.value,decks=loadSavedDecks().filter(deck=>deck.owner_name===owner),creating=!$('new-deck-wrap').hidden;select.innerHTML='<option value="">Select a saved deck</option>'+decks.map(deck=>'<option value="'+esc(savedDeckKey(deck.owner_name,deck.name))+'">'+esc(deck.name)+'</option>').join('');if(decks.some(deck=>savedDeckKey(deck.owner_name,deck.name)===chosen))select.value=chosen;$('confirm-deck').disabled=!select.value&&(!creating||!$('deck-name').value.trim())}
+function legacyRenderSavedDecks(){const owner=$('owner').value.trim(),select=$('saved-decks'),chosen=select.value,decks=loadSavedDecks().filter(deck=>deck.owner_name===owner),creating=!$('new-deck-wrap').hidden;select.innerHTML='<option value="">Select a saved deck</option>'+decks.map(deck=>'<option value="'+esc(savedDeckKey(deck.owner_name,deck.name))+'">'+esc(deck.name)+'</option>').join('');if(decks.some(deck=>savedDeckKey(deck.owner_name,deck.name)===chosen))select.value=chosen;$('confirm-deck').disabled=!select.value&&(!creating||!$('deck-name').value.trim())}
 function currentDeckRecord(){return {...currentDeckPayload(),random_card_ids_configured:state.randomEligibilityConfigured===true}}
 function persistSelectedDeck(){if(!state.deckReady||!state.deckKey)return;const record=currentDeckRecord(),decks=loadSavedDecks().filter(deck=>savedDeckKey(deck.owner_name,deck.name)!==state.deckKey);decks.push(record);saveSavedDecks(decks)}
 function activateDeck(){state.deckReady=true;$('deck-setup').hidden=true;$('workflow-nav').hidden=false;$('status').hidden=false;$('status').textContent='';renderDeck();renderRules();persistSelectedDeck();setView('deck')}
@@ -197,7 +197,7 @@ renderTournamentBattle=async function(number){const pair=tournamentState.data.ba
 renderTournamentResults=function(){const data=tournamentState.data,panel=tournamentPanel(),standings=data.standings||[],logsAvailable=tournamentState.logsAvailable===true,rank=new Map(standings.map((row,index)=>[String(row.discord_user_id),index])),pairings=(data.battles||[]).map((pair,index)=>({pair,index})).sort((left,right)=>Math.min(rank.get(String(left.pair.first_discord_user_id)),rank.get(String(left.pair.second_discord_user_id)))-Math.min(rank.get(String(right.pair.first_discord_user_id)),rank.get(String(right.pair.second_discord_user_id)))||Math.max(rank.get(String(left.pair.first_discord_user_id)),rank.get(String(left.pair.second_discord_user_id)))-Math.max(rank.get(String(right.pair.first_discord_user_id)),rank.get(String(right.pair.second_discord_user_id))));const rows=standings.map((row,index)=>'<tr tabindex="0" data-tournament-deck="'+esc(row.discord_user_id)+'"><td>'+(index+1)+'</td><td>'+esc(row.player_name)+'</td><td>'+esc(row.deck_name)+'</td><td>'+row.total_wins+'</td></tr>').join('');const matchups=pairings.map(({pair,index})=>{const firstWins=pair.battles.filter(b=>b.winner_id==='first').length,secondWins=pair.battles.filter(b=>b.winner_id==='second').length,draws=pair.battles.length-firstWins-secondWins,attributes=logsAvailable?'tabindex="0" data-tournament-match="'+index+'"':'class="tournament-match-disabled"';return '<tr '+attributes+'><td>'+esc(tournamentName(pair.first_discord_user_id))+'</td><td>'+esc(tournamentName(pair.second_discord_user_id))+'</td><td>'+firstWins+'-'+secondWins+'-'+draws+'</td><td>'+pair.battles.length+'</td></tr>'}).join(''),notice=logsAvailable?'<p class="sub">Select a matchup to inspect its battles.</p>':'<p class="sub">Battle logs are unavailable because this tournament does not contain its original replay rules.</p>';panel.innerHTML='<div class="section-heading"><div><h2>Results</h2><p class="sub">Choose a deck to view it.</p></div>'+tournamentBack('Back','summary')+'</div><div class="table-scroll"><table><thead><tr><th>Rank</th><th>Player</th><th>Deck</th><th>Wins</th></tr></thead><tbody>'+rows+'</tbody></table></div><h3 class="tournament-heading">Matchups</h3>'+notice+'<div class="table-scroll"><table><thead><tr><th>First player</th><th>Second player</th><th>W-L-D</th><th>Battles</th></tr></thead><tbody>'+matchups+'</tbody></table></div>'}
 
 /* Simulations use the latest published tournament's submitted deck/program pairs. */
-function tournamentSimulationOpponents(){const decks=tournamentState.data?.decks,available=new Set(state.pool.map(card=>card.card_id));if(!Array.isArray(decks)||!decks.length)return [];return decks.filter(entry=>Object.keys(entry.submission.decklist||{}).every(cardId=>available.has(cardId))).map(entry=>({...entry.submission,owner_name:entry.player_name||entry.submission.owner_name||entry.submission.name}))}
+function legacyTournamentSimulationOpponents(){const decks=tournamentState.data?.decks,available=new Set(state.pool.map(card=>card.card_id));if(!Array.isArray(decks)||!decks.length)return [];return decks.filter(entry=>Object.keys(entry.submission.decklist||{}).every(cardId=>available.has(cardId))).map(entry=>({...entry.submission,owner_name:entry.player_name||entry.submission.owner_name||entry.submission.name}))}
 const activateDeckWithTournamentNavigation=activateDeck;activateDeck=function(){activateDeckWithTournamentNavigation();$('latest-tournament').hidden=true;$('header-tournament').hidden=false};
 $('submit').onclick=()=>{try{if(deckSize()<state.config.minimum_deck_size||deckSize()>state.config.maximum_deck_size){$('status').textContent=deckMessage();return}const opponents=tournamentSimulationOpponents();if(!opponents.length){$('status').textContent='No published tournament is available for simulations.';return}state.running=true;state.session='browser';state.match=null;state.logNumber=null;state.browserSubmission=currentDeckPayload();state.browserOpponents=opponents;$('match-panel').hidden=true;$('results-empty').hidden=false;$('results-table-wrap').hidden=true;$('simulation-progress').hidden=false;$('simulation-progress').value=0;setView('results');updateNavigation();$('status').textContent='Starting simulations against '+opponents.length+' tournament player'+(opponents.length===1?'…':'s…');worker().postMessage({type:'simulate',opponents:state.publicOpponents,submission:state.browserSubmission,opponents:state.browserOpponents,games:+$('games').value,actionLimit:+$('action-limit').value})}catch(error){state.running=false;$('status').textContent=error.message;setView('program')}};
 const openTournamentFromHeader=openTournamentResults;openTournamentResults=async function(){await openTournamentFromHeader();$('header-tournament').hidden=true};
@@ -214,7 +214,7 @@ function simulationRunRecord(snapshot,matches){return {format_id:state.formatId|
 function renderRevertButton(){const button=$('revert-to-previous-run');if(!button)return;const hasPrevious=Boolean(state.currentRun?.previous?.submission);const locked=state.revertLockRevision!==null&&state.revertLockRevision===state.editorRevision;button.hidden=!hasPrevious;button.disabled=state.running||locked}
 function markEditorChanged(){state.editorRevision+=1;renderRevertButton()}
 function restoreSimulationRun(record){const submission=record?.submission||{};$('owner').value=submission.owner_name||$('owner').value;$('deck-name').value=submission.name||$('deck-name').value;state.deck={...(submission.decklist||{})};state.rules=(submission.program||[]).map(rule=>({...rule}));state.defaultAction=submission.default_action||'play_random_card';state.randomEligibleCards=Array.isArray(submission.random_card_ids)?[...submission.random_card_ids]:Object.keys(state.deck);state.randomEligibilityConfigured=record?.random_eligibility_configured===undefined?Array.isArray(submission.random_card_ids):record.random_eligibility_configured===true;state.reactions=(submission.reactions||[]).map(rule=>({...rule}));state.selectedRule=undefined;renderDeck();renderRules();renderReactionProgram();renderDefaultAction();persistSelectedDeck()}
-function startBrowserSimulation(){try{if(deckSize()<state.config.minimum_deck_size||deckSize()>state.config.maximum_deck_size){$('status').textContent=deckMessage();return}const opponents=Array.isArray(state.publicOpponents)&&state.publicOpponents.length?state.publicOpponents:tournamentSimulationOpponents();if(!opponents.length){$('status').textContent='No published tournament is available for simulations.';return}const snapshot=editorSimulationSnapshot(),previous=simulationHistoryForDeck();state.pendingRun={snapshot,previous};state.comparisonBrowserWinRates={...(previous?.win_rates||{})};state.running=true;state.session='browser';state.match=null;state.browserMatch=null;state.logNumber=null;state.browserSubmission=snapshot.submission;state.browserOpponents=opponents;$('match-panel').hidden=true;$('opponent-deck-panel').hidden=true;$('results-empty').hidden=false;$('results-table-wrap').hidden=true;$('simulation-progress').hidden=false;$('simulation-progress').value=0;setView('results');updateNavigation();renderRevertButton();$('status').textContent='Starting simulations against '+opponents.length+' tournament player'+(opponents.length===1?'â€¦':'sâ€¦');worker().postMessage({type:'simulate',opponents:state.publicOpponents,submission:state.browserSubmission,opponents:state.browserOpponents,games:+$('games').value,actionLimit:+$('action-limit').value})}catch(error){state.running=false;renderRevertButton();$('status').textContent=error.message;setView('program')}}
+function startBrowserSimulation(){try{if(deckSize()<state.config.minimum_deck_size||deckSize()>state.config.maximum_deck_size){$('status').textContent=deckMessage();return}const opponents=tournamentSimulationOpponents();if(!opponents.length){$('status').textContent='No published tournament is available for simulations.';return}const snapshot=editorSimulationSnapshot(),previous=simulationHistoryForDeck();state.pendingRun={snapshot,previous};state.comparisonBrowserWinRates={...(previous?.win_rates||{})};state.running=true;state.session='browser';state.match=null;state.browserMatch=null;state.logNumber=null;state.browserSubmission=snapshot.submission;state.browserOpponents=opponents;$('match-panel').hidden=true;$('opponent-deck-panel').hidden=true;$('results-empty').hidden=false;$('results-table-wrap').hidden=true;$('simulation-progress').hidden=false;$('simulation-progress').value=0;setView('results');updateNavigation();renderRevertButton();$('status').textContent='Starting simulations against '+opponents.length+' tournament player'+(opponents.length===1?'â€¦':'sâ€¦');worker().postMessage({type:'simulate',opponents:state.publicOpponents,submission:state.browserSubmission,opponents:state.browserOpponents,games:+$('games').value,actionLimit:+$('action-limit').value})}catch(error){state.running=false;renderRevertButton();$('status').textContent=error.message;setView('program')}}
 function revertToPreviousRun(){const previous=state.currentRun?.previous;if(!previous||state.running)return;restoreSimulationRun(previous);state.revertLockRevision=state.editorRevision;renderRevertButton();startBrowserSimulation()}
 $('revert-to-previous-run').addEventListener('click',revertToPreviousRun);
 worker().addEventListener('message',event=>{const data=event.data;if(data.type!=='complete'||!state.pendingRun)return;const pending=state.pendingRun,record=simulationRunRecord(pending.snapshot,data.matches);state.simulationHistory[state.deckKey]=record;saveSimulationHistory();state.currentRun={record,previous:pending.previous};state.pendingRun=null;renderRevertButton()});
@@ -716,3 +716,73 @@ document.addEventListener('keydown',event=>{const marker=event.target.closest?.(
 const comboResetRuleEditorSelectionsWithAll=conditionTypeForReset.onchange;
 conditionTypeForReset.onchange=()=>{comboResetRuleEditorSelectionsWithAll();state.comboAllSelection=[]};
 renderRuleSelectors();renderComparisonRuleSentence();
+
+/* Tournament submissions are immutable historical inputs. Translate their
+ * old condition vocabulary and any renamed card IDs into the current client
+ * once at simulation time, while leaving the published snapshot untouched. */
+const tournamentLegacyConditionMap={
+  own_victory_points_at_most:{quantity_target:'your',quantity:'flux',comparison_operator:'<='},
+  opponent_victory_points_at_most:{quantity_target:'opponent',quantity:'flux',comparison_operator:'<='},
+  opponent_victory_points_at_least:{quantity_target:'opponent',quantity:'flux',comparison_operator:'>='},
+  opponent_sync_at_most:{quantity_target:'opponent',quantity:'sync',comparison_operator:'<='},
+};
+const tournamentLegacyQuantityMap={
+  cards_in_your_deck:{quantity_target:'your',quantity:'cards_in_deck'},
+  cards_in_your_hand:{quantity_target:'your',quantity:'cards_in_hand'},
+  cards_in_opponent_deck:{quantity_target:'opponent',quantity:'cards_in_deck'},
+  cards_in_opponent_hand:{quantity_target:'opponent',quantity:'cards_in_hand'},
+  cards_on_your_board:{quantity_target:'your',quantity:'cards_on_board'},
+  cards_on_opponent_board:{quantity_target:'opponent',quantity:'cards_on_board'},
+  your_flux:{quantity_target:'your',quantity:'flux'},
+  opponent_flux:{quantity_target:'opponent',quantity:'flux'},
+  your_ki:{quantity_target:'your',quantity:'ki'},
+  opponent_ki:{quantity_target:'opponent',quantity:'ki'},
+  your_bandwidth:{quantity_target:'your',quantity:'bandwidth'},
+  opponent_bandwidth:{quantity_target:'opponent',quantity:'bandwidth'},
+  your_sync:{quantity_target:'your',quantity:'sync'},
+  opponent_sync:{quantity_target:'opponent',quantity:'sync'},
+};
+function tournamentCardTranslator(){
+  const available=new Set((state.pool||[]).map(card=>card.card_id)),byName=new Map((state.pool||[]).map(card=>[String(card.display_name||'').trim().toLowerCase(),card.card_id])),aliases={};
+  for(const definition of (tournamentState.data?.manifest?.cards||[])){
+    if(!definition?.card_id)continue;
+    const id=String(definition.card_id),nameKey=String(definition.display_name||'').trim().toLowerCase();
+    aliases[id]=available.has(id)?id:(byName.get(nameKey)||id);
+  }
+  return {available,translate:id=>typeof id==='string'?(aliases[id]||id):id};
+}
+function migrateTournamentRule(rule,translate,available){
+  if(!rule||typeof rule!=='object')return null;
+  const migrated={...rule};
+  for(const key of ['condition_card_id','action_card_id'])if(migrated[key]!==undefined)migrated[key]=translate(migrated[key]);
+  for(const key of ['action_card_ids','action_card_all_ids'])if(Array.isArray(migrated[key]))migrated[key]=migrated[key].map(translate);
+  const oldCondition=tournamentLegacyConditionMap[migrated.condition_type];
+  if(oldCondition){
+    Object.assign(migrated,oldCondition,{quantity_threshold:Number.isSafeInteger(migrated.victory_points_threshold)?migrated.victory_points_threshold:Number.isSafeInteger(migrated.energy_threshold)?migrated.energy_threshold:0});
+    delete migrated.victory_points_threshold;delete migrated.energy_threshold;
+  }
+  const oldQuantity=tournamentLegacyQuantityMap[migrated.quantity];
+  if(migrated.condition_type==='quantity_compare'&&oldQuantity&&!migrated.quantity_target)Object.assign(migrated,oldQuantity);
+  const references=[migrated.condition_card_id,migrated.action_card_id,...(migrated.action_card_ids||[]),...(migrated.action_card_all_ids||[])].filter(Boolean);
+  if(references.some(id=>!available.has(id)))return null;
+  return migrated;
+}
+function migrateTournamentSubmission(entry){
+  const source=entry?.submission;
+  if(!source||typeof source!=='object'||!source.decklist||typeof source.decklist!=='object')return null;
+  const {available,translate}=tournamentCardTranslator(),decklist={};
+  for(const [id,rawCount] of Object.entries(source.decklist)){
+    const currentId=translate(id),count=Number(rawCount);
+    if(!available.has(currentId)||!Number.isSafeInteger(count)||count<=0)return null;
+    decklist[currentId]=(decklist[currentId]||0)+count;
+  }
+  const submission={...source,owner_name:entry.player_name||source.owner_name||source.name||'Tournament player',decklist,program:(Array.isArray(source.program)?source.program:[]).map(rule=>migrateTournamentRule(rule,translate,available)).filter(Boolean)};
+  if(Array.isArray(source.random_card_ids))submission.random_card_ids=[...new Set(source.random_card_ids.map(translate).filter(id=>available.has(id)))];
+  if(Array.isArray(source.reactions))submission.reactions=source.reactions.map(rule=>{if(!rule||typeof rule!=='object')return null;const reaction={...rule,action_card_id:translate(rule.action_card_id)};return available.has(reaction.action_card_id)?reaction:null}).filter(Boolean);
+  return submission;
+}
+function tournamentSimulationOpponents(){
+  const decks=tournamentState.data?.decks;
+  if(!Array.isArray(decks)||!decks.length)return [];
+  return decks.map(migrateTournamentSubmission).filter(Boolean);
+}
