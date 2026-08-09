@@ -1368,7 +1368,7 @@ export class Battle {
                 default_random: true,
             };
             if (!this.action(player, action)) {
-                if (this.canceledComboRule === rule) {
+                if (rule !== undefined && this.canceledComboRule === rule) {
                     canceledRule = rule;
                     continue;
                 }
