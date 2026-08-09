@@ -1,5 +1,5 @@
 {
-  "format_id": "naruto-ninjutsu-qa-1",
+  "format_id": "next-set-1",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -35,10 +35,9 @@
     {
       "card_id": "sparkleback_totem",
       "display_name": "One For All",
-      "effect": "Whenever you gain Flux, gain 1 additional Flux.",
+      "effect": "The first time each turn you gain Flux, gain 1 additional Flux.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
-      "keyword_line": "Uplink 2",
       "art_url": "https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2023/04/My-Hero-Academia-One-For-All-temporada-6.jpg?quality=80&resize=1280%2C1735&ssl=1",
       "art_alt": "Deku with the One For All bearers",
       "art_position": "center 18%"
@@ -56,7 +55,7 @@
     {
       "card_id": "overcharge_gambit",
       "display_name": "Kaioken",
-      "effect": "If you have 5 or fewer Flux, gain 7 Flux.",
+      "effect": "If you have 5 or fewer Flux, gain 6 Flux.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "https://wallpapersok.com/images/high/goku-red-kaioken-aura-2yivgcz9ybmljr4j.jpg",
@@ -177,9 +176,33 @@
       "art_position": "50% 0%"
     },
     {
+      "card_id": "raditz_invader",
+      "display_name": "Raditz, Invader",
+      "effect": "During your opponent's End Phase, this Agent deals 1 damage.",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Double Sunday",
+      "signature_card_id": "double_sunday",
+      "art_url": "card-art/raditz_invader.png",
+      "art_alt": "Raditz, Invader standing on a beach in Saiyan armor",
+      "art_position": "50% 0%"
+    },
+    {
+      "card_id": "double_sunday",
+      "display_name": "Double Sunday",
+      "effect": "Deal 1 damage. Then deal 1 damage.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Signature",
+      "keyword_line": "Ki 1 \u2022 Signature",
+      "signature": true,
+      "art_url": "card-art/double_sunday.jpg",
+      "art_alt": "Raditz firing the Double Sunday attack",
+      "art_position": "50% 0%"
+    },
+    {
       "card_id": "matt_daemon",
       "display_name": "Matt Daemon",
-      "effect": "Whenever another Matt Daemon enters play under your control, draw a card.",
+      "effect": "The first time each turn another Matt Daemon enters play under your control, draw a card.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
       "keyword_line": "Bandwidth 1",
@@ -256,21 +279,21 @@
     {
       "card_id": "ninjutsu",
       "display_name": "Ninjutsu",
-      "effect": "You may play a Jutsu without meeting its printed Signs if you have no Prepared Jutsu. Pay its costs and put it face up beneath this card as your Prepared Jutsu; it doesn't resolve. Whenever another non-Jutsu card you play resolves, form its base Sign on your Prepared Jutsu. If that card's type matches the next printed Sign, form one matching Sign before the base Sign if possible; otherwise, form it after the base Sign if possible. A card can form only one matching Sign this way. When all Signs are formed, resolve the Jutsu without paying its costs, then discard it. You can have only one Prepared Jutsu. Playing a Jutsu counts as playing a card; forming a Sign doesn't.",
+      "effect": "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon \u2022 Immutable",
+      "keyword_line": "Passive \u2022 Agent\u2014Ram \u2022 Daemon\u2014Ox \u2022 Pulse\u2014Tiger \u2022 Glitch\u2014Snake",
       "immutable": true,
       "activation": "passive",
-      "keyword_line": "Passive \u2022 Agent\u2014Ram \u2022 Daemon\u2014Ox \u2022 Pulse\u2014Tiger \u2022 Glitch\u2014Snake",
       "supports_jutsu_preparation": true,
-      "art_url": "card-art/ninjutsu.jpg",
+      "art_url": "card-art/ninjutsu.svg",
       "art_alt": "Naruto forms hand seals as shadow clones begin to appear",
       "art_position": "50% 40%"
     },
     {
       "card_id": "clone_jutsu",
       "display_name": "Clone Jutsu",
-      "effect": "When this Jutsu is completed, create two Clone Agents with 1 Integrity.",
+      "effect": "Create two Clone Agents, each with Integrity 1.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse \u2022 Jutsu",
       "keyword_line": "Signs \u2014 Ram, Ram",
@@ -288,6 +311,16 @@
       "art_url": "card-art/fire_release_great_fireball.jpg",
       "art_alt": "Sasuke unleashes a Great Fireball Technique",
       "art_position": "50% 42%"
+    },
+    {
+      "card_id": "dragon_install",
+      "display_name": "Dragon Install",
+      "effect": "Lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync.",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "art_url": "card-art/dragon_install.jpg",
+      "art_alt": "Temporary placeholder artwork for Dragon Install, a red cyberpunk transformation",
+      "art_position": "100% 38%"
     }
   ],
   "card_ids": [
@@ -308,6 +341,8 @@
     "charge_ki",
     "scrappy_kamehameha",
     "farmer_with_shotgun",
+    "raditz_invader",
+    "double_sunday",
     "matt_daemon",
     "crush_card_virus",
     "garbage_collection",
@@ -317,13 +352,14 @@
     "virus_beetle",
     "ninjutsu",
     "clone_jutsu",
-    "fire_release_great_fireball"
+    "fire_release_great_fireball",
+    "dragon_install"
   ],
   "config": {
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "7b6f079fefe79e63dd2dc066ad8f6e48ab493a1f6b97175e1c8e507452bd42c6",
+  "fingerprint": "8f6139857ad85630739ed6181b4fad2fb3029d89cff1d79bd0ca397bb4b8f714",
   "keyword_definitions": [
     {
       "title": "Flux",
