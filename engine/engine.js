@@ -208,6 +208,10 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
             typeof rule.cancel_if_card_not_played !== "boolean") {
             throw Error("Invalid combo cancellation setting.");
         }
+        if (rule.only_when_all_cards_in_hand !== undefined &&
+            typeof rule.only_when_all_cards_in_hand !== "boolean") {
+            throw Error("Invalid combo all-cards-in-hand setting.");
+        }
     }
     for (const rule of reactions) {
         if (rule.trigger_type !== "opponent_would_gain_flux" ||
@@ -238,6 +242,7 @@ export class Battle {
     extraTurns = [[], []];
     generatedCardCount = 0;
     canceledComboRule;
+    nonMatchingComboRule;
     winner;
     reason = "";
     active = 0;
@@ -1206,7 +1211,12 @@ export class Battle {
             return this.randomCandidates(player, rule.default_random).some((card) => this.canPlay(player, card));
         }
         if (rule.action_type === "play_combo") {
-            return (rule.action_card_ids ?? []).some((cardId) => player.hand.some((card) => card.definition.card_id === cardId && this.canPlay(player, card)));
+            const comboCardIds = rule.action_card_ids ?? [];
+            if (rule.only_when_all_cards_in_hand === true &&
+                !comboCardIds.every((cardId) => player.hand.some((card) => card.definition.card_id === cardId))) {
+                return false;
+            }
+            return comboCardIds.some((cardId) => player.hand.some((card) => card.definition.card_id === cardId && this.canPlay(player, card)));
         }
         if (rule.action_type === "activate_immutable_card") {
             return player.battlefield.some((card) => card.definition.card_id === rule.action_card_id &&
@@ -1217,6 +1227,7 @@ export class Battle {
     }
     action(player, rule) {
         this.canceledComboRule = undefined;
+        this.nonMatchingComboRule = undefined;
         if (!this.canAct(player, rule)) {
             return false;
         }
@@ -1240,7 +1251,7 @@ export class Battle {
                     if (!card || !this.canPlay(player, card)) {
                         if (rule.cancel_if_card_not_played && playedThisCard === 0) {
                             this.canceledComboRule = rule;
-                            return false;
+                            return playedAny;
                         }
                         break;
                     }
@@ -1255,7 +1266,7 @@ export class Battle {
                     if (!played) {
                         if (rule.cancel_if_card_not_played && playedThisCard === 0) {
                             this.canceledComboRule = rule;
-                            return false;
+                            return playedAny;
                         }
                         break;
                     }
@@ -1263,6 +1274,9 @@ export class Battle {
                         break;
                     }
                 }
+            }
+            if (!playedAny) {
+                this.nonMatchingComboRule = rule;
             }
             return playedAny;
         }
@@ -1362,25 +1376,29 @@ export class Battle {
         }
     }
     runMainPhase(player) {
-        let canceledRule;
+        const canceledRules = new Set();
         while (this.winner === undefined &&
             this.phase === "main" &&
             (player.hand.length ||
                 player.battlefield.some((card) => card.definition.immutable))) {
-            const rule = player.program.find((candidate) => candidate !== canceledRule && this.matching(player, candidate));
+            const rule = player.program.find((candidate) => !canceledRules.has(candidate) && this.matching(player, candidate));
             const action = rule ?? {
                 condition_type: "if_able",
                 action_type: player.default_action,
                 default_random: true,
             };
             if (!this.action(player, action)) {
-                if (rule !== undefined && this.canceledComboRule === rule) {
-                    canceledRule = rule;
+                if (rule !== undefined &&
+                    (this.canceledComboRule === rule || this.nonMatchingComboRule === rule)) {
+                    // A Combo that played nothing is a non-match. Remember it until a
+                    // successful action changes the state so failed Combo rules cannot
+                    // alternate forever when several later choices remain playable.
+                    canceledRules.add(rule);
                     continue;
                 }
                 break;
             }
-            canceledRule = undefined;
+            canceledRules.clear();
         }
     }
     finish(winner, reason) {
