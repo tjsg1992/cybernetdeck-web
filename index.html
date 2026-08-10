@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=9207d409d309"></head>
+<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=a89c7647371a"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><div class="header-actions"><a class="whats-new-button" href="whats-new.html">What's New?</a><button id="header-tournament" class="header-tournament" type="button" data-tournament-open hidden>Tournament</button><a class="rules-button" href="rules.html">Rules Reference</a></div></header>
 <section id="latest-tournament" class="tournament-panel" aria-live="polite"><p class="eyebrow">TOURNAMENT</p><button class="primary tournament-open" type="button" data-tournament-open>View tournament results</button></section>
@@ -47,7 +47,7 @@
 <label id="comparison-wrap" hidden>Comparison<select id="comparison-operator"><option value="<">Fewer than</option><option value="<=">At most</option><option value="=">Exactly</option><option value=">=">At least</option><option value=">">More than</option></select></label>
 <label id="quantity-threshold-wrap" hidden>Threshold<input id="quantity-threshold" type="number" min="0" step="1" value="0"></label><span class="builder-prefix then-prefix">Then</span><label>Action<select id="action-type"><option value="play_named_card">Play named card</option>
 <option value="activate_immutable_card">Activate</option><option value="play_random_card">Play random card</option><option value="end_turn">End turn</option></select></label>
-<label id="action-card-wrap">Cards to play<select id="action-card"><option value="__select__">-- Select --</option><option value="__combo__">*Combo*</option></select></label><div id="combo-card-picker" class="combo-card-picker" hidden><p class="field-hint">Click cards in order to build the combo. Click a selected card again to remove it.</p><p id="combo-summary" class="combo-summary">No cards selected.</p><label class="combo-cancel-option"><input id="combo-cancel-if-not-played" type="checkbox"> Cancel if card isn't played</label><div id="combo-card-list" class="combo-card-list"></div></div></div>
+<label id="action-card-wrap">Cards to play<select id="action-card"><option value="__select__">-- Select --</option><option value="__combo__">*Combo*</option></select></label><div id="combo-card-picker" class="combo-card-picker" hidden><p class="field-hint">Click cards in order to build the combo. Click a selected card again to remove it.</p><p id="combo-summary" class="combo-summary">No cards selected.</p><label class="combo-cancel-option"><input id="combo-cancel-if-not-played" type="checkbox"> Cancel if card isn't played</label><label class="combo-cancel-option"><input id="combo-only-when-all-cards-in-hand" type="checkbox"> Only when all cards in hand</label><div id="combo-card-list" class="combo-card-list"></div></div></div>
 <div id="action-rule-actions" class="row rule-actions"><button id="add-rule" type="button">Add rule</button><button id="cancel-rule-edit" type="button" hidden>Cancel edit</button></div>
 <div hidden aria-hidden="true"><button id="rule-up"></button><button id="rule-down"></button><button id="remove-rule"></button></div>
 <p class="field-hint">Click or tap a rule to edit it. Hold and drag to reorder; use × to remove it.</p><ol id="rules" class="rules-list"></ol>
@@ -88,4 +88,4 @@
 <div id="log-context" class="log-context"></div><pre id="log">Select a battle from the simulation results.</pre></article>
 </div></section>
 
-</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=7e1bdacea397"></script></body></html>
+</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=e7f62e60d168"></script></body></html>
