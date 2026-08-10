@@ -1,5 +1,5 @@
 {
-  "format_id": "next-set-2",
+  "format_id": "next-set-2-patch-1",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -358,7 +358,7 @@
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "84c817380822e130c006c4e8132bcda90ed6da4c61e1837c2551acb0bb4a67c3",
+  "fingerprint": "d3cff57f163d708d9cd8abe225183f312657d8322e97ab70d4fc2d4094bbbfb5",
   "keyword_definitions": [
     {
       "title": "Flux",

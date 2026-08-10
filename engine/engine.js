@@ -351,6 +351,16 @@ export class Battle {
     opponent(player) {
         return this.players[0] === player ? this.players[1] : this.players[0];
     }
+    boardCards(player) {
+        return [...player.battlefield, ...player.preparedJutsu];
+    }
+    namedCardConditionArea(player, condition) {
+        if (condition === "in_your_hand") {
+            return player.hand;
+        }
+        const target = condition === "on_your_side_of_board" ? player : this.opponent(player);
+        return this.boardCards(target);
+    }
     note(text) {
         if (this.captureLog) {
             this.log.push(text);
@@ -987,7 +997,7 @@ export class Battle {
             deckCount: player.deck.length,
             hand: player.hand.map((card) => card.definition.card_id),
             deck: player.deck.map((card) => card.definition.card_id),
-            board: player.battlefield.map((card) => card.definition.card_id),
+            board: this.boardCards(player).map((card) => card.definition.card_id),
             discard: player.discard.map((card) => card.definition.card_id),
             void: player.void.map((card) => card.definition.card_id),
             flux: player.points,
@@ -1277,9 +1287,9 @@ export class Battle {
                     : quantityKey === "cards_in_opponent_hand"
                         ? opponent.hand.length
                         : quantityKey === "cards_on_your_board"
-                            ? player.battlefield.length
+                            ? this.boardCards(player).length
                             : quantityKey === "cards_on_opponent_board"
-                                ? opponent.battlefield.length
+                                ? this.boardCards(opponent).length
                                 : quantityKey === "your_flux"
                                     ? player.points
                                     : quantityKey === "opponent_flux"
@@ -1302,11 +1312,7 @@ export class Battle {
             : rule.condition_type === "card_in_hand"
                 ? player.hand.some((card) => card.definition.card_id === rule.condition_card_id)
                 : rule.condition_type === "card_is"
-                    ? (rule.card_condition === "in_your_hand"
-                        ? player.hand
-                        : rule.card_condition === "on_your_side_of_board"
-                            ? player.battlefield
-                            : opponent.battlefield).some((card) => card.definition.card_id === rule.condition_card_id)
+                    ? this.namedCardConditionArea(player, rule.card_condition ?? "in_your_hand").some((card) => card.definition.card_id === rule.condition_card_id)
                     : rule.condition_type === "quantity_compare"
                         ? compare(quantity, rule.comparison_operator ?? "<", rule.quantity_threshold ?? 0)
                         : rule.condition_type === "own_victory_points_at_most"

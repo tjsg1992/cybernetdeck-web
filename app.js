@@ -431,7 +431,7 @@ const replayTournamentBattleWithZoneMetadata=replayTournamentBattleWithDrawMetad
 replayTournamentBattleWithDrawMetadata=async function(Battle,replayBattle,CARD_POOL,first,second,record){
  if(typeof Battle?.prototype?.snapshot==='function'&&!Battle.prototype.__cybernetZoneMetadata){
   const originalSnapshot=Battle.prototype.snapshot;
-  Battle.prototype.snapshot=function(player,phase){originalSnapshot.call(this,player,phase);const snapshot=this.turnSnapshots?.at(-1);if(snapshot?.player===player.id){const cards=area=>(area||[]).map(card=>card.definition.card_id);if(!Array.isArray(snapshot.deck))snapshot.deck=cards(player.deck);snapshot.ordered=true;snapshot.board=cards(player.battlefield);snapshot.discard=cards(player.discard);snapshot.void=cards(player.void)}};
+  Battle.prototype.snapshot=function(player,phase){originalSnapshot.call(this,player,phase);const snapshot=this.turnSnapshots?.at(-1);if(snapshot?.player===player.id){const cards=area=>(area||[]).map(card=>card.definition.card_id);if(!Array.isArray(snapshot.deck))snapshot.deck=cards(player.deck);snapshot.ordered=true;snapshot.board=[...cards(player.battlefield),...cards(player.preparedJutsu)];snapshot.discard=cards(player.discard);snapshot.void=cards(player.void)}};
   Object.defineProperty(Battle.prototype,'__cybernetZoneMetadata',{value:true});
  }
  return replayTournamentBattleWithZoneMetadata(Battle,replayBattle,CARD_POOL,first,second,record)
