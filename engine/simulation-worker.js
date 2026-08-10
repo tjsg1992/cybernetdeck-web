@@ -1,6 +1,6 @@
-import { DEFAULT_CONFIG, replayBattle, simulateMatch, } from "./engine.js";
-import { optimizeDeckBudgeted, } from "./deck-optimizer.js";
-import { CARD_POOL } from "./cards.js";
+import { DEFAULT_CONFIG, replayBattle, simulateMatch, } from "./engine.js?v=b601feba6418";
+import { optimizeDeckBudgeted, } from "./deck-optimizer.js?v=b601feba6418";
+import { CARD_POOL } from "./cards.js?v=b601feba6418";
 let cancelRequested = false;
 function randomSeed() {
     const values = new Uint32Array(1);
