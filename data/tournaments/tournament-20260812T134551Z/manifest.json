@@ -26,8 +26,7 @@
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
       "display_name": "One For All",
-      "effect": "Whenever you gain Flux, gain 1 additional Flux.",
-      "keyword_line": "Uplink 2"
+      "effect": "The first time each turn you gain Flux, gain 1 additional Flux."
     },
     {
       "card_id": "throttle",
@@ -41,7 +40,7 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "display_name": "Kaioken",
-      "effect": "If you have 5 or fewer Flux, gain 7 Flux."
+      "effect": "If you have 5 or fewer Flux, gain 6 Flux."
     },
     {
       "card_id": "download_scan",
@@ -124,11 +123,29 @@
       "keyword_line": "Integrity 1"
     },
     {
+      "card_id": "raditz_invader",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Raditz, Invader",
+      "effect": "",
+      "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Double Sunday",
+      "signature_card_id": "double_sunday"
+    },
+    {
+      "card_id": "double_sunday",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Signature",
+      "display_name": "Double Sunday",
+      "effect": "Deal 1 damage. Then deal 1 damage.",
+      "keyword_line": "Ki 1 \u2022 Signature",
+      "signature": true
+    },
+    {
       "card_id": "matt_daemon",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
       "display_name": "Matt Daemon",
-      "effect": "Whenever another Matt Daemon enters play under your control, draw a card.",
+      "effect": "The first time each turn another Matt Daemon enters play under your control, draw a card.",
       "keyword_line": "Bandwidth 1"
     },
     {
@@ -171,18 +188,58 @@
       "card_kind_label": "Pulse",
       "display_name": "Admin Override",
       "effect": "Gain 1 Sync. Then, your opponent plays the top card of their deck."
+    },
+    {
+      "card_id": "virus_beetle",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Virus Beetle",
+      "effect": "Your opponent discards a card at random."
+    },
+    {
+      "activation": "passive",
+      "card_id": "ninjutsu",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon \u2022 Immutable",
+      "display_name": "Ninjutsu",
+      "effect": "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.",
+      "immutable": true,
+      "supports_jutsu_preparation": true
+    },
+    {
+      "card_id": "clone_jutsu",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu",
+      "display_name": "Clone Jutsu",
+      "effect": "Create two Clone Agents, each with Integrity 1.",
+      "keyword_line": "Signs \u2014 Ram, Ram"
+    },
+    {
+      "card_id": "fire_release_great_fireball",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu",
+      "display_name": "Fire Release: Great Fireball Technique",
+      "effect": "Deal 6 damage to your opponent.",
+      "keyword_line": "Bandwidth 2 \u2022 Signs \u2014 Tiger, Ox, Tiger"
+    },
+    {
+      "card_id": "dragon_install",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Dragon Install",
+      "effect": "Lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync."
     }
   ],
-  "created_at": "2026-08-08T06:01:13.429161+00:00",
-  "format_fingerprint": "803b8d1d5a5327ba1485ed52a5412c72a3b44c8b05cd5b4ea27cabb7f4c4a540",
-  "format_id": "seal-card-display-1",
+  "created_at": "2026-08-12T13:45:51.831658+00:00",
+  "format_fingerprint": "0b5a90df68248b7825e6e4578ffe78233b39210fad96c7019b3a172449fdaab6",
+  "format_id": "next-set-2-patch-1",
   "format_version": "cd-ts-1",
-  "id": "tournament-20260808T060113Z",
+  "id": "tournament-20260812T134551Z",
   "published": true,
   "replay_assets": {
     "cards": "cards.js",
     "engine": "engine.js"
   },
-  "rules_fingerprint": "bcffc5443cb236d58cd74ccd1af2cd17272fe58c2504f4c007c4c557ebc17078",
-  "tournament_seed": 3580494372
+  "rules_fingerprint": "c1bac7ef46847b25781f707aa5ffbec8408f4b10950ae03cb94c8dc0c52c95b6",
+  "tournament_seed": 2981497397
 }

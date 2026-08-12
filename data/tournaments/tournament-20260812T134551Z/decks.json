@@ -1,0 +1,362 @@
+[
+  {
+    "discord_user_id": "134208646606356480",
+    "player_name": "Eli",
+    "submission": {
+      "name": "Sync dis sheet",
+      "owner_name": "Rawhide Kobayashi",
+      "decklist": {
+        "threefold_siphon": 5,
+        "cursed_seal": 1,
+        "five_l": 5,
+        "dixie_flatline": 4,
+        "air_five_l": 8,
+        "admin_override": 5,
+        "dragon_install": 2
+      },
+      "program": [
+        {
+          "condition_type": "opponent_victory_points_at_least",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 10,
+          "action_card_id": "seal"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "in_your_hand",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dragon_install"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "admin_override"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "air_five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "five_l"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [
+        "cursed_seal",
+        "five_l"
+      ],
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "163009224090058753",
+    "player_name": "Noonan",
+    "submission": {
+      "name": "Peggy Hill",
+      "owner_name": "NNBJ",
+      "decklist": {
+        "dixie_flatline": 26,
+        "one_more_roll": 1,
+        "garbage_collection": 3
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_deck",
+          "comparison_operator": "<",
+          "quantity_threshold": 10,
+          "action_card_id": "victory_point_1"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dixie_flatline"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "173981293229506561",
+    "player_name": "Alex",
+    "submission": {
+      "name": "Matt Daemon in Oppenheimer",
+      "owner_name": "\"Hope you're toe\" Johnson",
+      "decklist": {
+        "dixie_flatline": 4,
+        "one_more_roll": 1,
+        "air_five_l": 7,
+        "matt_daemon": 10,
+        "ninjutsu": 1,
+        "fire_release_great_fireball": 4,
+        "dragon_install": 3
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "your_sync",
+          "comparison_operator": ">",
+          "quantity_threshold": 8,
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "fire_release_great_fireball"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "matt_daemon"
+        }
+      ],
+      "default_action": "play_random_card",
+      "random_card_ids": [],
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "173986825889644544",
+    "player_name": "Colin",
+    "submission": {
+      "name": "Matt Daemon Wins on My 4th Turn",
+      "owner_name": "Phen",
+      "decklist": {
+        "victory_point_2": 8,
+        "overcharge_gambit": 1,
+        "five_l": 3,
+        "matt_daemon": 13
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_deck",
+          "comparison_operator": ">",
+          "quantity_threshold": 0,
+          "action_card_id": "victory_point_1"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_combo",
+          "quantity": "cards_in_your_deck",
+          "comparison_operator": "=",
+          "quantity_threshold": 0,
+          "action_card_ids": [
+            "overcharge_gambit",
+            "victory_point_2"
+          ],
+          "action_card_all_ids": [
+            "victory_point_2"
+          ],
+          "cancel_if_card_not_played": true,
+          "only_when_all_cards_in_hand": true
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "opponent_sync",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "download_scan"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [
+        "victory_point_2",
+        "overcharge_gambit"
+      ],
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "184439858255626240",
+    "player_name": "Taylor",
+    "submission": {
+      "name": "Katon: Goukakyu no Jutsu!",
+      "owner_name": "Loth",
+      "decklist": {
+        "one_more_roll": 1,
+        "air_five_l": 13,
+        "matt_daemon": 12,
+        "ninjutsu": 1,
+        "fire_release_great_fireball": 3
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "fire_release_great_fireball"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_your_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "matt_daemon"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "your_sync",
+          "comparison_operator": ">",
+          "quantity_threshold": 1,
+          "action_card_id": "overcharge_gambit"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "221460738928017408",
+    "player_name": "Stella",
+    "submission": {
+      "name": "Prealpha",
+      "owner_name": "Stella",
+      "decklist": {
+        "victory_point_2": 15,
+        "sparkleback_totem": 4,
+        "overcharge_gambit": 2,
+        "cursed_seal": 7,
+        "five_l": 2
+      },
+      "program": [
+        {
+          "condition_type": "opponent_sync_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 1,
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "sparkleback_totem",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "own_victory_points_at_most",
+          "action_type": "play_named_card",
+          "victory_points_threshold": 5,
+          "action_card_id": "overcharge_gambit"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "victory_point_2",
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "card_in_hand",
+          "action_type": "play_named_card",
+          "condition_card_id": "cursed_seal",
+          "action_card_id": "cursed_seal"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "240154642816696322",
+    "player_name": "Sam",
+    "submission": {
+      "name": "Can you help me install a dragon on my computer",
+      "owner_name": "Blkwaterpark",
+      "decklist": {
+        "five_l": 9,
+        "dixie_flatline": 1,
+        "air_five_l": 9,
+        "dragon_install": 1
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dragon_install"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "air_five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "five_l"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "format_id": "next-set-2-patch-1"
+    }
+  }
+]

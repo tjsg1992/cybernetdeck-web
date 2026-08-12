@@ -1,4 +1,11 @@
 /** DOM-free CyberNet Deck rules core. Keep cards declarative and mutations here. */
+function namedAgentName(definition) {
+    if (definition.card_kind !== "agent") {
+        return undefined;
+    }
+    const match = definition.display_name.match(/^([^,]+),\s*(.+)$/);
+    return match?.[1].trim() || undefined;
+}
 export const FORMAT_VERSION = "cd-ts-1";
 export const DEFAULT_CONFIG = {
     minimum_deck_size: 20,
@@ -33,6 +40,75 @@ export class Rng {
     }
 }
 const OPERATORS = ["<", "<=", "=", ">=", ">"];
+const QUANTITY_KINDS = [
+    "cards_in_deck",
+    "cards_in_hand",
+    "cards_on_board",
+    "flux",
+    "ki",
+    "bandwidth",
+    "sync",
+];
+const LEGACY_QUANTITIES = [
+    "cards_in_your_deck",
+    "cards_in_your_hand",
+    "cards_in_opponent_deck",
+    "cards_in_opponent_hand",
+    "cards_on_your_board",
+    "cards_on_opponent_board",
+    "your_flux",
+    "opponent_flux",
+    "your_ki",
+    "opponent_ki",
+    "your_bandwidth",
+    "opponent_bandwidth",
+    "your_sync",
+    "opponent_sync",
+];
+const STRUCTURED_QUANTITY_MAP = {
+    your: {
+        cards_in_deck: "cards_in_your_deck",
+        cards_in_hand: "cards_in_your_hand",
+        cards_on_board: "cards_on_your_board",
+        flux: "your_flux",
+        ki: "your_ki",
+        bandwidth: "your_bandwidth",
+        sync: "your_sync",
+    },
+    opponent: {
+        cards_in_deck: "cards_in_opponent_deck",
+        cards_in_hand: "cards_in_opponent_hand",
+        cards_on_board: "cards_on_opponent_board",
+        flux: "opponent_flux",
+        ki: "opponent_ki",
+        bandwidth: "opponent_bandwidth",
+        sync: "opponent_sync",
+    },
+};
+function normalizedQuantity(rule) {
+    if (rule.quantity_target !== undefined) {
+        if (!["your", "opponent"].includes(rule.quantity_target) ||
+            !QUANTITY_KINDS.includes(rule.quantity)) {
+            return undefined;
+        }
+        return STRUCTURED_QUANTITY_MAP[rule.quantity_target][rule.quantity];
+    }
+    return LEGACY_QUANTITIES.includes(rule.quantity)
+        ? rule.quantity
+        : undefined;
+}
+const CARD_KIND_SIGN = {
+    agent: "ram",
+    daemon: "ox",
+    pulse: "tiger",
+    glitch: "snake",
+};
+const SIGN_LABELS = {
+    ram: "Ram",
+    ox: "Ox",
+    tiger: "Tiger",
+    snake: "Snake",
+};
 const compare = (value, operator, threshold) => operator === "<"
     ? value < threshold
     : operator === "<="
@@ -51,6 +127,12 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
     for (const [id, count] of Object.entries(submission.decklist)) {
         if (!cards[id] || !Number.isSafeInteger(count) || count <= 0) {
             throw Error(`Invalid card quantity for ${id}.`);
+        }
+        if (cards[id].signature) {
+            throw Error(`Signature card ${id} cannot be included in a deck.`);
+        }
+        if (cards[id].jutsu && (!cards[id].signs?.length || cards[id].signs.some((sign) => !SIGN_LABELS[sign]))) {
+            throw Error(`Jutsu ${id} must have at least one valid Sign.`);
         }
         if (cards[id].immutable && count > 1) {
             throw Error(`Immutable card quantity for ${id} cannot exceed one.`);
@@ -84,7 +166,7 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
         ].includes(rule.condition_type)) {
             throw Error("Invalid rule condition.");
         }
-        if (!["play_named_card", "activate_immutable_card", "play_random_card", "end_turn"].includes(rule.action_type)) {
+        if (!["play_named_card", "play_combo", "activate_immutable_card", "play_random_card", "end_turn"].includes(rule.action_type)) {
             throw Error("Invalid rule action.");
         }
         if ((rule.condition_type === "card_in_hand" ||
@@ -94,21 +176,12 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
         }
         if (rule.condition_type === "card_is" &&
             rule.card_condition !== "in_your_hand" &&
-            rule.card_condition !== "on_your_side_of_board") {
+            rule.card_condition !== "on_your_side_of_board" &&
+            rule.card_condition !== "on_opponent_side_of_board") {
             throw Error("Invalid card condition.");
         }
         if (rule.condition_type === "quantity_compare" &&
-            (![
-                "cards_in_your_deck",
-                "cards_in_your_hand",
-                "cards_in_opponent_hand",
-                "your_flux",
-                "opponent_flux",
-                "your_ki",
-                "your_bandwidth",
-                "your_sync",
-                "opponent_sync",
-            ].includes(rule.quantity ?? "") ||
+            (!normalizedQuantity(rule) ||
                 !OPERATORS.includes(rule.comparison_operator ?? "<") ||
                 !Number.isSafeInteger(rule.quantity_threshold) ||
                 rule.quantity_threshold < 0)) {
@@ -119,6 +192,25 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
                 (rule.action_type === "play_named_card" && cards[rule.action_card_id].immutable) ||
                 (rule.action_type === "activate_immutable_card" && !cards[rule.action_card_id].immutable))) {
             throw Error("Invalid named play card.");
+        }
+        if (rule.action_type === "play_combo" &&
+            (!Array.isArray(rule.action_card_ids) ||
+                rule.action_card_ids.length === 0 ||
+                rule.action_card_ids.some((cardId) => !cardId || !cards[cardId] || cards[cardId].immutable))) {
+            throw Error("Invalid combo play cards.");
+        }
+        if (rule.action_card_all_ids !== undefined &&
+            (!Array.isArray(rule.action_card_all_ids) ||
+                rule.action_card_all_ids.some((cardId) => !rule.action_card_ids?.includes(cardId)))) {
+            throw Error("Invalid Combo all-card choices.");
+        }
+        if (rule.cancel_if_card_not_played !== undefined &&
+            typeof rule.cancel_if_card_not_played !== "boolean") {
+            throw Error("Invalid combo cancellation setting.");
+        }
+        if (rule.only_when_all_cards_in_hand !== undefined &&
+            typeof rule.only_when_all_cards_in_hand !== "boolean") {
+            throw Error("Invalid combo all-cards-in-hand setting.");
         }
     }
     for (const rule of reactions) {
@@ -149,6 +241,8 @@ export class Battle {
     turnCount = 0;
     extraTurns = [[], []];
     generatedCardCount = 0;
+    canceledComboRule;
+    nonMatchingComboRule;
     winner;
     reason = "";
     active = 0;
@@ -201,11 +295,13 @@ export class Battle {
                     ...(definition.card_kind === "agent"
                         ? { remaining_integrity: definition.integrity }
                         : {}),
+                    ...(definition.jutsu ? { formed_signs: 0 } : {}),
                 };
             });
             player.deck = makeCards(playerSetup.deck, "deck");
             player.hand = makeCards(playerSetup.hand, "hand");
             player.battlefield = makeCards(playerSetup.battlefield, "battlefield");
+            player.preparedJutsu = makeCards(playerSetup.prepared_jutsu ? [playerSetup.prepared_jutsu] : [], "prepared");
             player.discard = makeCards(playerSetup.discard, "discard");
             player.void = makeCards(playerSetup.void, "void");
             player.points = playerSetup.flux ?? 0;
@@ -231,6 +327,7 @@ export class Battle {
                     ...(definition.card_kind === "agent"
                         ? { remaining_integrity: definition.integrity }
                         : {}),
+                    ...(definition.jutsu ? { formed_signs: 0 } : {}),
                 });
             }
         }
@@ -243,6 +340,7 @@ export class Battle {
             discard: [],
             void: [],
             battlefield: [],
+            preparedJutsu: [],
             points: 0,
             sync: 20,
             ki: 0,
@@ -258,10 +356,26 @@ export class Battle {
     opponent(player) {
         return this.players[0] === player ? this.players[1] : this.players[0];
     }
+    boardCards(player) {
+        return [...player.battlefield, ...player.preparedJutsu];
+    }
+    namedCardConditionArea(player, condition) {
+        if (condition === "in_your_hand") {
+            return player.hand;
+        }
+        const target = condition === "on_your_side_of_board" ? player : this.opponent(player);
+        return this.boardCards(target);
+    }
     note(text) {
         if (this.captureLog) {
             this.log.push(text);
         }
+    }
+    mechanicTriggeredThisTurn(card, mechanicType) {
+        return card.triggeredMechanics?.[mechanicType] === this.turnCount;
+    }
+    markMechanicTriggeredThisTurn(card, mechanicType) {
+        (card.triggeredMechanics ??= {})[mechanicType] = this.turnCount;
     }
     snapshotDeck(player, eventIndex = this.log.length - 1) {
         if (!this.captureLog || !this.log.length || eventIndex < 0) {
@@ -394,16 +508,26 @@ export class Battle {
         }
         return true;
     }
-    canPlay(player, card) {
+    canPlayRestrictions(player, card) {
+        const name = namedAgentName(card.definition);
+        const duplicateNamedAgent = name !== undefined &&
+            player.battlefield.some((installed) => namedAgentName(installed.definition) === name);
         return (card.definition.card_kind !== "glitch" &&
             (this.phase === "main" || this.phase === "pregame") &&
-            this.canPayCosts(player, card.definition) &&
+            !duplicateNamedAgent &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
             player.ki >= (card.definition.minimum_ki ?? 0) &&
-            (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0));
+            (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0) &&
+            (!card.definition.jutsu ||
+                (player.preparedJutsu.length === 0 &&
+                    player.battlefield.some((installed) => installed.definition.supports_jutsu_preparation))));
+    }
+    canPlay(player, card) {
+        return this.canPlayRestrictions(player, card) && this.canPayCosts(player, card.definition);
     }
     canActivate(player, card) {
         return (card.definition.immutable === true &&
+            card.definition.activation !== "passive" &&
             this.phase === "main" &&
             this.canPayCosts(player, card.definition) &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
@@ -423,28 +547,57 @@ export class Battle {
             }
         }
     }
-    setSync(player, value, source) {
+    resolveSyncLossBonuses(sourcePlayer, target, causingCard) {
+        const bonuses = [];
+        for (const daemon of sourcePlayer.battlefield) {
+            for (const mechanic of daemon.definition.mechanics ?? []) {
+                if (mechanic.type === "opponent_sync_loss_bonus") {
+                    bonuses.push({ daemon, amount: Math.max(0, mechanic.amount) });
+                }
+            }
+        }
+        for (const { daemon, amount } of bonuses) {
+            if (!amount || target.sync <= 0 || this.winner !== undefined) {
+                continue;
+            }
+            if (!this.act(sourcePlayer, `resolve ${daemon.definition.card_id}`)) {
+                return;
+            }
+            this.note(`${sourcePlayer.id} | sync_loss_bonus:${causingCard.definition.card_id}:${daemon.definition.card_id}:${amount}`);
+            // This is the additional loss for the same event, so it must not
+            // recursively trigger the Dragon Install bonuses again.
+            this.changeSync(target, -amount, undefined, `bonus:${daemon.definition.card_id}`);
+        }
+    }
+    setSync(player, value, source, causingCard, changeSource) {
         if (!this.act(player, `set sync to ${value}`)) {
             return;
         }
         const before = player.sync;
         player.sync = Math.max(0, value);
         const applied = player.sync - before;
+        const actualLoss = Math.max(0, before - player.sync);
         if (source) {
             this.note(`${player.id} | sync_set:${value}:${player.sync}:${source}`);
         }
         else if (applied) {
-            this.note(`${player.id} | sync:${applied}:${player.sync}`);
+            const event = changeSource
+                ? `${player.id} | sync:${applied}:${player.sync}:${changeSource}`
+                : `${player.id} | sync:${applied}:${player.sync}`;
+            this.note(event);
         }
         if (before > 0 && player.sync === 0) {
             this.resolveSyncZeroTriggers(player);
+        }
+        if (actualLoss && causingCard && this.winner === undefined) {
+            this.resolveSyncLossBonuses(this.opponent(player), player, causingCard);
         }
         if (player.sync === 0) {
             this.finish(this.opponent(player).id, "sync");
         }
     }
-    changeSync(player, amount) {
-        this.setSync(player, player.sync + amount);
+    changeSync(player, amount, causingCard, changeSource) {
+        this.setSync(player, player.sync + amount, undefined, causingCard, changeSource);
     }
     gainKi(player, amount) {
         const gain = Math.max(0, amount);
@@ -493,6 +646,10 @@ export class Battle {
         if (!definition) {
             return;
         }
+        if (definition.signature) {
+            this.note(`${player.id} | add_to_deck_rejected_signature:${cardId}:${source}`);
+            return;
+        }
         let added = 0;
         for (let index = 0; index < Math.max(0, amount); index++) {
             if (!this.act(player, `create ${cardId} in deck`)) {
@@ -515,6 +672,42 @@ export class Battle {
                 this.shuffleDeck(player);
             }
             this.snapshotDeck(player, addedEventIndex);
+        }
+    }
+    addSignatureToHand(player, cardId, source) {
+        const definition = this.cards[cardId];
+        if (!definition?.signature || !this.act(player, `create ${cardId} in hand`)) {
+            return;
+        }
+        this.generatedCardCount++;
+        player.hand.push({
+            uid: `generated:${player.id}:${this.generatedCardCount}:${cardId}`,
+            definition,
+        });
+        this.note(`${player.id} | signature_added_to_hand:${cardId}:${source.definition.card_id}`);
+    }
+    resolveEndPhaseTriggers(player) {
+        const opponent = this.opponent(player);
+        const signatureProviders = [...player.battlefield].filter((card) => card.definition.card_kind === "agent" &&
+            card.definition.signature_card_id);
+        const breachProviders = [...opponent.battlefield].filter((card) => card.definition.card_kind === "agent" &&
+            (card.definition.breach ?? 0) > 0);
+        for (const provider of signatureProviders) {
+            if (this.winner !== undefined) {
+                return;
+            }
+            this.addSignatureToHand(player, provider.definition.signature_card_id, provider);
+        }
+        for (const provider of breachProviders) {
+            if (this.winner !== undefined) {
+                return;
+            }
+            const amount = Math.max(0, provider.definition.breach ?? 0);
+            if (!amount || !this.act(opponent, `resolve breach ${provider.definition.card_id}`)) {
+                continue;
+            }
+            this.note(`${opponent.id} | breach:${provider.definition.card_id}:${amount}`);
+            this.dealDamage(opponent, player, amount, provider);
         }
     }
     recoverRandomDiscard(player, amount, source) {
@@ -547,7 +740,7 @@ export class Battle {
             this.note(`${player.id} | destroy_random_daemon:${target.definition.card_id}:${source}`);
         }
     }
-    dealDamage(source, target, amount) {
+    dealDamage(source, target, amount, causingCard) {
         const damage = Math.max(0, amount);
         if (!damage) {
             return;
@@ -559,7 +752,7 @@ export class Battle {
             : agents.filter((card) => (card.remaining_integrity ?? 0) === Math.min(...agents.map((agent) => agent.remaining_integrity ?? 0)));
         if (!candidates.length) {
             this.note(`${target.id} | damage:${damage}:sync`);
-            this.changeSync(target, -damage);
+            this.changeSync(target, -damage, causingCard);
             return;
         }
         const agent = candidates[this.rng.int(candidates.length)];
@@ -570,6 +763,91 @@ export class Battle {
         this.note(`${target.id} | agent_damaged:${agent.definition.card_id}:${damage}:${agent.remaining_integrity}`);
         if (agent.remaining_integrity === 0 && this.move(target, agent, target.battlefield, target.discard, "battlefield", "discard")) {
             this.note(`${target.id} | agent_deleted:${agent.definition.card_id}`);
+        }
+    }
+    formPreparedSign(player, prepared, reason) {
+        const signs = prepared.definition.signs ?? [];
+        const formed = prepared.formed_signs ?? 0;
+        const sign = signs[formed];
+        if (!sign) {
+            return;
+        }
+        prepared.formed_signs = formed + 1;
+        this.note(`${player.id} | handseal:${prepared.definition.card_id}:${SIGN_LABELS[sign]}:${prepared.formed_signs}:${signs.length}:${reason}`);
+    }
+    formPreparedSigns(player, source) {
+        if (!player.preparedJutsu.length) {
+            return;
+        }
+        const prepared = player.preparedJutsu[0];
+        const signs = prepared.definition.signs ?? [];
+        const formed = prepared.formed_signs ?? 0;
+        if (!signs[formed]) {
+            return;
+        }
+        const matchingSign = CARD_KIND_SIGN[source.definition.card_kind];
+        if (signs[formed] === matchingSign) {
+            this.formPreparedSign(player, prepared, "matching");
+            if (player.preparedJutsu[0] === prepared && this.winner === undefined) {
+                this.formPreparedSign(player, prepared, "base");
+            }
+        }
+        else {
+            this.formPreparedSign(player, prepared, "base");
+            if (player.preparedJutsu[0] === prepared &&
+                this.winner === undefined &&
+                signs[prepared.formed_signs ?? 0] === matchingSign) {
+                this.formPreparedSign(player, prepared, "matching");
+            }
+        }
+        if (player.preparedJutsu[0] === prepared &&
+            this.winner === undefined &&
+            (prepared.formed_signs ?? 0) >= signs.length) {
+            this.resolvePreparedJutsu(player, prepared);
+        }
+    }
+    resolvePreparedJutsu(player, prepared) {
+        if (player.preparedJutsu[0] !== prepared || this.winner !== undefined) {
+            return;
+        }
+        this.note(`${player.id} | prepared_jutsu_complete:${prepared.definition.card_id}`);
+        if (!this.move(player, prepared, player.preparedJutsu, player.battlefield, "prepared", "battlefield") ||
+            !this.act(player, `resolve prepared ${prepared.definition.card_id}`)) {
+            return;
+        }
+        this.resolve(player, prepared);
+        if (this.winner === undefined) {
+            if (this.move(player, prepared, player.battlefield, player.discard, "battlefield", "discard")) {
+                this.note(`${player.id} | prepared_jutsu_deleted:${prepared.definition.card_id}`);
+            }
+        }
+    }
+    createAgents(player, amount, displayName, integrity, source) {
+        const count = Math.max(0, amount);
+        const startingIntegrity = Math.max(0, integrity);
+        let created = 0;
+        const tokenId = `token:${displayName.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`;
+        const definition = {
+            card_id: tokenId,
+            display_name: displayName,
+            effect: "",
+            card_kind: "agent",
+            integrity: startingIntegrity,
+        };
+        for (let index = 0; index < count && this.winner === undefined; index++) {
+            if (!this.act(player, `create ${displayName} Agent`)) {
+                break;
+            }
+            this.generatedCardCount++;
+            player.battlefield.push({
+                uid: `generated:${player.id}:${this.generatedCardCount}:${tokenId}`,
+                definition,
+                remaining_integrity: startingIntegrity,
+            });
+            created++;
+        }
+        if (created) {
+            this.note(`${player.id} | agents_created:${created}:${displayName}:${startingIntegrity}:${source}`);
         }
     }
     preventersFor(event) {
@@ -599,6 +877,7 @@ export class Battle {
                 event.prevented = true;
                 this.note(`${event.recipient.id} | flux_gain_prevented:${event.amount}:${card.definition.card_id}:discarded`);
             }
+            this.formPreparedSigns(player, card);
             return true;
         }
         return false;
@@ -650,12 +929,18 @@ export class Battle {
         this.changePoints(player, gain, source);
         const applied = player.points - before;
         if (applied && bonus) {
+            const bonuses = [];
             for (const daemon of player.battlefield) {
                 for (const mechanic of daemon.definition.mechanics ?? []) {
-                    if (mechanic.type === "victory_point_gain_bonus") {
-                        this.gain(player, mechanic.amount, false, `bonus:${daemon.definition.card_id}`);
+                    if (mechanic.type === "first_flux_gain_bonus" &&
+                        !this.mechanicTriggeredThisTurn(daemon, mechanic.type)) {
+                        bonuses.push({ daemon, amount: mechanic.amount });
                     }
                 }
+            }
+            for (const { daemon, amount } of bonuses) {
+                this.markMechanicTriggeredThisTurn(daemon, "first_flux_gain_bonus");
+                this.gain(player, amount, false, `bonus:${daemon.definition.card_id}`);
             }
         }
     }
@@ -695,6 +980,12 @@ export class Battle {
             }
             return;
         }
+        this.discardRandomCard(player);
+    }
+    discardRandomCard(player) {
+        if (!player.hand.length) {
+            return;
+        }
         const discarded = player.hand[this.rng.int(player.hand.length)];
         if (discarded && this.move(player, discarded, player.hand, player.discard, "hand", "discard")) {
             this.note(`${player.id} | discard_random:${discarded.definition.card_id}`);
@@ -711,16 +1002,27 @@ export class Battle {
             deckCount: player.deck.length,
             hand: player.hand.map((card) => card.definition.card_id),
             deck: player.deck.map((card) => card.definition.card_id),
+            board: this.boardCards(player).map((card) => card.definition.card_id),
+            discard: player.discard.map((card) => card.definition.card_id),
+            void: player.void.map((card) => card.definition.card_id),
+            flux: player.points,
+            sync: player.sync,
+            uplink: player.uplink,
+            bandwidth: player.bandwidth,
+            bandwidthMax: player.maxBandwidth,
+            ki: player.ki,
         });
     }
     resolvePlayTriggers(player, playedCard) {
         const triggers = player.battlefield.filter((card) => card !== playedCard &&
             card.definition.card_id === playedCard.definition.card_id &&
+            !this.mechanicTriggeredThisTurn(card, "draw_when_another_copy_played") &&
             card.definition.mechanics?.some((mechanic) => mechanic.type === "draw_when_another_copy_played"));
         for (const trigger of triggers) {
             if (this.winner !== undefined || !this.act(player, `resolve triggered ${trigger.definition.card_id}`)) {
                 return;
             }
+            this.markMechanicTriggeredThisTurn(trigger, "draw_when_another_copy_played");
             const drawnCards = [];
             if (this.draw(player, false, drawnCards)) {
                 this.note(`${player.id} | triggered_draw:${trigger.definition.card_id}`);
@@ -731,14 +1033,19 @@ export class Battle {
     playTopCardOfDeck(player, source) {
         const opponent = this.opponent(player);
         const card = opponent.deck[0];
-        if (!card || !this.canPlay(opponent, card)) {
+        if (!card || !this.canPlayRestrictions(opponent, card)) {
             return;
         }
         if (!this.move(opponent, card, opponent.deck, opponent.hand, "deck", "hand")) {
             return;
         }
-        this.note(`${opponent.id} | play_top_card:${card.definition.card_id}:${source}`);
         this.snapshotDeck(opponent);
+        if (!this.canPayCosts(opponent, card.definition)) {
+            this.note(`${opponent.id} | forced_play_discarded:${card.definition.card_id}:${source}`);
+            this.move(opponent, card, opponent.hand, opponent.discard, "hand", "discard");
+            return;
+        }
+        this.note(`${opponent.id} | play_top_card:${card.definition.card_id}:${source}`);
         this.play(opponent, card, true);
     }
     resolve(player, card) {
@@ -753,7 +1060,7 @@ export class Battle {
                 this.gainKi(player, mechanic.amount);
             }
             else if (mechanic.type === "deal_damage") {
-                this.dealDamage(player, this.opponent(player), mechanic.amount);
+                this.dealDamage(player, this.opponent(player), mechanic.amount, card);
             }
             else if (mechanic.type === "remove_opponent_victory_points") {
                 this.changePoints(this.opponent(player), -mechanic.amount);
@@ -767,7 +1074,7 @@ export class Battle {
                 }
             }
             else if (mechanic.type === "remove_opponent_sync") {
-                this.changeSync(this.opponent(player), -mechanic.amount);
+                this.changeSync(this.opponent(player), -mechanic.amount, card);
             }
             else if (mechanic.type === "remove_own_sync") {
                 this.changeSync(player, -mechanic.amount);
@@ -777,6 +1084,9 @@ export class Battle {
             }
             else if (mechanic.type === "draw_two_if_hand_empty_otherwise_discard_random") {
                 this.resolveConditionalHandEffect(player);
+            }
+            else if (mechanic.type === "discard_random_card") {
+                this.discardRandomCard(mechanic.target === "opponent" ? this.opponent(player) : player);
             }
             else if (mechanic.type === "set_own_sync_and_draw_half_deck") {
                 this.setSync(player, mechanic.sync);
@@ -825,6 +1135,12 @@ export class Battle {
             else if (mechanic.type === "play_top_card_of_opponent_deck") {
                 this.playTopCardOfDeck(player, card.definition.card_id);
             }
+            else if (mechanic.type === "opponent_sync_loss_bonus") {
+                // Persistent trigger; it is applied by resolveSyncLossBonuses.
+            }
+            else if (mechanic.type === "create_agents") {
+                this.createAgents(player, mechanic.amount, mechanic.display_name, mechanic.integrity, card.definition.card_id);
+            }
         }
     }
     play(player, card, fromDeck = false) {
@@ -834,8 +1150,20 @@ export class Battle {
         if (!fromDeck) {
             this.note(`${player.id} | play:${card.definition.card_id}`);
         }
-        if (!this.payCosts(player, card.definition) ||
-            !this.move(player, card, player.hand, player.battlefield, "hand", "battlefield")) {
+        if (!this.payCosts(player, card.definition)) {
+            return false;
+        }
+        if (card.definition.jutsu) {
+            if (!this.move(player, card, player.hand, player.preparedJutsu, "hand", "prepared")) {
+                return false;
+            }
+            if (this.phase === "main") {
+                player.cardsPlayedThisTurn++;
+            }
+            this.note(`${player.id} | jutsu_prepared:${card.definition.card_id}`);
+            return this.winner === undefined;
+        }
+        if (!this.move(player, card, player.hand, player.battlefield, "hand", "battlefield")) {
             return false;
         }
         if (this.phase === "main") {
@@ -844,6 +1172,7 @@ export class Battle {
         this.act(player, `resolve ${card.definition.card_id}`);
         this.resolve(player, card);
         this.resolvePlayTriggers(player, card);
+        this.formPreparedSigns(player, card);
         if (card.definition.card_kind === "pulse") {
             this.move(player, card, player.battlefield, player.discard, "battlefield", "discard");
         }
@@ -881,6 +1210,14 @@ export class Battle {
         if (rule.action_type === "play_random_card") {
             return this.randomCandidates(player, rule.default_random).some((card) => this.canPlay(player, card));
         }
+        if (rule.action_type === "play_combo") {
+            const comboCardIds = rule.action_card_ids ?? [];
+            if (rule.only_when_all_cards_in_hand === true &&
+                !comboCardIds.every((cardId) => player.hand.some((card) => card.definition.card_id === cardId))) {
+                return false;
+            }
+            return comboCardIds.some((cardId) => player.hand.some((card) => card.definition.card_id === cardId && this.canPlay(player, card)));
+        }
         if (rule.action_type === "activate_immutable_card") {
             return player.battlefield.some((card) => card.definition.card_id === rule.action_card_id &&
                 this.canActivate(player, card));
@@ -889,6 +1226,8 @@ export class Battle {
             this.canPlay(player, card));
     }
     action(player, rule) {
+        this.canceledComboRule = undefined;
+        this.nonMatchingComboRule = undefined;
         if (!this.canAct(player, rule)) {
             return false;
         }
@@ -902,6 +1241,45 @@ export class Battle {
             const card = choices[this.rng.int(choices.length)];
             return !!card && this.play(player, card);
         }
+        if (rule.action_type === "play_combo") {
+            const allCards = new Set(rule.action_card_all_ids ?? []);
+            let playedAny = false;
+            for (const cardId of rule.action_card_ids ?? []) {
+                let playedThisCard = 0;
+                while (true) {
+                    const card = player.hand.find((instance) => instance.definition.card_id === cardId);
+                    if (!card || !this.canPlay(player, card)) {
+                        if (rule.cancel_if_card_not_played && playedThisCard === 0) {
+                            this.canceledComboRule = rule;
+                            return playedAny;
+                        }
+                        break;
+                    }
+                    const played = this.play(player, card);
+                    if (played) {
+                        playedAny = true;
+                        playedThisCard++;
+                    }
+                    if (this.winner !== undefined || this.phase !== "main") {
+                        return played;
+                    }
+                    if (!played) {
+                        if (rule.cancel_if_card_not_played && playedThisCard === 0) {
+                            this.canceledComboRule = rule;
+                            return playedAny;
+                        }
+                        break;
+                    }
+                    if (!allCards.has(cardId)) {
+                        break;
+                    }
+                }
+            }
+            if (!playedAny) {
+                this.nonMatchingComboRule = rule;
+            }
+            return playedAny;
+        }
         if (rule.action_type === "activate_immutable_card") {
             const card = player.battlefield.find((instance) => instance.definition.card_id === rule.action_card_id &&
                 this.canActivate(player, instance));
@@ -913,33 +1291,42 @@ export class Battle {
     }
     matching(player, rule) {
         const opponent = this.opponent(player);
-        const quantity = rule.quantity === "cards_in_your_deck"
+        const quantityKey = normalizedQuantity(rule);
+        const quantity = quantityKey === "cards_in_your_deck"
             ? player.deck.length
-            : rule.quantity === "cards_in_your_hand"
-                ? player.hand.length
-                : rule.quantity === "cards_in_opponent_hand"
-                    ? opponent.hand.length
-                    : rule.quantity === "your_flux"
-                        ? player.points
-                        : rule.quantity === "opponent_flux"
-                            ? opponent.points
-                            : rule.quantity === "your_ki"
-                                ? player.ki
-                                : rule.quantity === "your_bandwidth"
-                                    ? player.bandwidth
-                                    : rule.quantity === "your_sync"
-                                        ? player.sync
-                                        : rule.quantity === "opponent_sync"
-                                            ? opponent.sync
-                                            : 0;
+            : quantityKey === "cards_in_opponent_deck"
+                ? opponent.deck.length
+                : quantityKey === "cards_in_your_hand"
+                    ? player.hand.length
+                    : quantityKey === "cards_in_opponent_hand"
+                        ? opponent.hand.length
+                        : quantityKey === "cards_on_your_board"
+                            ? this.boardCards(player).length
+                            : quantityKey === "cards_on_opponent_board"
+                                ? this.boardCards(opponent).length
+                                : quantityKey === "your_flux"
+                                    ? player.points
+                                    : quantityKey === "opponent_flux"
+                                        ? opponent.points
+                                        : quantityKey === "your_ki"
+                                            ? player.ki
+                                            : quantityKey === "opponent_ki"
+                                                ? opponent.ki
+                                                : quantityKey === "your_bandwidth"
+                                                    ? player.bandwidth
+                                                    : quantityKey === "opponent_bandwidth"
+                                                        ? opponent.bandwidth
+                                                        : quantityKey === "your_sync"
+                                                            ? player.sync
+                                                            : quantityKey === "opponent_sync"
+                                                                ? opponent.sync
+                                                                : 0;
         const condition = rule.condition_type === "if_able"
             ? true
             : rule.condition_type === "card_in_hand"
                 ? player.hand.some((card) => card.definition.card_id === rule.condition_card_id)
                 : rule.condition_type === "card_is"
-                    ? (rule.card_condition === "in_your_hand"
-                        ? player.hand
-                        : player.battlefield).some((card) => card.definition.card_id === rule.condition_card_id)
+                    ? this.namedCardConditionArea(player, rule.card_condition ?? "in_your_hand").some((card) => card.definition.card_id === rule.condition_card_id)
                     : rule.condition_type === "quantity_compare"
                         ? compare(quantity, rule.comparison_operator ?? "<", rule.quantity_threshold ?? 0)
                         : rule.condition_type === "own_victory_points_at_most"
@@ -956,6 +1343,7 @@ export class Battle {
         const player = this.players[this.active];
         const index = this.players.indexOf(player);
         const extraTurnSource = this.extraTurns[index].shift();
+        this.snapshot(player, "before_start");
         for (const phase of ["start", "draw", "main", "end"]) {
             if (this.winner !== undefined) {
                 return;
@@ -977,7 +1365,10 @@ export class Battle {
                 this.runMainPhase(player);
             }
             else {
-                this.note(`${player.id} | turn_end`);
+                this.resolveEndPhaseTriggers(player);
+                if (this.winner === undefined) {
+                    this.note(`${player.id} | turn_end`);
+                }
             }
         }
         if (this.extraTurns[index].length === 0) {
@@ -985,18 +1376,29 @@ export class Battle {
         }
     }
     runMainPhase(player) {
+        const canceledRules = new Set();
         while (this.winner === undefined &&
             this.phase === "main" &&
             (player.hand.length ||
                 player.battlefield.some((card) => card.definition.immutable))) {
-            const rule = player.program.find((candidate) => this.matching(player, candidate));
-            if (!this.action(player, rule ?? {
+            const rule = player.program.find((candidate) => !canceledRules.has(candidate) && this.matching(player, candidate));
+            const action = rule ?? {
                 condition_type: "if_able",
                 action_type: player.default_action,
                 default_random: true,
-            })) {
+            };
+            if (!this.action(player, action)) {
+                if (rule !== undefined &&
+                    (this.canceledComboRule === rule || this.nonMatchingComboRule === rule)) {
+                    // A Combo that played nothing is a non-match. Remember it until a
+                    // successful action changes the state so failed Combo rules cannot
+                    // alternate forever when several later choices remain playable.
+                    canceledRules.add(rule);
+                    continue;
+                }
                 break;
             }
+            canceledRules.clear();
         }
     }
     finish(winner, reason) {
@@ -1024,9 +1426,15 @@ export class Battle {
     run() {
         if (this.scenarioSetup) {
             const player = this.players[this.active];
-            this.phase = "main";
+            this.phase = this.scenarioSetup.phase ?? "main";
             this.note(`${player.id} | turn_start`);
-            this.runMainPhase(player);
+            this.act(player, `${player.id} enters ${this.phase} phase`);
+            if (this.phase === "main") {
+                this.runMainPhase(player);
+            }
+            else {
+                this.resolveEndPhaseTriggers(player);
+            }
             if (this.winner === undefined) {
                 this.finish(null, "scenario_complete");
             }
@@ -1059,8 +1467,8 @@ export class Battle {
         return record;
     }
 }
-export function replayBattle(first, second, cards, seed, config = DEFAULT_CONFIG, startingPlayer = 0, scenarioSetup) {
-    const battle = new Battle(first, second, cards, config, new Rng(seed), true, scenarioSetup);
+export function replayBattle(first, second, cards, seed, config = DEFAULT_CONFIG, startingPlayer = 0, scenarioSetup, captureLog = true) {
+    const battle = new Battle(first, second, cards, config, new Rng(seed), captureLog, scenarioSetup);
     battle.active = scenarioSetup?.active_player ?? startingPlayer;
     battle.starting_player = startingPlayer;
     return battle.run();
