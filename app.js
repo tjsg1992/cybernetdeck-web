@@ -515,6 +515,16 @@ document.addEventListener('click',event=>{const copy=event.target.closest?.('[da
 async function waitForTournamentClientReady(){for(let attempt=0;attempt<120&&!state.pool?.length;attempt++)await new Promise(resolve=>setTimeout(resolve,25));if(typeof narrationReady!=='undefined'&&narrationReady)await narrationReady}
 async function restoreTournamentDeepLink(){const target=tournamentUrlTarget();if(!target.snapshot&&!target.matchup&&!target.battle&&!target.turn)return;try{await waitForTournamentClientReady();if(!tournamentState.data){const response=await fetch((()=>{const script=document.querySelector('script[src*=\"app.js\"]'),base=script?script.src:location.href;return new URL('data/tournaments/latest.json'+new URL(base).search,base)})());if(!response.ok)throw Error('Could not load the latest tournament.');tournamentState.data=await response.json();renderLatestTournament(tournamentState.data)}if(target.snapshot&&target.snapshot!==String(tournamentState.data?.snapshot_id||'')){throw Error('This tournament link is no longer the published tournament.')}await openTournamentResults();if(!target.matchup)return;const summary=tournamentState.data?.matchups?.find(pair=>String(pair.matchup_id)===target.matchup);if(!summary)throw Error('That tournament matchup could not be found.');await renderTournamentMatchById(target.matchup,target.page||1);if(target.battle)await renderTournamentBattle(target.battle,target.turn||undefined)}catch(error){const panel=tournamentPanel();panel.hidden=false;panel.innerHTML='<div class="section-heading"><div><h2>Shared tournament view unavailable</h2><p class="sub">'+esc(error.message||String(error))+'</p></div>'+tournamentBack('Tournament results','results')+'</div>'}}
 
+/* Preserve the current battle page for ordinary pagination clicks, while
+ * allowing explicit deep links to select a requested page. */
+const renderTournamentMatchByIdWithCurrentPage=renderTournamentMatchById;
+renderTournamentMatchById=async function(matchupId,requestedPage){
+ const index=tournamentState.data?.matchups?.findIndex(pair=>String(pair.matchup_id)===String(matchupId))??-1;
+ if(index>=0)tournamentState.matchIndex=index;
+ const page=requestedPage??(tournamentState.battlePage+1);
+ return renderTournamentMatchByIdWithCurrentPage(matchupId,page);
+};
+
 /* Tournament deck snapshots can seed a new local deck without mutating the
  * published results. The copy gets its own saved-deck identity immediately so
  * the player can adjust it and run simulations from Deckbuilding. */
