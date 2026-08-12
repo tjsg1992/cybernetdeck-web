@@ -608,7 +608,7 @@
   ],
   "export_deck_code_prefix": "CD6",
   "submission_schema_version": 1,
-  "browser_submission_migration_enabled": false,
+  "browser_submission_migration_enabled": true,
   "deck_code_catalogs": [
     {
       "fingerprint": "83f6775e03a05079342d52fd71c4053f68c0a69d1db77ee076688351a33a5857",
