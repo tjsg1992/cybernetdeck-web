@@ -1,5 +1,5 @@
 {
-  "snapshot_id": "tournament-20260812T135723Z",
+  "snapshot_id": "tournament-20260812T141644Z",
   "manifest": {
     "cards": [
       {
@@ -232,61 +232,61 @@
         "effect": "Lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync."
       }
     ],
-    "created_at": "2026-08-12T13:57:23.097056+00:00",
+    "created_at": "2026-08-12T14:16:44.640541+00:00",
     "format_fingerprint": "0b5a90df68248b7825e6e4578ffe78233b39210fad96c7019b3a172449fdaab6",
     "format_id": "next-set-2-patch-1",
     "format_version": "cd-ts-1",
-    "id": "tournament-20260812T135723Z",
+    "id": "tournament-20260812T141644Z",
     "published": true,
     "replay_assets": {
       "cards": "cards.js",
       "engine": "engine.js"
     },
     "rules_fingerprint": "c1bac7ef46847b25781f707aa5ffbec8408f4b10950ae03cb94c8dc0c52c95b6",
-    "tournament_seed": 1811931747
+    "tournament_seed": 3042218310
   },
   "standings": [
     {
       "deck_name": "Katon: Goukakyu no Jutsu!",
       "discord_user_id": "184439858255626240",
       "player_name": "Taylor",
-      "total_wins": 5180
+      "total_wins": 4787
     },
     {
       "deck_name": "Can you help me install a dragon on my computer",
       "discord_user_id": "240154642816696322",
       "player_name": "Sam",
-      "total_wins": 3883
+      "total_wins": 4015
     },
     {
       "deck_name": "Prealpha",
       "discord_user_id": "221460738928017408",
       "player_name": "Stella",
-      "total_wins": 3744
+      "total_wins": 3749
     },
     {
       "deck_name": "Sync dis sheet",
       "discord_user_id": "134208646606356480",
       "player_name": "Eli",
-      "total_wins": 2467
+      "total_wins": 2456
     },
     {
       "deck_name": "Peggy Hill",
       "discord_user_id": "163009224090058753",
       "player_name": "Noonan",
-      "total_wins": 2118
+      "total_wins": 2099
     },
     {
       "deck_name": "Matt Daemon Wins on My 4th Turn",
       "discord_user_id": "173986825889644544",
       "player_name": "Colin",
-      "total_wins": 2091
+      "total_wins": 2072
     },
     {
       "deck_name": "Matt Daemon in Oppenheimer",
       "discord_user_id": "173981293229506561",
       "player_name": "Alex",
-      "total_wins": 1517
+      "total_wins": 1822
     }
   ],
   "decks": [
@@ -523,29 +523,15 @@
         "owner_name": "Taylor",
         "decklist": {
           "one_more_roll": 1,
-          "air_five_l": 13,
-          "matt_daemon": 12,
+          "air_five_l": 14,
           "ninjutsu": 1,
-          "fire_release_great_fireball": 3
+          "fire_release_great_fireball": 4
         },
         "program": [
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_in_your_hand",
-            "comparison_operator": "=",
-            "quantity_threshold": 0,
-            "action_card_id": "victory_point_2"
-          },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
             "action_card_id": "fire_release_great_fireball"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "matt_daemon"
           },
           {
             "condition_type": "if_able",
@@ -654,11 +640,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "163009224090058753",
       "summary": {
-        "average_turns": 25.3,
+        "average_turns": 25.1,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 611,
-        "second_wins": 389
+        "first_wins": 602,
+        "second_wins": 398
       }
     },
     {
@@ -666,11 +652,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "173981293229506561",
       "summary": {
-        "average_turns": 11.6,
+        "average_turns": 11.5,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 454,
-        "second_wins": 546
+        "first_wins": 444,
+        "second_wins": 556
       }
     },
     {
@@ -678,11 +664,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 18.5,
+        "average_turns": 18.3,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 689,
-        "second_wins": 311
+        "first_wins": 713,
+        "second_wins": 287
       }
     },
     {
@@ -690,11 +676,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 6.4,
+        "average_turns": 7.0,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 74,
-        "second_wins": 926
+        "first_wins": 60,
+        "second_wins": 940
       }
     },
     {
@@ -705,8 +691,8 @@
         "average_turns": 3.1,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 492,
-        "second_wins": 508
+        "first_wins": 472,
+        "second_wins": 528
       }
     },
     {
@@ -714,11 +700,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "240154642816696322",
       "summary": {
-        "average_turns": 6.8,
+        "average_turns": 6.9,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 147,
-        "second_wins": 853
+        "first_wins": 165,
+        "second_wins": 835
       }
     },
     {
@@ -726,7 +712,7 @@
       "first_discord_user_id": "163009224090058753",
       "second_discord_user_id": "173981293229506561",
       "summary": {
-        "average_turns": 18.2,
+        "average_turns": 18.1,
         "battle_count": 1000,
         "draws": 0,
         "first_wins": 1000,
@@ -750,7 +736,7 @@
       "first_discord_user_id": "163009224090058753",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 10.5,
+        "average_turns": 19.0,
         "battle_count": 1000,
         "draws": 0,
         "first_wins": 103,
@@ -762,7 +748,7 @@
       "first_discord_user_id": "163009224090058753",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "average_turns": 4.4,
+        "average_turns": 4.3,
         "battle_count": 1000,
         "draws": 0,
         "first_wins": 0,
@@ -774,11 +760,11 @@
       "first_discord_user_id": "163009224090058753",
       "second_discord_user_id": "240154642816696322",
       "summary": {
-        "average_turns": 27.9,
+        "average_turns": 27.5,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 626,
-        "second_wins": 374
+        "first_wins": 598,
+        "second_wins": 402
       }
     },
     {
@@ -786,11 +772,11 @@
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 17.4,
+        "average_turns": 17.6,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 221,
-        "second_wins": 779
+        "first_wins": 215,
+        "second_wins": 785
       }
     },
     {
@@ -798,11 +784,11 @@
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 9.5,
+        "average_turns": 12.5,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 209,
-        "second_wins": 791
+        "first_wins": 493,
+        "second_wins": 507
       }
     },
     {
@@ -810,7 +796,7 @@
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "average_turns": 4.4,
+        "average_turns": 4.3,
         "battle_count": 1000,
         "draws": 0,
         "first_wins": 38,
@@ -822,11 +808,11 @@
       "first_discord_user_id": "173981293229506561",
       "second_discord_user_id": "240154642816696322",
       "summary": {
-        "average_turns": 13.7,
+        "average_turns": 14.2,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 503,
-        "second_wins": 497
+        "first_wins": 520,
+        "second_wins": 480
       }
     },
     {
@@ -834,11 +820,11 @@
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 8.8,
+        "average_turns": 11.2,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 1,
-        "second_wins": 999
+        "first_wins": 0,
+        "second_wins": 1000
       }
     },
     {
@@ -846,7 +832,7 @@
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "221460738928017408",
       "summary": {
-        "average_turns": 4.4,
+        "average_turns": 4.3,
         "battle_count": 1000,
         "draws": 0,
         "first_wins": 0,
@@ -873,8 +859,8 @@
         "average_turns": 3.4,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 825,
-        "second_wins": 175
+        "first_wins": 829,
+        "second_wins": 171
       }
     },
     {
@@ -885,8 +871,8 @@
         "average_turns": 6.9,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 742,
-        "second_wins": 258
+        "first_wins": 614,
+        "second_wins": 386
       }
     },
     {
@@ -897,8 +883,8 @@
         "average_turns": 3.3,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 99,
-        "second_wins": 901
+        "first_wins": 88,
+        "second_wins": 912
       }
     }
   ]
