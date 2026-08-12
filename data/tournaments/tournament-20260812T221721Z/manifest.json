@@ -230,16 +230,16 @@
       "effect": "Lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync."
     }
   ],
-  "created_at": "2026-08-12T14:23:29.699957+00:00",
+  "created_at": "2026-08-12T22:17:21.558249+00:00",
   "format_fingerprint": "0b5a90df68248b7825e6e4578ffe78233b39210fad96c7019b3a172449fdaab6",
   "format_id": "next-set-2-patch-1",
   "format_version": "cd-ts-1",
-  "id": "tournament-20260812T142329Z",
+  "id": "tournament-20260812T221721Z",
   "published": true,
   "replay_assets": {
     "cards": "cards.js",
     "engine": "engine.js"
   },
   "rules_fingerprint": "c1bac7ef46847b25781f707aa5ffbec8408f4b10950ae03cb94c8dc0c52c95b6",
-  "tournament_seed": 974638343
+  "tournament_seed": 1261004719
 }
