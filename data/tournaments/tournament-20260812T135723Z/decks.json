@@ -229,7 +229,7 @@
     "player_name": "Taylor",
     "submission": {
       "name": "Katon: Goukakyu no Jutsu!",
-      "owner_name": "Loth",
+      "owner_name": "Taylor",
       "decklist": {
         "one_more_roll": 1,
         "air_five_l": 13,
@@ -239,17 +239,17 @@
       },
       "program": [
         {
-          "condition_type": "if_able",
-          "action_type": "play_named_card",
-          "action_card_id": "fire_release_great_fireball"
-        },
-        {
           "condition_type": "quantity_compare",
           "action_type": "play_named_card",
           "quantity": "cards_in_your_hand",
           "comparison_operator": "=",
-          "quantity_threshold": 1,
+          "quantity_threshold": 0,
           "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "fire_release_great_fireball"
         },
         {
           "condition_type": "if_able",
@@ -257,12 +257,9 @@
           "action_card_id": "matt_daemon"
         },
         {
-          "condition_type": "quantity_compare",
+          "condition_type": "if_able",
           "action_type": "play_named_card",
-          "quantity": "your_sync",
-          "comparison_operator": ">",
-          "quantity_threshold": 1,
-          "action_card_id": "overcharge_gambit"
+          "action_card_id": "air_five_l"
         }
       ],
       "default_action": "end_turn",
