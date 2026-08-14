@@ -1305,5 +1305,6 @@
         "admin_override"
       ]
     }
-  ]
+  ],
+  "deck_api_url": "https://cybernetdeck-deck-api.tjsg1992.workers.dev"
 }

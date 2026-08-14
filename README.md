@@ -1,10 +1,12 @@
 # NetDeck public site
 
 This directory is the standalone public GitHub Pages package. It contains no
-Sage of Light runtime or private database. Export it with:
+Sage of Light runtime or private database. From the Sage of Light repository
+root, the normal publisher reads the one-time Worker URL from
+`cloudflare-deck-api/local-config.json`:
 
 ```powershell
-.\sagebot\.venv\Scripts\python.exe -c "from pathlib import Path; from sagebot.cardgame.static_site import build_static_site; build_static_site(Path('netdeck-web'))"
+cmd.exe /c publish-netdeck-pages.bat
 ```
 
 Copy this directory into the dedicated public `netdeck-web` repository. The

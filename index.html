@@ -1,13 +1,16 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=a89c7647371a"></head>
+<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=69b1fe9c1e6e"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><div class="header-actions"><a class="whats-new-button" href="whats-new.html">What's New?</a><button id="header-tournament" class="header-tournament" type="button" data-tournament-open hidden>Tournament</button><a class="rules-button" href="rules.html">Rules Reference</a></div></header>
 <section id="latest-tournament" class="tournament-panel" aria-live="polite"><p class="eyebrow">TOURNAMENT</p><button class="primary tournament-open" type="button" data-tournament-open>View tournament results</button></section>
 <section id="tournament-view" class="tournament-view" hidden aria-live="polite"></section>
 <section id="deck-setup" class="setup-panel"><p class="eyebrow">Deck selection</p><h2>Choose a deck</h2>
 <p class="sub">Select one of your saved decks, or create a new one.</p>
-<label>Your name<input id="owner" value=""></label>
+<label>Your name<input id="owner" value="" autocomplete="nickname"></label>
+<div class="cloud-login-actions"><button id="player-login" class="primary" type="button">Enter / Log in</button><button id="switch-player" type="button" hidden>Switch Player</button></div>
+<p id="cloud-status" class="cloud-status" aria-live="polite">Enter your name to load cloud decks.</p><button id="cloud-retry" type="button" hidden>Retry save</button>
+<div id="cloud-conflict" class="cloud-conflict" hidden><strong>Another browser changed this deck.</strong><p id="cloud-conflict-message"></p><div class="cloud-conflict-actions"><button id="cloud-reload-copy" type="button">Reload cloud copy</button><button id="cloud-save-new" class="primary" type="button">Save mine as a new deck</button><button id="cloud-return-list" type="button">Return to deck list</button></div></div>
 <div class="deck-setup-actions"><button id="start-new-deck" type="button">Create a new deck</button><button id="import-discord-code" class="discord-export" type="button">Import Discord code</button></div>
 <div id="new-deck-wrap" class="new-deck-row" hidden><label>New deck name<input id="deck-name" placeholder="Deck name"></label><button id="create-deck" type="button">Create</button></div>
 <p id="new-deck-hint" class="field-hint" hidden>Enter a name, then click Create.</p>
@@ -88,4 +91,4 @@
 <div id="log-context" class="log-context"></div><pre id="log">Select a battle from the simulation results.</pre></article>
 </div></section>
 
-</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=23ca96fb0cbb"></script></body></html>
+</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=d9918161b05f"></script></body></html>
