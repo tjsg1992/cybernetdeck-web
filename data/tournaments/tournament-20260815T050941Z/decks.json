@@ -1,0 +1,401 @@
+[
+  {
+    "discord_user_id": "134208646606356480",
+    "player_name": "Eli",
+    "submission": {
+      "name": "the same old sync",
+      "owner_name": "Rawhide Kobayashi",
+      "decklist": {
+        "threefold_siphon": 5,
+        "cursed_seal": 1,
+        "five_l": 5,
+        "dixie_flatline": 3,
+        "air_five_l": 9,
+        "admin_override": 5,
+        "dragon_install": 2
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "flux",
+          "comparison_operator": ">=",
+          "quantity_threshold": 10,
+          "action_card_id": "threefold_siphon",
+          "quantity_target": "opponent"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board",
+          "action_card_id": "cursed_seal"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "play_named_card",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "in_your_hand",
+          "action_card_id": "dixie_flatline"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dragon_install"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "admin_override"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "air_five_l"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "five_l"
+        }
+      ],
+      "reactions": [],
+      "default_action": "play_random_card",
+      "random_card_ids": [
+        "cursed_seal",
+        "five_l"
+      ],
+      "submission_schema_version": 1,
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "163009224090058753",
+    "player_name": "Noonan",
+    "submission": {
+      "name": "Cotton Hill",
+      "owner_name": "NNBJ",
+      "decklist": {
+        "one_more_roll": 1,
+        "charge_ki": 1,
+        "raditz_invader": 4,
+        "crush_card_virus": 1,
+        "virus_beetle": 23
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "double_sunday"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "one_more_roll",
+          "quantity_target": "your"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_on_board",
+          "comparison_operator": ">=",
+          "quantity_threshold": 1,
+          "action_card_id": "crush_card_virus",
+          "quantity_target": "opponent"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_hand",
+          "comparison_operator": ">=",
+          "quantity_threshold": 1,
+          "action_card_id": "virus_beetle",
+          "quantity_target": "opponent"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "raditz_invader"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "activate_immutable_card",
+          "action_card_id": "charge_ki"
+        }
+      ],
+      "reactions": [],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "submission_schema_version": 1,
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "173981293229506561",
+    "player_name": "Alex",
+    "submission": {
+      "name": "Matt Daemon flies too close to the sun",
+      "owner_name": "\"Hope you're toe\" Johnson",
+      "decklist": {
+        "matt_daemon": 11,
+        "virus_beetle": 8,
+        "ninjutsu": 1,
+        "fire_release_great_fireball": 10
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "fire_release_great_fireball"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "matt_daemon"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "virus_beetle"
+        }
+      ],
+      "reactions": [
+        {
+          "trigger_type": "opponent_would_gain_flux",
+          "comparison_operator": ">=",
+          "quantity_threshold": 2,
+          "action_card_id": "seal"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "submission_schema_version": 1,
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "173986825889644544",
+    "player_name": "Colin",
+    "submission": {
+      "name": "26 Lightning Bolts and a Dream",
+      "owner_name": "Phen",
+      "decklist": {
+        "five_l": 2,
+        "one_more_roll": 1,
+        "charge_ki": 1,
+        "scrappy_kamehameha": 26
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "sync",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "five_l",
+          "quantity_target": "opponent"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "activate_immutable_card",
+          "quantity": "ki",
+          "comparison_operator": "=",
+          "quantity_threshold": 0,
+          "action_card_id": "charge_ki",
+          "quantity_target": "your"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "scrappy_kamehameha"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_hand",
+          "comparison_operator": "=",
+          "quantity_threshold": 1,
+          "action_card_id": "one_more_roll",
+          "quantity_target": "your"
+        }
+      ],
+      "reactions": [],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "submission_schema_version": 1,
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "184439858255626240",
+    "player_name": "Taylor",
+    "submission": {
+      "name": "Katon: Goukakyu no 2-tsu!",
+      "owner_name": "Loth",
+      "decklist": {
+        "seal": 1,
+        "air_five_l": 11,
+        "matt_daemon": 12,
+        "crush_card_virus": 1,
+        "ninjutsu": 1,
+        "fire_release_great_fireball": 4
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "fire_release_great_fireball"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "matt_daemon"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "crush_card_virus"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "sync",
+          "comparison_operator": "<=",
+          "quantity_threshold": 2,
+          "action_card_id": "air_five_l",
+          "quantity_target": "opponent"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "sync",
+          "comparison_operator": ">",
+          "quantity_threshold": 1,
+          "action_card_id": "air_five_l",
+          "quantity_target": "your"
+        }
+      ],
+      "reactions": [
+        {
+          "trigger_type": "opponent_would_gain_flux",
+          "comparison_operator": ">",
+          "quantity_threshold": 2,
+          "action_card_id": "seal"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "submission_schema_version": 1,
+      "format_id": "next-set-2-patch-1"
+    }
+  },
+  {
+    "discord_user_id": "221460738928017408",
+    "player_name": "Stella",
+    "submission": {
+      "name": "Full Control",
+      "owner_name": "Stella",
+      "decklist": {
+        "seal": 4,
+        "dixie_flatline": 4,
+        "charge_ki": 1,
+        "farmer_with_shotgun": 1,
+        "raditz_invader": 3,
+        "matt_daemon": 7,
+        "crush_card_virus": 2,
+        "garbage_collection": 3,
+        "virus_beetle": 5
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "farmer_with_shotgun"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "raditz_invader"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "double_sunday"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_deck",
+          "comparison_operator": "<=",
+          "quantity_threshold": 6,
+          "action_card_id": "garbage_collection",
+          "quantity_target": "your"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_on_board",
+          "comparison_operator": ">=",
+          "quantity_threshold": 1,
+          "action_card_id": "crush_card_virus",
+          "quantity_target": "opponent"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_hand",
+          "comparison_operator": ">=",
+          "quantity_threshold": 1,
+          "action_card_id": "virus_beetle",
+          "quantity_target": "opponent"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity": "cards_in_deck",
+          "comparison_operator": ">=",
+          "quantity_threshold": 6,
+          "action_card_id": "matt_daemon",
+          "quantity_target": "your"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "activate_immutable_card",
+          "quantity": "ki",
+          "comparison_operator": "=",
+          "quantity_threshold": 0,
+          "action_card_id": "charge_ki",
+          "quantity_target": "your"
+        },
+        {
+          "condition_type": "card_is",
+          "action_type": "end_turn",
+          "condition_card_id": "dixie_flatline",
+          "card_condition": "on_your_side_of_board"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "dixie_flatline"
+        }
+      ],
+      "reactions": [
+        {
+          "trigger_type": "opponent_would_gain_flux",
+          "comparison_operator": ">",
+          "quantity_threshold": 0,
+          "action_card_id": "seal"
+        }
+      ],
+      "default_action": "end_turn",
+      "random_card_ids": [
+        "seal"
+      ],
+      "submission_schema_version": 1,
+      "format_id": "next-set-2-patch-1"
+    }
+  }
+]
