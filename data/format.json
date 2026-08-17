@@ -643,7 +643,7 @@
   },
   "submission_schema_version": 1,
   "browser_submission_migration_enabled": true,
-  "fingerprint": "819bc4c210fc9f886ff8c10fa09fcfc72134bc7ac7a1611e31d6e9482d746a59",
+  "fingerprint": "b447c3ab61451a160b8571a69549689f5b948a5a11066fd0939769c3831c99fa",
   "keyword_definitions": [
     {
       "title": "Flux",
@@ -774,18 +774,18 @@
       "definition": "A Daemon subtype that attaches to a card when it enters play. A Module remains on the battlefield until its effect deletes it or another effect deletes it. If its attached Agent is deleted, the Module is deleted too."
     },
     {
-      "title": "Armed Jutsu",
+      "title": "Charged Jutsu",
       "aliases": [
-        "Armed Jutsu"
+        "Charged Jutsu"
       ],
-      "definition": "A public zone for Glitch Jutsu. An Armed Jutsu is not on the battlefield, does not form Signs, and does not pay its printed cost when it is resolved from the Armed Jutsu zone as a reaction."
+      "definition": "A public zone for Glitch Jutsu. A Charged Jutsu is not on the battlefield, does not form Signs, and does not pay its printed cost when it is resolved from the Charged Jutsu zone as a reaction."
     },
     {
       "title": "Jutsu",
       "aliases": [
         "Jutsu"
       ],
-      "definition": "This card can be played only as a Prepared Jutsu.\n\nTo resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.\n\nWhenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.\n\nAgent \u2014 Ram\nDaemon \u2014 Ox\nPulse \u2014 Tiger\nGlitch \u2014 Snake\n\nWhen a Glitch Jutsu has had its Signs formed, move it to the Armed Jutsu zone. It can be resolved as a reaction from that zone."
+      "definition": "This card can be played only as a Prepared Jutsu.\n\nTo resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.\n\nWhenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.\n\nAgent \u2014 Ram\nDaemon \u2014 Ox\nPulse \u2014 Tiger\nGlitch \u2014 Snake\n\nWhen a Glitch Jutsu has had its Signs formed, move it to the Charged Jutsu zone. It can be resolved as a reaction from that zone."
     },
     {
       "title": "Prepared Jutsu",
@@ -800,7 +800,7 @@
         "Sign",
         "Signs"
       ],
-      "definition": "A sequence that must be completed in order to resolve a Prepared Jutsu. A Jutsu with no Signs cost is resolved immediately after it is prepared, except that a Glitch Jutsu moves to Armed Jutsu after its Sign sequence is complete."
+      "definition": "A sequence that must be completed in order to resolve a Prepared Jutsu. A Jutsu with no Signs cost is resolved immediately after it is prepared, except that a Glitch Jutsu moves to Charged Jutsu after its Sign sequence is complete."
     },
     {
       "title": "Ram",
@@ -889,7 +889,7 @@
     }
   ],
   "export_format_id": "next-set-2-patch-4",
-  "export_format_fingerprint": "819bc4c210fc9f886ff8c10fa09fcfc72134bc7ac7a1611e31d6e9482d746a59",
+  "export_format_fingerprint": "b447c3ab61451a160b8571a69549689f5b948a5a11066fd0939769c3831c99fa",
   "export_card_ids": [
     "victory_point_1",
     "victory_point_2",
@@ -1461,7 +1461,7 @@
       ]
     },
     {
-      "fingerprint": "819bc4c210fc9f886ff8c10fa09fcfc72134bc7ac7a1611e31d6e9482d746a59",
+      "fingerprint": "b447c3ab61451a160b8571a69549689f5b948a5a11066fd0939769c3831c99fa",
       "format_id": "next-set-2-patch-4",
       "card_ids": [
         "victory_point_1",

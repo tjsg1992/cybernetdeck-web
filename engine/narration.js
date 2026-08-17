@@ -95,8 +95,8 @@ export function narrateBattleEvent(event, context) {
     }
     if (detail.startsWith("prepared_jutsu_complete:"))
         return `${player} completes ${context.card(detail.split(":")[1])}.`;
-    if (detail.startsWith("jutsu_armed:"))
-        return `${player} moves ${context.card(detail.split(":")[1])} to the Armed Jutsu zone.`;
+    if (detail.startsWith("jutsu_charged:"))
+        return `${player} moves ${context.card(detail.split(":")[1])} to the Charged Jutsu zone.`;
     if (detail.startsWith("copies_created:")) {
         const [, cardId, amount, source] = detail.split(":");
         return `${player} creates ${amount} permanent printed copies of ${context.card(cardId)} from ${context.card(source)}.`;
@@ -218,7 +218,7 @@ export function narrateBattleEvent(event, context) {
         if (trigger === "own_agent_would_be_deleted" && subject)
             return `${player} plays ${context.card(cardId)} to protect ${context.card(subject)} from deletion.`;
         const response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
-        return `${player} ${subject === "armed" ? "resolves" : "plays"} ${context.card(cardId)} in response to ${response}.`;
+        return `${player} ${subject === "charged" ? "resolves" : "plays"} ${context.card(cardId)} in response to ${response}.`;
     }
     if (detail.startsWith("flux_gain_prevented:")) {
         const [, amount, cardId, outcome] = detail.split(":"), ending = outcome === "deleted" ? " and is deleted." : outcome === "discarded" ? "." : ".";

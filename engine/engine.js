@@ -340,7 +340,7 @@ export class Battle {
             player.hand = makeCards(playerSetup.hand, "hand");
             player.battlefield = makeCards(playerSetup.battlefield, "battlefield");
             player.preparedJutsu = makeCards(playerSetup.prepared_jutsu ? [playerSetup.prepared_jutsu] : [], "prepared");
-            player.armedJutsu = makeCards(playerSetup.armed_jutsu, "armed");
+            player.chargedJutsu = makeCards(playerSetup.charged_jutsu, "charged");
             player.discard = makeCards(playerSetup.discard, "discard");
             player.void = makeCards(playerSetup.void, "void");
             player.points = playerSetup.flux ?? 0;
@@ -385,7 +385,7 @@ export class Battle {
             void: [],
             battlefield: [],
             preparedJutsu: [],
-            armedJutsu: [],
+            chargedJutsu: [],
             points: 0,
             sync: 20,
             ki: 0,
@@ -409,7 +409,7 @@ export class Battle {
         return this.players[0] === player ? this.players[1] : this.players[0];
     }
     boardCards(player) {
-        return [...player.battlefield, ...player.preparedJutsu, ...player.armedJutsu];
+        return [...player.battlefield, ...player.preparedJutsu, ...player.chargedJutsu];
     }
     namedCardConditionArea(player, condition) {
         if (condition === "in_your_hand") {
@@ -818,7 +818,7 @@ export class Battle {
         }
         if (player.hand.some((card) => card.definition.card_id === cardId) ||
             player.preparedJutsu.some((card) => card.definition.card_id === cardId) ||
-            player.armedJutsu.some((card) => card.definition.card_id === cardId)) {
+            player.chargedJutsu.some((card) => card.definition.card_id === cardId)) {
             this.note(`${player.id} | signature_already_in_hand:${cardId}:${source.definition.card_id}`);
             return;
         }
@@ -1081,8 +1081,8 @@ export class Battle {
         }
         this.note(`${player.id} | prepared_jutsu_complete:${prepared.definition.card_id}`);
         if (prepared.definition.card_kind === "glitch") {
-            if (this.move(player, prepared, player.preparedJutsu, player.armedJutsu, "prepared", "armed")) {
-                this.note(`${player.id} | jutsu_armed:${prepared.definition.card_id}`);
+            if (this.move(player, prepared, player.preparedJutsu, player.chargedJutsu, "prepared", "charged")) {
+                this.note(`${player.id} | jutsu_charged:${prepared.definition.card_id}`);
             }
             return;
         }
@@ -1216,19 +1216,19 @@ export class Battle {
             if (!ownsWindow || rule.trigger_type !== event.type) {
                 continue;
             }
-            const card = player.armedJutsu.find((instance) => instance.definition.card_id === rule.action_card_id) ?? player.hand.find((instance) => instance.definition.card_id === rule.action_card_id && instance.definition.jutsu !== true);
+            const card = player.chargedJutsu.find((instance) => instance.definition.card_id === rule.action_card_id) ?? player.hand.find((instance) => instance.definition.card_id === rule.action_card_id && instance.definition.jutsu !== true);
             if (!card ||
                 !card.definition.reaction_triggers?.includes(rule.trigger_type) ||
                 !compare(event.amount, rule.comparison_operator, rule.quantity_threshold)) {
                 continue;
             }
-            const isArmed = player.armedJutsu.includes(card);
-            if (!isArmed && !this.canPayCosts(player, card.definition)) {
+            const isCharged = player.chargedJutsu.includes(card);
+            if (!isCharged && !this.canPayCosts(player, card.definition)) {
                 continue;
             }
             this.note(`${player.id} | reaction_play:${rule.trigger_type}:${card.definition.card_id}:${event.recipient.id}`);
-            if (!(isArmed ? true : this.payCosts(player, card.definition)) ||
-                !this.move(player, card, isArmed ? player.armedJutsu : player.hand, player.discard, isArmed ? "armed" : "hand", "discard")) {
+            if (!(isCharged ? true : this.payCosts(player, card.definition)) ||
+                !this.move(player, card, isCharged ? player.chargedJutsu : player.hand, player.discard, isCharged ? "charged" : "hand", "discard")) {
                 continue;
             }
             this.act(player, `resolve reaction ${card.definition.card_id}`);
