@@ -45,13 +45,33 @@ export function narrateBattleEvent(event, context) {
         return `${player} cannot pay the cost of ${context.card(cardId)} forced by ${context.card(source)}, so it is discarded.`;
     }
     if (detail.startsWith("play_top_card:")) {
-        const [, cardId, source] = detail.split(":");
-        return `${player} plays the top card of their ${deck(context, actor)}, ${context.card(cardId)}, from ${context.card(source)}.`;
+        const [, cardId, source, deckOwner] = detail.split(":");
+        if (deckOwner && deckOwner !== actor)
+            return `${player} plays ${context.card(cardId)} from the top of ${context.player(deckOwner)}'s ${deck(context, deckOwner)} using ${context.card(source)}.`;
+        return `${player} plays ${context.card(cardId)} from the top of their ${deck(context, actor)} using ${context.card(source)}.`;
+    }
+    if (detail.startsWith("forced_play_failed:")) {
+        const [, cardId, source, fallback, deckOwner] = detail.split(":");
+        const owner = deckOwner && deckOwner !== actor ? `${context.player(deckOwner)}'s ${deck(context, deckOwner)}` : `their ${deck(context, actor)}`;
+        const destination = fallback === "bottom" ? `the bottom of ${owner}` : deckOwner && deckOwner !== actor ? `${context.player(deckOwner)}'s Discard` : `their Discard`;
+        return `${player} cannot play ${context.card(cardId)} from the top of ${owner} using ${context.card(source)}, so it goes to ${destination}.`;
     }
     if (detail.startsWith("signature_added_to_hand:")) {
         const [, cardId, source] = detail.split(":");
         return `${player} adds ${context.card(cardId)} to their hand from ${context.card(source)}.`;
     }
+    if (detail.startsWith("signature_granted:")) {
+        const [, cardId, agentId] = detail.split(":");
+        return `${context.card(agentId)} gains an additional Signature: ${context.card(cardId)} for the rest of the battle.`;
+    }
+    if (detail.startsWith("mission_progress:")) {
+        const [, missionId, current] = detail.split(":");
+        return `After drawing, ${context.card(missionId)} advances to Goal ${current}.`;
+    }
+    if (detail.startsWith("mission_complete:"))
+        return `${player} completes ${context.card(detail.split(":")[1])}.`;
+    if (detail.startsWith("mission_deleted:"))
+        return `${context.card(detail.split(":")[1])} is deleted.`;
     if (detail.startsWith("breach:")) {
         const [, source, amount] = detail.split(":");
         return `${player}'s ${context.card(source)} resolves Breach ${amount}.`;
@@ -64,6 +84,20 @@ export function narrateBattleEvent(event, context) {
     }
     if (detail.startsWith("prepared_jutsu_complete:"))
         return `${player} completes ${context.card(detail.split(":")[1])}.`;
+    if (detail.startsWith("jutsu_armed:"))
+        return `${player} moves ${context.card(detail.split(":")[1])} to the Armed Jutsu zone.`;
+    if (detail.startsWith("copies_created:")) {
+        const [, cardId, amount, source] = detail.split(":");
+        return `${player} creates ${amount} permanent printed copies of ${context.card(cardId)} from ${context.card(source)}.`;
+    }
+    if (detail.startsWith("module_attached:")) {
+        const [, moduleId, hostId] = detail.split(":");
+        return `${player} attaches ${context.card(moduleId)} to ${context.card(hostId)}.`;
+    }
+    if (detail.startsWith("module_redirected_damage:")) {
+        const [, moduleId, hostId, targetId] = detail.split(":");
+        return `${context.card(moduleId)} redirects damage from ${context.card(hostId)} to ${context.card(targetId)}.`;
+    }
     if (detail.startsWith("agents_created:")) {
         const [, amount, name, integrity] = detail.split(":");
         return `${player} creates ${amount} ${name} Agents with ${integrity} Integrity.`;
@@ -88,16 +122,39 @@ export function narrateBattleEvent(event, context) {
         const [, amount, current, max] = detail.split(":"), value = Number(amount);
         return `${player} spends ${value} Bandwidth. <span class="log-total">(${current}/${max})</span>`;
     }
+    // The following sync event carries the player-facing total, so do not show
+    // the lower-level damage-to-Sync event as a duplicate line.
     if (detail.startsWith("damage:"))
-        return `${player} takes ${detail.split(":")[1]} damage directly to Sync.`;
+        return "";
     if (detail.startsWith("agent_damaged:")) {
         const [, cardId, amount, integrity] = detail.split(":");
         return `${context.card(cardId)} takes ${amount} damage and has ${integrity} Integrity remaining.`;
     }
     if (detail.startsWith("agent_deleted:"))
         return `${player}'s ${context.card(detail.split(":")[1])} is deleted.`;
+    if (detail.startsWith("agent_deletion_prevented:")) {
+        const [, cardId, amount, current] = detail.split(":");
+        return Number(amount) > 0 ? `${context.card(cardId)} gains ${amount} Integrity and remains at ${current}.` : `${context.card(cardId)} remains at ${current} Integrity.`;
+    }
+    if (detail.startsWith("module_deleted_with_agent:")) {
+        return `${player}'s attached ${context.card(detail.split(":")[1])} is deleted with its Agent.`;
+    }
+    if (detail.startsWith("module_deleted_no_target:")) {
+        return `${player}'s ${context.card(detail.split(":")[1])} is deleted because no Agent was available to attach it to.`;
+    }
+    if (detail.startsWith("module_deleted:")) {
+        return `${player}'s ${context.card(detail.split(":")[1])} is deleted after redirecting damage.`;
+    }
     if (detail.startsWith("daemon_deleted:"))
         return `${player}'s ${context.card(detail.split(":")[1])} is deleted.`;
+    if (detail.startsWith("breach_modified:")) {
+        const [, cardId, amount, current] = detail.split(":");
+        return `${context.card(cardId)} gains ${amount} Breach. (Current Breach: ${current})`;
+    }
+    if (detail.startsWith("integrity_gained:")) {
+        const [, cardId, amount, current] = detail.split(":");
+        return `${context.card(cardId)} gains ${amount} Integrity. (Current Integrity: ${current})`;
+    }
     if (detail === "pregame_end_turn_effect")
         return `${player}'s card effect has no turn to end before the battle begins.`;
     if (detail.startsWith("scan_deck:")) {
@@ -106,6 +163,23 @@ export function narrateBattleEvent(event, context) {
             return `${player} looks at the top ${looked} cards and adds ${found} matching cards to their hand.`;
         const [, _, __, ids, source] = fields, cardIds = ids.split(","), target = cardIds.length === 1 ? `${context.card(cardIds[0])} ${plural(found, "card")}` : "matching cards";
         return `${player} uses ${context.card(source)} to look at the top ${looked} cards and adds ${found} ${target} to their hand.`;
+    }
+    if (detail.startsWith("cards_moved_from_deck:")) {
+        const [, ids, source] = detail.split(":");
+        const cardIds = ids ? ids.split(",").filter(Boolean) : [];
+        if (!cardIds.length)
+            return `${player} uses ${context.card(source)}, but no matching cards are moved from their ${deck(context, actor)} to their hand.`;
+        const counts = [];
+        for (const cardId of cardIds) {
+            const existing = counts.find(entry => entry.id === cardId);
+            if (existing)
+                existing.count++;
+            else
+                counts.push({ id: cardId, count: 1 });
+        }
+        const names = counts.map(entry => entry.count > 1 ? `${entry.count} × ${context.card(entry.id)}` : context.card(entry.id));
+        const listed = names.length === 1 ? names[0] : names.length === 2 ? names.join(" and ") : names.slice(0, -1).join(", ") + `, and ${names.at(-1)}`;
+        return `${player} uses ${context.card(source)} to move ${listed} from their ${deck(context, actor)} to their hand.`;
     }
     if (detail.startsWith("cards_added_to_deck:")) {
         const [, amount, cardId, source, order] = detail.split(":"), targetDeck = deck(context, actor);
@@ -129,12 +203,16 @@ export function narrateBattleEvent(event, context) {
             const [, cardId, amount] = fields;
             return `${player} plays ${context.card(cardId)} in response to the opponent gaining ${amount} Flux.`;
         }
-        const [, trigger, cardId, recipient] = fields, response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
-        return `${player} plays ${context.card(cardId)} in response to ${response}.`;
+        const [, trigger, cardId, recipient, zone] = fields, response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
+        return `${player} ${zone === "armed" ? "resolves" : "plays"} ${context.card(cardId)} in response to ${response}.`;
     }
     if (detail.startsWith("flux_gain_prevented:")) {
         const [, amount, cardId, outcome] = detail.split(":"), ending = outcome === "deleted" ? " and is deleted." : outcome === "discarded" ? "." : ".";
         return `${player} would gain ${amount} Flux, but ${context.card(cardId)} prevents it${ending}`;
+    }
+    if (detail.startsWith("flux_gain_reduced:")) {
+        const [, amount, sources = ""] = detail.split(":"), cards = sources.split(",").filter(Boolean).map((cardId) => context.card(cardId));
+        return `${player} gains ${amount} less Flux due to ${cards.join(" and ")}.`;
     }
     if (detail.startsWith("prevention_no_effect:"))
         return `${player} activates ${context.card(detail.split(":")[1])}, but the gain was already prevented, so it has no effect and is deleted.`;
@@ -148,7 +226,7 @@ export function narrateBattleEvent(event, context) {
         const [, amount, current, source] = detail.split(":"), value = Number(amount);
         if (!value)
             return "";
-        const sentence = source === "bonus" ? `gains ${Math.abs(value)} additional Flux from ${context.card(detail.split(":")[4])}.` : `${value > 0 ? "gains " : "loses "}${Math.abs(value)} Flux.`;
+        const sentence = source === "bonus" ? `gains ${Math.abs(value)} additional Flux from ${context.card(detail.split(":")[4])}.` : value > 0 && source && source !== "cost" ? `gains ${Math.abs(value)} Flux from ${context.card(source)}.` : `${value > 0 ? "gains " : "loses "}${Math.abs(value)} Flux.`;
         return `${player} ${sentence} <span class="log-total">(${current}/20)</span>`;
     }
     if (detail.startsWith("sync:")) {

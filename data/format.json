@@ -1,5 +1,5 @@
 {
-  "format_id": "next-set-2-patch-1",
+  "format_id": "next-set-2-patch-2",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -75,7 +75,7 @@
     {
       "card_id": "cursed_seal",
       "display_name": "Cursed Seal",
-      "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn.",
+      "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down. End your turn.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "card-art/cursed_seal.png",
@@ -85,7 +85,7 @@
     {
       "card_id": "five_l",
       "display_name": "5L",
-      "effect": "Reduce your opponent's Sync by 1.",
+      "effect": "Your opponent loses 1 Sync.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "card-art/five_l.png",
@@ -146,8 +146,8 @@
       "card_id": "charge_ki",
       "display_name": "Charge Ki",
       "effect": "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.",
-      "card_kind": "daemon",
-      "card_kind_label": "Daemon \u2022 Immutable",
+      "card_kind": "immutable",
+      "card_kind_label": "Immutable",
       "immutable": true,
       "art_url": "card-art/charge_ki.png",
       "art_alt": "Temporary placeholder artwork for Charge Ki",
@@ -190,10 +190,10 @@
     {
       "card_id": "double_sunday",
       "display_name": "Double Sunday",
-      "effect": "Deal 1 damage. Then deal 1 damage.",
+      "effect": "Deal 1 damage. Deal 1 damage.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse \u2022 Signature",
-      "keyword_line": "Ki 1 \u2022 Signature",
+      "keyword_line": "Ki 1",
       "signature": true,
       "art_url": "card-art/double_sunday.jpg",
       "art_alt": "Raditz firing the Double Sunday attack",
@@ -205,10 +205,21 @@
       "effect": "The first time each turn another Matt Daemon enters play under your control, draw a card.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
-      "keyword_line": "Bandwidth 1",
+      "keyword_line": "Bandwidth 2",
       "art_url": "card-art/matt_daemon.jpg",
       "art_alt": "Temporary placeholder artwork for Matt Daemon",
       "art_position": "50% 26%"
+    },
+    {
+      "card_id": "rampant_growth",
+      "display_name": "Rampant Growth",
+      "effect": "All Agents you control lose 1 Integrity. Gain 1 Flux for each Integrity lost this way.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 2",
+      "art_url": "card-art/rampant_growth.png",
+      "art_alt": "Generated rampant growth card art option 1: Luminous data vines spread around a small agent silhouette in a cyber-garden.",
+      "art_position": "50% 50%"
     },
     {
       "card_id": "crush_card_virus",
@@ -223,7 +234,7 @@
     {
       "card_id": "garbage_collection",
       "display_name": "Garbage Collection",
-      "effect": "Shuffle two random cards from your Discard into your deck. Then wipe this card.",
+      "effect": "Shuffle 2 random cards from your Discard into your deck. Then wipe this card.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "card-art/garbage_collection.jpg",
@@ -233,7 +244,7 @@
     {
       "card_id": "core_a_core",
       "display_name": "Core-a-Core",
-      "effect": "Gain 1 Flux. Then add a Core card to your deck and shuffle.",
+      "effect": "Gain 1 Flux. Add a Core card to your deck and shuffle.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "adds_card_ids": [
@@ -246,7 +257,7 @@
     {
       "card_id": "two_cores_in_a_box",
       "display_name": "Two Cores (in a box)",
-      "effect": "Add two Core cards to your deck and shuffle.",
+      "effect": "Add 2 Core cards to your deck and shuffle.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "adds_card_ids": [
@@ -259,7 +270,7 @@
     {
       "card_id": "admin_override",
       "display_name": "Admin Override",
-      "effect": "Gain 1 Sync. Then, your opponent plays the top card of their deck.",
+      "effect": "Gain 1 Sync. Your opponent plays the top card of their deck.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "art_url": "card-art/admin_override.webp",
@@ -280,8 +291,8 @@
       "card_id": "ninjutsu",
       "display_name": "Ninjutsu",
       "effect": "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.",
-      "card_kind": "daemon",
-      "card_kind_label": "Daemon \u2022 Immutable",
+      "card_kind": "immutable",
+      "card_kind_label": "Immutable",
       "immutable": true,
       "activation": "passive",
       "supports_jutsu_preparation": true,
@@ -292,7 +303,7 @@
     {
       "card_id": "clone_jutsu",
       "display_name": "Clone Jutsu",
-      "effect": "Create two Clone Agents, each with Integrity 1.",
+      "effect": "Create 2 Clone Agents, each with Integrity 1.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse \u2022 Jutsu",
       "keyword_line": "Signs \u2014 Ram, Ram",
@@ -303,7 +314,7 @@
     {
       "card_id": "fire_release_great_fireball",
       "display_name": "Fire Release: Great Fireball Technique",
-      "effect": "Deal 6 damage to your opponent.",
+      "effect": "Deal 6 damage.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse \u2022 Jutsu",
       "keyword_line": "Bandwidth 2 \u2022 Signs \u2014 Tiger, Ox, Tiger",
@@ -312,14 +323,258 @@
       "art_position": "50% 42%"
     },
     {
+      "card_id": "naruto_knuckleheaded_ninja",
+      "display_name": "Naruto, Knuckleheaded Ninja",
+      "effect": "",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "keyword_line": "Bandwidth 1 \u2022 Integrity 2 \u2022 Breach 1 \u2022 Signature: Vandalize the Hokage Monument",
+      "signature_card_id": "vandalize_hokage_monument",
+      "art_url": "card-art/naruto_knuckleheaded_ninja.jpg",
+      "art_alt": "Temporary placeholder artwork for Naruto, Knuckleheaded Ninja",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "vandalize_hokage_monument",
+      "display_name": "Vandalize the Hokage Monument",
+      "effect": "When this enters play, gain 1 Flux. This Mission completes only while you control Naruto, Knuckleheaded Ninja. Complete \u2014 For the rest of the battle, Naruto Agents you own gain an additional Signature: Shadow Clone Jutsu; then gain 2 Flux.",
+      "card_kind": "mission",
+      "card_kind_label": "Mission \u2022 Signature",
+      "keyword_line": "Bandwidth 1 \u2022 Goal 1",
+      "signature": true,
+      "art_url": "card-art/vandalize_hokage_monument.png",
+      "art_alt": "Temporary placeholder artwork for Vandalize the Hokage Monument",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "shadow_clone_jutsu",
+      "display_name": "Shadow Clone Jutsu",
+      "effect": "Choose the Naruto Agent you control with the highest Breach, breaking ties by oldest. Create 2 printed copies of it.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu \u2022 Signature",
+      "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Ram",
+      "signature": true,
+      "art_url": "card-art/shadow_clone_jutsu.webp",
+      "art_alt": "Temporary placeholder artwork for Shadow Clone Jutsu",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "transformation_jutsu",
+      "display_name": "Transformation Jutsu",
+      "effect": "When this enters play, attach it to the Agent you control with the highest Breach. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.",
+      "card_kind": "daemon",
+      "card_kind_label": "Module \u2022 Jutsu",
+      "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Snake",
+      "art_url": "card-art/transformation_jutsu.webp",
+      "art_alt": "Temporary placeholder artwork for Transformation Jutsu",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "substitution_jutsu",
+      "display_name": "Substitution Jutsu",
+      "effect": "You lose 2 Sync. When an Agent you control would be deleted, you may resolve this card. If you do, prevent that deletion, set that Agent's Integrity to 1 if it is lower, then deal 1 damage to your opponent.",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch \u2022 Jutsu",
+      "keyword_line": "Signs \u2014 None",
+      "art_url": "card-art/substitution_jutsu.jpg",
+      "art_alt": "Temporary placeholder artwork for Substitution Jutsu",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "kakashi_distracted_mentor",
+      "display_name": "Kakashi, Distracted Mentor",
+      "effect": "",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Demonic Illusion: Hell Viewing Technique",
+      "signature_card_id": "demonic_illusion_hell_viewing_technique",
+      "art_url": "card-art/kakashi_distracted_mentor.jpg",
+      "art_alt": "Temporary placeholder artwork for Kakashi, Distracted Mentor",
+      "art_position": "50% 19%"
+    },
+    {
+      "card_id": "demonic_illusion_hell_viewing_technique",
+      "display_name": "Demonic Illusion: Hell Viewing Technique",
+      "effect": "Whenever your opponent would gain Flux, prevent that Flux gain.",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch \u2022 Jutsu \u2022 Signature",
+      "keyword_line": "Glitch Jutsu \u2022 Signs \u2014 None",
+      "signature": true,
+      "art_url": "card-art/demonic_illusion_hell_viewing_technique.png",
+      "art_alt": "Temporary placeholder artwork for Demonic Illusion: Hell Viewing Technique",
+      "art_position": "61% 51%"
+    },
+    {
       "card_id": "dragon_install",
       "display_name": "Dragon Install",
-      "effect": "Lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync.",
+      "effect": "You lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
       "art_url": "card-art/dragon_install.jpg",
       "art_alt": "Temporary placeholder artwork for Dragon Install, a red cyberpunk transformation",
       "art_position": "100% 38%"
+    },
+    {
+      "card_id": "system_backdoor",
+      "display_name": "System Backdoor",
+      "effect": "Play the top card of your opponent's deck if able. If not, put it on the bottom of their deck.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 1",
+      "art_url": "card-art/system_backdoor.png",
+      "art_alt": "Temporary wide placeholder for System Backdoor",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "red_ribbon_funding",
+      "display_name": "Red Ribbon Funding",
+      "effect": "Agents you control gain Breach 1.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 1",
+      "art_url": "card-art/red_ribbon_funding.jpg",
+      "art_alt": "Red Ribbon Army reference artwork",
+      "art_position": "50% 0%"
+    },
+    {
+      "card_id": "scorched_earth",
+      "display_name": "Scorched Earth",
+      "effect": "Delete every Agent and Daemon on both battlefields.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 3",
+      "art_url": "card-art/scorched_earth.png",
+      "art_alt": "Generated Scorched Earth card art option 1: Charred signal obelisk surrounded by a quiet ring of ember-lit heat.",
+      "art_position": "49% 49%"
+    },
+    {
+      "card_id": "core_values",
+      "display_name": "Core Values",
+      "effect": "At the start of the battle, if you have any Core or Twin Core cards in your deck, you lose. You can activate this card once per battle to move all Core and Twin Core cards from your deck to your hand, set your Sync to 1, and end your turn.",
+      "card_kind": "immutable",
+      "card_kind_label": "Immutable",
+      "activation": "active",
+      "art_url": "card-art/core_values.png",
+      "art_alt": "Generated core values card art option 2: A radiant geometric core rests in a quiet digital sanctuary.",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "the_points_icon",
+      "display_name": "The Points Icon",
+      "effect": "Gain 20 Flux.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 10 \u2022 Flux 15",
+      "art_url": "card-art/the_points_icon.png",
+      "art_alt": "Generated the points icon card art option 3: A simple radiant flux token floats above a quiet cyber plaza.",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "keyboard_roll",
+      "display_name": "Keyboard Roll",
+      "effect": "Play the top card of your deck if able. If not, put it into your discard pile. Lose 1 Sync.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/keyboard_roll.png",
+      "art_alt": "Generated keyboard roll card art option 3: A glowing keyboard key rolls along a soft stream of digital light.",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "kernel_exploit",
+      "display_name": "Kernel Exploit",
+      "effect": "Your opponent loses 10 Sync. Gain 10 Flux.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 10",
+      "art_url": "card-art/kernel_exploit.png",
+      "art_alt": "Generated kernel exploit card art option 1: A cracked luminous kernel core leaks a controlled stream of cyan energy.",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "junk_food",
+      "display_name": "Junk Food",
+      "effect": "Draw 3 cards, then end your turn.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "art_url": "card-art/junk_food.png",
+      "art_alt": "Generated junk food card art option 1: A simple glowing snack form rests beside abstract data cards in a pastel cyber-cafe.",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "soul_warden",
+      "display_name": "Soul Warden",
+      "effect": "The first time a Daemon is successfully played each turn, gain 1 Flux.",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "keyword_line": "Integrity 1",
+      "art_url": "card-art/soul_warden.png",
+      "art_alt": "Generated Soul Warden card art option 1: Luminous cyber-guardian seated beside a glowing soul-orb in a quiet digital shrine.",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "flux_capacitor",
+      "display_name": "Flux Capacitor",
+      "effect": "When you would lose Sync during your opponent's turn, you may pay 2 Flux and play this card. If you do, prevent that Sync loss.",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch",
+      "keyword_line": "Flux 2",
+      "art_url": "card-art/flux_capacitor.jpg",
+      "art_alt": "Generated flux capacitor card art option 4: A floating capacitor holds a looping ring of soft cyan flux.",
+      "art_position": "0% 40%"
+    },
+    {
+      "card_id": "special_beam_cannon",
+      "display_name": "Special Beam Cannon",
+      "effect": "Deal 4 damage. If this deletes an Agent, deal damage again, reduced by 1, and repeat until the next damage amount would be 0.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Ki cost 1",
+      "art_url": "card-art/special_beam_cannon.webp",
+      "art_alt": "Piccolo Special Beam Cannon reference artwork",
+      "art_position": "50% 98%"
+    },
+    {
+      "card_id": "core_for_all",
+      "display_name": "Core for All",
+      "effect": "The first time each turn you gain Flux, add a Core to your deck and shuffle.",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "art_url": "card-art/core_for_all.png",
+      "art_alt": "Industrial reactor table where a red-orange core is placed into a shared central socket with cables from several stations.",
+      "art_position": "50% 50%"
+    },
+    {
+      "card_id": "blood_shadow",
+      "display_name": "Blood Shadow, Spawn of the Bleeding Phoenix",
+      "effect": "At the start of your turn, all other Agents on both battlefields lose 1 Integrity. This Agent gains 1 Integrity for each Integrity lost this way. Whenever you would gain Flux, gain 1 less Flux instead.",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "keyword_line": "Integrity 1",
+      "art_url": "card-art/blood_shadow.jpg",
+      "art_alt": "Generated blood shadow card art option 1: A dark phoenix-like shadow form glows softly with blood-red ember light.",
+      "art_position": "77% 55%"
+    },
+    {
+      "card_id": "spirit_bomb",
+      "display_name": "Spirit Bomb",
+      "effect": "Deal 1 damage for each Agent you control.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Ki 2",
+      "art_url": "card-art/spirit_bomb.jpg",
+      "art_alt": "Spirit Bomb reference artwork",
+      "art_position": "50% 0%"
+    },
+    {
+      "card_id": "cultivate",
+      "display_name": "Cultivate",
+      "effect": "All Agents you control gain 1 Integrity.",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 2",
+      "art_url": "card-art/cultivate.png",
+      "art_alt": "Warm terracotta garden bed with a sturdy seedling, copper irrigation traces, and hard afternoon light.",
+      "art_position": "50% 50%"
     }
   ],
   "card_ids": [
@@ -343,6 +598,7 @@
     "raditz_invader",
     "double_sunday",
     "matt_daemon",
+    "rampant_growth",
     "crush_card_virus",
     "garbage_collection",
     "core_a_core",
@@ -352,13 +608,37 @@
     "ninjutsu",
     "clone_jutsu",
     "fire_release_great_fireball",
-    "dragon_install"
+    "naruto_knuckleheaded_ninja",
+    "vandalize_hokage_monument",
+    "shadow_clone_jutsu",
+    "transformation_jutsu",
+    "substitution_jutsu",
+    "kakashi_distracted_mentor",
+    "demonic_illusion_hell_viewing_technique",
+    "dragon_install",
+    "system_backdoor",
+    "red_ribbon_funding",
+    "scorched_earth",
+    "core_values",
+    "the_points_icon",
+    "keyboard_roll",
+    "kernel_exploit",
+    "junk_food",
+    "soul_warden",
+    "flux_capacitor",
+    "special_beam_cannon",
+    "core_for_all",
+    "blood_shadow",
+    "spirit_bomb",
+    "cultivate"
   ],
   "config": {
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "fingerprint": "0b5a90df68248b7825e6e4578ffe78233b39210fad96c7019b3a172449fdaab6",
+  "submission_schema_version": 1,
+  "browser_submission_migration_enabled": true,
+  "fingerprint": "d273cd53e1fecb8898fa7d515a03ac72708fd78e099b5bc8edd1d8579d4e3779",
   "keyword_definitions": [
     {
       "title": "Flux",
@@ -386,7 +666,7 @@
       "aliases": [
         "Ki"
       ],
-      "definition": "A resource that starts at 0 and is not spent unless a card says to spend it."
+      "definition": "A resource that starts at 0. A minimum Ki requirement is only a threshold; a Ki cost is spent when the card is played or activated."
     },
     {
       "title": "Uplink",
@@ -432,7 +712,7 @@
         "Named Agent",
         "Named Agents"
       ],
-      "definition": "An Agent whose card name is formatted as Name, Title. You cannot play another Named Agent with the same Name while you control one."
+      "definition": "An Agent whose card name is formatted as Name, Title. Named Agents with the same Name may coexist; other play restrictions still apply."
     },
     {
       "title": "Breach",
@@ -447,7 +727,7 @@
         "Signature",
         "Signatures"
       ],
-      "definition": "A card subtype that cannot be included in decks. An Agent may add its named Signature card to its controller's hand during that player's End Phase; Signature cards are played normally from hand."
+      "definition": "A card subtype that cannot be included in decks. Agents can have multiple Signatures. An Agent may add each named Signature card to its controller's hand during that player's End Phase; Signature cards are played normally from hand."
     },
     {
       "title": "Immutable",
@@ -465,11 +745,42 @@
       "definition": "A reaction card played from hand on either turn for its specified event, then moved directly to Discard."
     },
     {
+      "title": "Mission",
+      "aliases": [
+        "Mission",
+        "Missions"
+      ],
+      "definition": "You may control only one Mission at a time. An attempt to add or play a Mission fails if another copy of that Mission is already in your hand or on your battlefield, or if you have completed a copy of that Mission this battle. A Mission checks for completion at the start of your turn, after the draw phase. A completed Mission resolves its Complete instruction, then is deleted. Each mission can only be played once per battle."
+    },
+    {
+      "title": "Goal",
+      "aliases": [
+        "Goal",
+        "Goals"
+      ],
+      "definition": "A Mission's progress target. At the start of its controller's turn, after the draw phase, advance the Goal by 1 up to its printed value; when the Mission's requirement is satisfied, resolve Complete and delete the Mission."
+    },
+    {
+      "title": "Module",
+      "aliases": [
+        "Module",
+        "Modules"
+      ],
+      "definition": "A Daemon subtype that attaches to a card when it enters play. A Module remains on the battlefield until its effect deletes it or another effect deletes it. If its attached Agent is deleted, the Module is deleted too."
+    },
+    {
+      "title": "Armed Jutsu",
+      "aliases": [
+        "Armed Jutsu"
+      ],
+      "definition": "A public zone for Glitch Jutsu. An Armed Jutsu is not on the battlefield, does not form Signs, and does not pay its printed cost when it is resolved from the Armed Jutsu zone as a reaction."
+    },
+    {
       "title": "Jutsu",
       "aliases": [
         "Jutsu"
       ],
-      "definition": "This card can be played only as a Prepared Jutsu.\n\nTo resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.\n\nWhenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.\n\nAgent \u2014 Ram\nDaemon \u2014 Ox\nPulse \u2014 Tiger\nGlitch \u2014 Snake"
+      "definition": "This card can be played only as a Prepared Jutsu.\n\nTo resolve a Prepared Jutsu, form its Signs in order over any number of turns. When a Prepared Jutsu resolves, delete it.\n\nWhenever you play a non-Jutsu card, form the next Sign in the sequence. If that card has one of the following types, form the corresponding additional Sign. Form that Sign first if able; otherwise, form it second. Starting a Jutsu is a card play, but does not form a Sign.\n\nAgent \u2014 Ram\nDaemon \u2014 Ox\nPulse \u2014 Tiger\nGlitch \u2014 Snake\n\nWhen a Glitch Jutsu has had its Signs formed, move it to the Armed Jutsu zone. It can be resolved as a reaction from that zone."
     },
     {
       "title": "Prepared Jutsu",
@@ -484,7 +795,7 @@
         "Sign",
         "Signs"
       ],
-      "definition": "A sequence that must be completed in order to resolve a Prepared Jutsu."
+      "definition": "A sequence that must be completed in order to resolve a Prepared Jutsu. A Jutsu with no Signs cost is resolved immediately after it is prepared, except that a Glitch Jutsu moves to Armed Jutsu after its Sign sequence is complete."
     },
     {
       "title": "Ram",
@@ -572,8 +883,8 @@
       "definition": "A passive Immutable has no activation and cannot be selected by an Activate action."
     }
   ],
-  "export_format_id": "next-set-2-patch-1",
-  "export_format_fingerprint": "0b5a90df68248b7825e6e4578ffe78233b39210fad96c7019b3a172449fdaab6",
+  "export_format_id": "next-set-2-patch-2",
+  "export_format_fingerprint": "d273cd53e1fecb8898fa7d515a03ac72708fd78e099b5bc8edd1d8579d4e3779",
   "export_card_ids": [
     "victory_point_1",
     "victory_point_2",
@@ -595,6 +906,7 @@
     "raditz_invader",
     "double_sunday",
     "matt_daemon",
+    "rampant_growth",
     "crush_card_virus",
     "garbage_collection",
     "core_a_core",
@@ -604,11 +916,31 @@
     "ninjutsu",
     "clone_jutsu",
     "fire_release_great_fireball",
-    "dragon_install"
+    "naruto_knuckleheaded_ninja",
+    "vandalize_hokage_monument",
+    "shadow_clone_jutsu",
+    "transformation_jutsu",
+    "substitution_jutsu",
+    "kakashi_distracted_mentor",
+    "demonic_illusion_hell_viewing_technique",
+    "dragon_install",
+    "system_backdoor",
+    "red_ribbon_funding",
+    "scorched_earth",
+    "core_values",
+    "the_points_icon",
+    "keyboard_roll",
+    "kernel_exploit",
+    "junk_food",
+    "soul_warden",
+    "flux_capacitor",
+    "special_beam_cannon",
+    "core_for_all",
+    "blood_shadow",
+    "spirit_bomb",
+    "cultivate"
   ],
   "export_deck_code_prefix": "CD6",
-  "submission_schema_version": 1,
-  "browser_submission_migration_enabled": true,
   "deck_code_catalogs": [
     {
       "fingerprint": "83f6775e03a05079342d52fd71c4053f68c0a69d1db77ee076688351a33a5857",
@@ -1003,6 +1335,65 @@
         "clone_jutsu",
         "fire_release_great_fireball",
         "dragon_install"
+      ]
+    },
+    {
+      "fingerprint": "d273cd53e1fecb8898fa7d515a03ac72708fd78e099b5bc8edd1d8579d4e3779",
+      "format_id": "next-set-2-patch-2",
+      "card_ids": [
+        "victory_point_1",
+        "victory_point_2",
+        "threefold_siphon",
+        "sparkleback_totem",
+        "throttle",
+        "overcharge_gambit",
+        "download_scan",
+        "cursed_seal",
+        "five_l",
+        "time_walk",
+        "seal",
+        "dixie_flatline",
+        "one_more_roll",
+        "air_five_l",
+        "charge_ki",
+        "scrappy_kamehameha",
+        "farmer_with_shotgun",
+        "raditz_invader",
+        "double_sunday",
+        "matt_daemon",
+        "rampant_growth",
+        "crush_card_virus",
+        "garbage_collection",
+        "core_a_core",
+        "two_cores_in_a_box",
+        "admin_override",
+        "virus_beetle",
+        "ninjutsu",
+        "clone_jutsu",
+        "fire_release_great_fireball",
+        "naruto_knuckleheaded_ninja",
+        "vandalize_hokage_monument",
+        "shadow_clone_jutsu",
+        "transformation_jutsu",
+        "substitution_jutsu",
+        "kakashi_distracted_mentor",
+        "demonic_illusion_hell_viewing_technique",
+        "dragon_install",
+        "system_backdoor",
+        "red_ribbon_funding",
+        "scorched_earth",
+        "core_values",
+        "the_points_icon",
+        "keyboard_roll",
+        "kernel_exploit",
+        "junk_food",
+        "soul_warden",
+        "flux_capacitor",
+        "special_beam_cannon",
+        "core_for_all",
+        "blood_shadow",
+        "spirit_bomb",
+        "cultivate"
       ]
     },
     {

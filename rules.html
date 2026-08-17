@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=69b1fe9c1e6e"></head>
+<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=56cf0504c9e7"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
 <article class="rules-reference"><p class="eyebrow">Rules Reference</p><h1>CyberNetDeck Rules</h1>
@@ -14,22 +14,23 @@
 <p>Trying to draw from an empty deck loses the battle. A battle can also end at the configured action limit; the player with fewer attributed actions wins, or the battle is a draw if the counts are tied.</p>
 <p>Reactions and triggered card effects resolve before the game checks for a winning or losing state caused by that event.</p>
 <h2>Decks and cards</h2>
-<p>Each deck contains 20–30 cards and may include any number of each card in the current format. A card with <strong>Bandwidth N</strong> costs N Bandwidth to play. A card with <strong>Sync cost N</strong> reduces its controller&#x27;s Sync by N when played.</p>
+<p>Each deck contains 20–30 cards and may include any number of each card in the current format. A card with <strong>Bandwidth N</strong> costs N Bandwidth to play. A card with <strong>Sync cost N</strong> reduces its controller&#x27;s Sync by N when played. A card with <strong>Ki cost N</strong> spends N Ki to play or activate; <strong>minimum Ki N</strong> is only a threshold and does not spend Ki.</p>
 <h3>Card types and properties</h3>
 <ul>
 <li><strong>Pulse</strong> cards resolve their effects and then go to the discard pile.</li>
 <li><strong>Daemon</strong> cards remain on the battlefield with their ongoing effects active.</li>
 <li><strong>Agent</strong> cards remain on the battlefield with a printed <strong>Integrity</strong> value. Agents take damage from attacks; an Agent at 0 Integrity is deleted.</li>
-<li><strong>Named Agent:</strong> An Agent named `Name, Title` is Named, using the text before the comma as its Name. You cannot play a Named Agent while you control another Named Agent with the same Name. This also applies to forced plays.</li>
-<li><strong>Signature</strong> cards cannot be included in decks. An Agent may supply its named Signature card to your hand during your End phase; it then plays as a normal card. Signature cards are available in the program builder when a deck card supplies them.</li>
+<li><strong>Named Agent:</strong> An Agent named `Name, Title` is Named, using the text before the comma as its Name. Named Agents with the same Name may coexist. This applies to ordinary and forced plays; all other play restrictions still apply.</li>
+<li><strong>Signature</strong> cards cannot be included in decks. Agents can have multiple Signatures; a granted Signature is added to the Agent&#x27;s existing Signatures. An Agent may supply each named Signature card to your hand during your End phase; if that Signature is already in your hand, no additional copy is created. Multiple providers do not create duplicates in the same hand. It then plays as a normal card. Signature cards are available in the program builder when a deck card supplies them.</li>
 <li><strong>Immutable</strong> cards are limited to one copy, searched into the opening hand before ordinary draws, and played onto the battlefield before the first turn without activating their effects. They cannot be removed from the battlefield or targeted by effects.</li>
-<li><strong>Glitch</strong> cards can be played from the hand on either turn as a reaction to a specified event, then go directly to the discard pile. They are not deleted; deletion moves a card from the battlefield to its discard pile.</li>
+<li><strong>Glitch</strong> cards can be played from the hand on either turn as a reaction to a specified event, then go directly to the discard pile. A Glitch Jutsu is first played as a Prepared Jutsu; after its Signs are formed, it moves to the controller&#x27;s <strong>Armed Jutsu</strong> zone and waits for its reaction window. Armed Jutsu costs are paid when prepared and are not paid again when the reaction resolves. Glitches are not deleted; deletion moves a card from the battlefield to its discard pile.</li>
+<li><strong>Mission</strong> cards enter the battlefield and remain there while their Goal is active. A player may control only one Mission at a time. An attempt to add or play a Mission fails if another copy of that Mission is already in that player&#x27;s hand or on that player&#x27;s battlefield, or if that player has completed a copy of that Mission this battle. Each Mission name can be played only once per battle. Missions do not prepare beneath Ninjutsu. At the start of its controller&#x27;s turn, after the Draw phase, a Mission checks its Goal and requirement; a completed Mission resolves its Complete instruction and is deleted.</li>
 </ul>
 <h3>Card zones and movement</h3>
 <p><strong>Delete</strong> moves a card from its controller&#x27;s battlefield to that player&#x27;s Discard; it does not resolve that card again. <strong>Wipe</strong> moves a card to the separate Void zone. The Void is not the Discard, so effects that target the Discard cannot target cards in the Void.</p>
 <p>When an effect says a player discards a card at random, one card instance is chosen from that player&#x27;s hand and moved to that player&#x27;s Discard. If that player&#x27;s hand is empty, nothing is discarded.</p>
-<h2>Jutsu</h2>
-<p>A Jutsu can be played only as a <strong>Prepared Jutsu</strong>. A Prepared Jutsu is a Jutsu placed face up beneath the card that prepared it after its non-Sign costs are paid. It remains on its controller&#x27;s board as an attached card rather than occupying a free-standing battlefield position. It is public, cannot be affected by other cards, and only one Prepared Jutsu can be held at a time.</p>
+<h2>Missions and Jutsu</h2>
+<p>An ordinary Jutsu can be played only as a <strong>Prepared Jutsu</strong>. A Prepared Jutsu is a Jutsu placed face up beneath the card that prepared it after its non-Sign costs are paid. It remains on its controller&#x27;s board as an attached card rather than occupying a free-standing battlefield position. It is public, cannot be affected by other cards, and only one Prepared Jutsu can be held at a time.</p>
 <p><strong>Signs</strong> are a sequence that must be formed in order, over any number of turns, before the Prepared Jutsu can resolve. Whenever you play a non-Jutsu card, form the next Sign. The card&#x27;s type can form one additional matching Sign, first if able and otherwise second:</p>
 <ul>
 <li>An <strong>Agent</strong> forms <strong>Ram</strong>.</li>
@@ -38,8 +39,11 @@
 <li>A <strong>Glitch</strong> forms <strong>Snake</strong>.</li>
 </ul>
 <p>A played card can provide at most one additional Sign. Starting a Jutsu is a card play but does not form a Sign; forming a Sign is not playing a card.</p>
-<p>When all Signs are formed, resolve the Prepared Jutsu as a Pulse without paying its costs again, then delete it to its controller&#x27;s Discard. Its own resolution does not form another Sign.</p>
+<p>When all Signs are formed, resolve the Prepared Jutsu without paying its costs again. A Jutsu with no Signs cost resolves immediately after it is prepared; an ordinary Jutsu with Signs resolves after its final Sign. A Pulse Jutsu then goes to its controller&#x27;s Discard. A Daemon Jutsu Module remains on the battlefield and attaches to its chosen Agent. A Glitch Jutsu moves to Armed Jutsu after its Signs are formed, then is discarded after its reaction resolves.</p>
 <p><strong>Ninjutsu</strong> lets you place one Jutsu as a Prepared Jutsu instead of resolving it, after paying its non-Sign costs.</p>
+<p>A Mission&#x27;s <strong>Goal N</strong> advances by 1 at the start of its controller&#x27;s turn, after the Draw phase, up to its printed value. Then check whether its Goal and printed requirement are complete. On completion, first apply any stated persistent Signature grant; this changes the Agent&#x27;s future End-phase Signature abilities but does not create a card in hand. Then resolve its Complete instruction and delete the Mission. Agents and Daemons entering play do not advance a Mission&#x27;s Goal.</p>
+<p><strong>Armed Jutsu</strong> is public and holds a controller&#x27;s prepared Glitch Jutsu. It does not count as a Prepared Jutsu beneath Ninjutsu and does not contribute to Signs. A reaction from Armed Jutsu is played without another cost payment.</p>
+<p><strong>Daemon Jutsu Modules</strong> attach to the highest-Breach controlled Agent, breaking ties by oldest battlefield instance. If a Module&#x27;s host would be chosen to take damage and another Agent can take that damage, the host is ignored and the Module is deleted. If no Agent exists when the Module resolves, the Module deletes itself. If its attached Agent is successfully deleted, the Module is deleted too; if that deletion is prevented, the Module remains.</p>
 <h2>Damage targeting</h2>
 <p>Damage is dealt to the opposing player. You do not choose a particular Agent; the game applies the following order every time an effect deals damage.</p>
 <ol>
@@ -48,6 +52,8 @@
 <li><strong>No Agent can be destroyed:</strong> the game chooses an Agent with the lowest remaining Integrity. If several Agents are tied for lowest, it chooses at random among those tied Agents. That Agent takes all of the damage.</li>
 </ol>
 <p>An Agent absorbs the entire damage event. Damage never carries over from that Agent to another Agent or to Sync, even if the Agent is deleted.</p>
+<h2>Direct Integrity loss</h2>
+<p>Direct Integrity loss is separate from damage. An effect that makes your Agents lose Integrity applies independently to every eligible Agent you control, in battlefield order. Immutable cards are not eligible. Each Agent loses up to the stated amount, based on its remaining Integrity, and an Agent at 0 Integrity is deleted to Discard. The loss never chooses randomly, spills to another Agent or to Sync, or triggers Sync-loss amplification. If the effect grants Flux for Integrity lost this way, it grants Flux equal to the total actual loss after all eligible Agents are processed.</p>
 <h2>Battle flow</h2>
 <p>Each player starts with five cards. Ki, Uplink, and current Bandwidth all start at 0; Bandwidth&#x27;s maximum also starts at 0. Turns proceed through Start, Draw, Main, and End.</p>
 <ul>
@@ -69,5 +75,35 @@
 <p>A Reaction program is separate from the Action program and has no default action. Whenever an event in the game occurs, the Reaction rules are checked in order. The current turn player gets priority first, followed by the other player, alternating until both players have no eligible Reaction to the event. The first eligible Glitch for the player with priority is played. If no reaction is eligible or its costs cannot be paid, nothing happens.</p>
 <p>A reaction window belongs to one pending event. If a reaction prevents that event, the reaction window closes immediately; no other matching Glitch can be played for that same event. If a reaction resolves without preventing the event and the event remains pending, priority continues to alternate until both players pass.</p>
 <h2>Simulations and battle logs</h2>
-<p>Simulations play the selected number of battles against each available opponent. Select a matchup and then a battle to read its player-facing log.</p></article>
+<p>Simulations play the selected number of battles against each available opponent. Select a matchup and then a battle to read its player-facing log.</p>
+<h2>Current backlog cards and format updates</h2>
+<p>If an Action program has no selected action, its default action is <strong>End the turn</strong>. A program that explicitly chooses <strong>Play a random card</strong> still uses the random-card behavior; the omission is what now defaults to ending the turn.</p>
+<p><strong>Immutable</strong> is the fifth card kind. Immutables use the Immutable marker and are not Agents or Daemons for effects that target those kinds. <strong>Ninjutsu</strong> and <strong>Charge Ki</strong> are Immutables. <strong>Crush Card Virus</strong> destroys every Agent and Daemon on both battlefields while leaving Immutables untouched.</p>
+<p>The following backlog cards are in the active catalog:</p>
+<ul>
+<li><strong>System Backdoor</strong> — Pulse, Bandwidth 1: play the top card of your opponent&#x27;s deck if able; otherwise put it on the bottom of their deck. The card&#x27;s effects resolve for you, and a Pulse goes to its owner&#x27;s Discard.</li>
+<li><strong>Red Ribbon Funding</strong> — Pulse, Bandwidth 1: Agents you control gain Breach 1.</li>
+<li><strong>Scorched Earth</strong> — Pulse, Bandwidth 3: delete every Agent and Daemon on both battlefields.</li>
+<li><strong>Core Values</strong> — Immutable: at the start of the battle, if you have any Core or Twin Core cards in your deck, you lose. You can activate this card once per battle to move all Core and Twin Core cards from your deck to your hand, set your Sync to 1, and end your turn.</li>
+<li><strong>The Points Icon</strong> — Pulse, Bandwidth 10 and Flux 15: gain 20 Flux. Costs are paid before the gain and terminal outcomes stop the sequence.</li>
+<li><strong>Keyboard Roll</strong> — Pulse: play the top card of your deck if able; otherwise put it into your discard pile; then lose 1 Sync.</li>
+<li><strong>Kernel Exploit</strong> — Pulse, Bandwidth 10: your opponent loses 10 Sync, then you gain 10 Flux.</li>
+<li><strong>Junk Food</strong> — Pulse: draw 3 cards, then end your turn.</li>
+<li><strong>Soul Warden</strong> — Agent, Integrity 1: the first time a Daemon is successfully played each turn, gain 1 Flux.</li>
+<li><strong>Flux Capacitor</strong> — Glitch, Flux 2: when you would lose Sync during your opponent&#x27;s turn, you may pay 2 Flux and play this card; if you do, prevent that Sync loss.</li>
+<li><strong>Special Beam Cannon</strong> — Pulse, Ki cost 1: deal 4 damage. If this deletes an Agent, deal damage again, reduced by 1, and repeat until the next damage amount would be 0.</li>
+<li><strong>Core for All</strong> — Daemon: the first time each turn you gain Flux, add a Core to your deck and shuffle.</li>
+<li><strong>Blood Shadow, Spawn of the Bleeding Phoenix</strong> — Agent, Integrity 1: at the start of your turn, all other Agents on both battlefields lose 1 Integrity, and this Agent gains 1 Integrity for each Integrity lost this way. Whenever you would gain Flux, gain 1 less Flux instead.</li>
+<li><strong>Spirit Bomb</strong> — Pulse, minimum Ki 2 (the Ki is not spent): deal 1 damage for each Agent you control.</li>
+<li><strong>Cultivate</strong> — Pulse, Bandwidth 2: all Agents you control gain 1 Integrity.</li>
+<li><strong>Naruto, Knuckleheaded Ninja</strong> — Agent, Bandwidth 1, Integrity 2, Breach 1: only one Naruto may be played each turn. Signature: Vandalize the Hokage Monument.</li>
+<li><strong>Vandalize the Hokage Monument</strong> — Mission, Bandwidth 1, Goal 1, Signature: when it enters, gain 1 Flux. It completes only while you control Naruto; after the Draw phase, completion grants Naruto Agents an additional Shadow Clone Jutsu Signature for the rest of the battle; then gains 2 Flux from this Mission. The granted Signature supplies Shadow Clone Jutsu during End, not on completion.</li>
+<li><strong>Shadow Clone Jutsu</strong> — Signature Pulse Jutsu, Bandwidth 1, Signs Ram/Ram: choose the highest-Breach Naruto Agent, breaking ties by oldest, and create two permanent printed copies.</li>
+<li><strong>Transformation Jutsu</strong> — Module Jutsu, Bandwidth 1, Signs Ram/Snake: attach to the highest-Breach Agent and redirect the first eligible damage choice away from that host when another Agent can take it; then delete the Module.</li>
+<li><strong>Substitution Jutsu</strong> — Glitch Jutsu, no Signs: lose 2 Sync when it is initially played as a Prepared Jutsu. When your Agent would be deleted, resolve this card from Armed Jutsu to prevent it, restore its Integrity to at least 1, then deal 1 damage to the opponent; do not pay the Sync cost again.</li>
+<li><strong>Kakashi, Distracted Mentor</strong> — Agent, Bandwidth 2, Integrity 4, Breach 1: Signature: Demonic Illusion: Hell Viewing Technique.</li>
+<li><strong>Demonic Illusion: Hell Viewing Technique</strong> — Signature Glitch Jutsu: when the opponent would gain Flux, prevent that gain.</li>
+</ul>
+<p>Battle logs identify the source of effect-triggered Flux gains, report Flux reductions from effects such as Blood Shadow, and show each Breach or Integrity increase with the affected card&#x27;s resulting quality.</p>
+<p>Card art candidates are selection-only until approved. Generated candidates are composed for the card renderer&#x27;s wide 1.42:1 art frame and can be repositioned with the crop control; reference candidates retain their source and attribution URL. A custom art URL may be supplied instead of choosing a candidate.</p></article>
 </main></body></html>
