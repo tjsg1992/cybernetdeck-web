@@ -1,5 +1,5 @@
 {
-  "format_id": "next-set-2-patch-2",
+  "format_id": "next-set-2-patch-3",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -18,6 +18,7 @@
       "effect": "Gain 2 Flux.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 1",
       "art_url": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=85",
       "art_alt": "Twin celestial lights in deep space",
       "art_position": "center"
@@ -138,6 +139,7 @@
       "effect": "Your opponent loses 2 Sync. You lose 1 Sync.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 1",
       "art_url": "card-art/air_five_l.png",
       "art_alt": "Placeholder artwork for Air 5L",
       "art_position": "84% 44%"
@@ -283,6 +285,7 @@
       "effect": "Your opponent discards a card at random.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "keyword_line": "Bandwidth 1",
       "art_url": "card-art/virus_beetle.webp",
       "art_alt": "Temporary placeholder artwork for Virus Beetle",
       "art_position": "61% 46%"
@@ -638,7 +641,7 @@
   },
   "submission_schema_version": 1,
   "browser_submission_migration_enabled": true,
-  "fingerprint": "d273cd53e1fecb8898fa7d515a03ac72708fd78e099b5bc8edd1d8579d4e3779",
+  "fingerprint": "ea5dea24e6d5a0f601676302c3742a60d2c7141b73f2db67ed2ddaf37ec4cc62",
   "keyword_definitions": [
     {
       "title": "Flux",
@@ -883,8 +886,8 @@
       "definition": "A passive Immutable has no activation and cannot be selected by an Activate action."
     }
   ],
-  "export_format_id": "next-set-2-patch-2",
-  "export_format_fingerprint": "d273cd53e1fecb8898fa7d515a03ac72708fd78e099b5bc8edd1d8579d4e3779",
+  "export_format_id": "next-set-2-patch-3",
+  "export_format_fingerprint": "ea5dea24e6d5a0f601676302c3742a60d2c7141b73f2db67ed2ddaf37ec4cc62",
   "export_card_ids": [
     "victory_point_1",
     "victory_point_2",
@@ -1340,6 +1343,65 @@
     {
       "fingerprint": "d273cd53e1fecb8898fa7d515a03ac72708fd78e099b5bc8edd1d8579d4e3779",
       "format_id": "next-set-2-patch-2",
+      "card_ids": [
+        "victory_point_1",
+        "victory_point_2",
+        "threefold_siphon",
+        "sparkleback_totem",
+        "throttle",
+        "overcharge_gambit",
+        "download_scan",
+        "cursed_seal",
+        "five_l",
+        "time_walk",
+        "seal",
+        "dixie_flatline",
+        "one_more_roll",
+        "air_five_l",
+        "charge_ki",
+        "scrappy_kamehameha",
+        "farmer_with_shotgun",
+        "raditz_invader",
+        "double_sunday",
+        "matt_daemon",
+        "rampant_growth",
+        "crush_card_virus",
+        "garbage_collection",
+        "core_a_core",
+        "two_cores_in_a_box",
+        "admin_override",
+        "virus_beetle",
+        "ninjutsu",
+        "clone_jutsu",
+        "fire_release_great_fireball",
+        "naruto_knuckleheaded_ninja",
+        "vandalize_hokage_monument",
+        "shadow_clone_jutsu",
+        "transformation_jutsu",
+        "substitution_jutsu",
+        "kakashi_distracted_mentor",
+        "demonic_illusion_hell_viewing_technique",
+        "dragon_install",
+        "system_backdoor",
+        "red_ribbon_funding",
+        "scorched_earth",
+        "core_values",
+        "the_points_icon",
+        "keyboard_roll",
+        "kernel_exploit",
+        "junk_food",
+        "soul_warden",
+        "flux_capacitor",
+        "special_beam_cannon",
+        "core_for_all",
+        "blood_shadow",
+        "spirit_bomb",
+        "cultivate"
+      ]
+    },
+    {
+      "fingerprint": "ea5dea24e6d5a0f601676302c3742a60d2c7141b73f2db67ed2ddaf37ec4cc62",
+      "format_id": "next-set-2-patch-3",
       "card_ids": [
         "victory_point_1",
         "victory_point_2",
