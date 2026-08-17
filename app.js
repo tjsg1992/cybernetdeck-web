@@ -403,10 +403,7 @@ const previousTournamentTurns=tournamentTurns;
 tournamentTurns=function(log,first,second){if(!battleNarration)return previousTournamentTurns(log,first,second);return battleNarration.groupBattleLogByTurn(log).map(events=>events.map(event=>richBattleLine(event,id=>id==='first'?first:second)).filter(Boolean)).filter(turn=>turn.length)};
 
 
-/* Draw-phase Mission scenarios should identify their actual checkpoint in the
- * setup summary instead of appearing as generic Main-phase replays. */
-const originalScenarioSetupMarkup=scenarioSetupMarkup;
-scenarioSetupMarkup=function(item){const markup=originalScenarioSetupMarkup(item);return item?.setup?.phase==='draw'?markup.replace('Main phase','Draw phase'):markup};
+
 
 /* Flux and Sync conditions share the Reaction comparison controls. */
 const comparisonConditionQuantities={own_victory_points_at_most:'your_flux',opponent_victory_points_at_most:'opponent_flux',opponent_victory_points_at_least:'opponent_flux',opponent_sync_at_most:'opponent_sync'};
