@@ -255,7 +255,12 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
             !Number.isSafeInteger(rule.quantity_threshold) ||
             rule.quantity_threshold < 0 ||
             !cards[rule.action_card_id] ||
-            cards[rule.action_card_id].card_kind !== "glitch") {
+            cards[rule.action_card_id].card_kind !== "glitch" ||
+            !cards[rule.action_card_id].reaction_triggers?.includes(rule.trigger_type) ||
+            (rule.agent_card_ids !== undefined && (!Array.isArray(rule.agent_card_ids) ||
+                rule.agent_card_ids.length === 0 ||
+                new Set(rule.agent_card_ids).size !== rule.agent_card_ids.length ||
+                rule.agent_card_ids.some((cardId) => !submission.decklist[cardId] || cards[cardId]?.card_kind !== "agent")))) {
             throw Error("Invalid reaction rule.");
         }
     }
@@ -353,6 +358,7 @@ export class Battle {
             player.completedMissionNames = new Set(playerSetup.completed_mission_names ?? []);
             player.playedMissionNames = new Set(playerSetup.played_mission_names ?? []);
             player.signatureGrants = new Map((playerSetup.signature_grants ?? []).map((grant) => [grant.signature_card_id, grant.eligible_agent_card_id]));
+            player.signatureIdsSuppliedThisTurn = new Set();
             player.startCount = setup.phase === "start" ? 0 : Math.max(0, (setup.turn ?? 1) - 1);
         }
         this.active = setup.active_player ?? 0;
@@ -401,6 +407,7 @@ export class Battle {
             completedMissionNames: new Set(),
             playedMissionNames: new Set(),
             signatureGrants: new Map(),
+            signatureIdsSuppliedThisTurn: new Set(),
             playCountsThisTurn: {},
             startCount: 0,
         };
@@ -733,20 +740,8 @@ export class Battle {
         }
         return false;
     }
-    deleteAgent(player, card, source) {
+    deleteAgentNow(player, card) {
         if (card.definition.card_kind !== "agent" || !player.battlefield.includes(card)) {
-            return false;
-        }
-        const event = {
-            type: "own_agent_would_be_deleted",
-            recipient: player,
-            amount: 1,
-            source: source?.definition.card_id,
-            agent: card,
-            causingCard: source,
-        };
-        this.react(event);
-        if (event.prevented || this.winner !== undefined) {
             return false;
         }
         if (this.move(player, card, player.battlefield, player.discard, "battlefield", "discard")) {
@@ -760,6 +755,47 @@ export class Battle {
             return true;
         }
         return false;
+    }
+    deleteAgent(player, card, source) {
+        if (card.definition.card_kind !== "agent" || !player.battlefield.includes(card)) {
+            return false;
+        }
+        const event = {
+            type: "own_agent_would_be_deleted",
+            recipient: player,
+            amount: 1,
+            source: source?.definition.card_id,
+            agent: card,
+            pendingAgents: [card],
+            causingCard: source,
+        };
+        this.react(event);
+        if (event.prevented || this.winner !== undefined) {
+            return false;
+        }
+        return this.deleteAgentNow(player, event.agent ?? card);
+    }
+    deleteAgentBatch(player, cards, source) {
+        const remaining = cards.filter((card) => card.definition.card_kind === "agent" && player.battlefield.includes(card));
+        while (remaining.length && this.winner === undefined) {
+            const defaultAgent = remaining[0];
+            const event = {
+                type: "own_agent_would_be_deleted",
+                recipient: player,
+                amount: 1,
+                source: source?.definition.card_id,
+                agent: defaultAgent,
+                pendingAgents: [...remaining],
+                causingCard: source,
+            };
+            this.react(event);
+            const target = event.agent && remaining.includes(event.agent) ? event.agent : defaultAgent;
+            const index = remaining.indexOf(target);
+            if (index >= 0)
+                remaining.splice(index, 1);
+            if (!event.prevented)
+                this.deleteAgentNow(player, target);
+        }
     }
     wipe(player, card) {
         if (this.move(player, card, player.battlefield, player.void, "battlefield", "void")) {
@@ -809,21 +845,21 @@ export class Battle {
     addSignatureToHand(player, cardId, source) {
         const definition = this.cards[cardId];
         if (!definition?.signature) {
-            return;
+            return false;
         }
         const missionReason = this.missionConflict(player, definition);
         if (missionReason) {
             this.rejectMission(player, definition, `signature:${source.definition.card_id}`, missionReason);
-            return;
+            return false;
         }
         if (player.hand.some((card) => card.definition.card_id === cardId) ||
             player.preparedJutsu.some((card) => card.definition.card_id === cardId) ||
             player.chargedJutsu.some((card) => card.definition.card_id === cardId)) {
             this.note(`${player.id} | signature_already_in_hand:${cardId}:${source.definition.card_id}`);
-            return;
+            return false;
         }
         if (!this.act(player, `create ${cardId} in hand`)) {
-            return;
+            return false;
         }
         this.generatedCardCount++;
         player.hand.push({
@@ -831,6 +867,57 @@ export class Battle {
             definition,
         });
         this.note(`${player.id} | signature_added_to_hand:${cardId}:${source.definition.card_id}`);
+        return true;
+    }
+    signatureSourcesForAgent(player, agent) {
+        const sources = [];
+        if (agent.definition.signature_card_id) {
+            sources.push({ cardId: agent.definition.signature_card_id, source: agent });
+        }
+        for (const [cardId, eligibleAgentId] of player.signatureGrants) {
+            if (!eligibleAgentId || eligibleAgentId === agent.definition.card_id) {
+                sources.push({ cardId, source: agent });
+            }
+        }
+        return sources;
+    }
+    supplySignaturesForAgent(player, agent) {
+        if (agent.definition.card_kind !== "agent") {
+            return;
+        }
+        for (const { cardId, source } of this.signatureSourcesForAgent(player, agent)) {
+            if (this.winner !== undefined) {
+                return;
+            }
+            if (player.signatureIdsSuppliedThisTurn.has(cardId)) {
+                this.note(`${player.id} | signature_already_supplied_this_turn:${cardId}:${source.definition.card_id}`);
+                continue;
+            }
+            if (this.addSignatureToHand(player, cardId, source)) {
+                player.signatureIdsSuppliedThisTurn.add(cardId);
+            }
+        }
+    }
+    supplySignaturesForBattlefield(player) {
+        for (const agent of [...player.battlefield]) {
+            if (this.winner !== undefined) {
+                return;
+            }
+            this.supplySignaturesForAgent(player, agent);
+        }
+    }
+    discardSignaturesFromHand(player) {
+        for (const card of [...player.hand]) {
+            if (this.winner !== undefined) {
+                return;
+            }
+            if (!card.definition.signature) {
+                continue;
+            }
+            if (this.move(player, card, player.hand, player.discard, "hand", "discard")) {
+                this.note(`${player.id} | signature_discarded_from_hand:${card.definition.card_id}`);
+            }
+        }
     }
     resolveStartPhaseTriggers(player) {
         const providers = player.battlefield.filter((card) => card.definition.mechanics?.some((mechanic) => mechanic.type === "start_turn_damage_other_agents_gain_integrity"));
@@ -860,23 +947,8 @@ export class Battle {
     }
     resolveEndPhaseTriggers(player) {
         const opponent = this.opponent(player);
-        const signatureProviders = [...player.battlefield].filter((card) => card.definition.card_kind === "agent" && card.definition.signature_card_id);
         const breachProviders = [...opponent.battlefield].filter((card) => card.definition.card_kind === "agent" &&
             (card.definition.breach ?? 0) + (card.breach_bonus ?? 0) > 0);
-        for (const provider of signatureProviders) {
-            if (this.winner !== undefined) {
-                return;
-            }
-            if (provider.definition.signature_card_id) {
-                this.addSignatureToHand(player, provider.definition.signature_card_id, provider);
-            }
-        }
-        for (const [signatureCardId, eligibleAgentId] of player.signatureGrants) {
-            const provider = player.battlefield.find((card) => card.definition.card_kind === "agent" &&
-                (!eligibleAgentId || card.definition.card_id === eligibleAgentId));
-            if (provider)
-                this.addSignatureToHand(player, signatureCardId, provider);
-        }
         for (const provider of breachProviders) {
             if (this.winner !== undefined) {
                 return;
@@ -887,6 +959,9 @@ export class Battle {
             }
             this.note(`${opponent.id} | breach:${provider.definition.card_id}:${amount}`);
             this.dealDamage(opponent, player, amount, provider);
+        }
+        if (this.winner === undefined) {
+            this.discardSignaturesFromHand(player);
         }
     }
     recoverRandomDiscard(player, amount, source) {
@@ -974,14 +1049,15 @@ export class Battle {
     }
     destroyAllAgentsAndDaemons(source) {
         const targets = this.players.flatMap((owner) => [...owner.battlefield].map((card) => ({ owner, card }))).filter(({ card }) => (card.definition.card_kind === "agent" || card.definition.card_kind === "daemon") && !isImmutable(card.definition));
-        for (const { owner, card } of targets) {
+        for (const owner of this.players) {
             if (this.winner !== undefined)
                 break;
-            if (card.definition.card_kind === "daemon") {
+            const ownerTargets = targets.filter((target) => target.owner === owner).map((target) => target.card);
+            this.deleteAgentBatch(owner, ownerTargets);
+            for (const card of ownerTargets.filter((candidate) => candidate.definition.card_kind === "daemon")) {
+                if (this.winner !== undefined)
+                    break;
                 this.deleteDaemon(owner, card);
-            }
-            else {
-                this.deleteAgent(owner, card);
             }
         }
         this.note(`${source.id} | scorched_earth_resolved`);
@@ -1216,6 +1292,12 @@ export class Battle {
             if (!ownsWindow || rule.trigger_type !== event.type) {
                 continue;
             }
+            const reactionAgent = event.type === "own_agent_would_be_deleted" && rule.agent_card_ids
+                ? rule.agent_card_ids.map((cardId) => event.pendingAgents?.find((candidate) => candidate.definition.card_id === cardId)).find((candidate) => Boolean(candidate))
+                : event.agent;
+            if (event.type === "own_agent_would_be_deleted" && !reactionAgent) {
+                continue;
+            }
             const card = player.chargedJutsu.find((instance) => instance.definition.card_id === rule.action_card_id) ?? player.hand.find((instance) => instance.definition.card_id === rule.action_card_id && instance.definition.jutsu !== true);
             if (!card ||
                 !card.definition.reaction_triggers?.includes(rule.trigger_type) ||
@@ -1226,7 +1308,11 @@ export class Battle {
             if (!isCharged && !this.canPayCosts(player, card.definition)) {
                 continue;
             }
-            this.note(`${player.id} | reaction_play:${rule.trigger_type}:${card.definition.card_id}:${event.recipient.id}`);
+            if (event.type === "own_agent_would_be_deleted" && reactionAgent) {
+                event.agent = reactionAgent;
+            }
+            const reactionTarget = event.type === "own_agent_would_be_deleted" ? `:${event.agent?.definition.card_id ?? ""}` : "";
+            this.note(`${player.id} | reaction_play:${rule.trigger_type}:${card.definition.card_id}:${event.recipient.id}${reactionTarget}`);
             if (!(isCharged ? true : this.payCosts(player, card.definition)) ||
                 !this.move(player, card, isCharged ? player.chargedJutsu : player.hand, player.discard, isCharged ? "charged" : "hand", "discard")) {
                 continue;
@@ -1682,6 +1768,7 @@ export class Battle {
             player.cardsPlayedThisTurn++;
         }
         player.playCountsThisTurn[card.definition.card_id] = (player.playCountsThisTurn[card.definition.card_id] ?? 0) + 1;
+        this.supplySignaturesForAgent(player, card);
         if (card.definition.card_kind === "mission") {
             player.playedMissionNames.add(card.definition.display_name);
         }
@@ -1870,6 +1957,7 @@ export class Battle {
             if (phase === "start") {
                 player.cardsPlayedThisTurn = 0;
                 player.playCountsThisTurn = {};
+                player.signatureIdsSuppliedThisTurn = new Set();
                 player.startCount++;
                 this.note(`${player.id} | ${extraTurnSource ? `turn_start:extra_turn:${extraTurnSource}` : "turn_start"}`);
                 this.gainUplink(player, 1);
@@ -1882,6 +1970,7 @@ export class Battle {
                 if (this.winner === undefined) {
                     this.advanceMissionGoals(player);
                     this.checkMissionCompletion(player);
+                    this.supplySignaturesForBattlefield(player);
                 }
                 this.snapshot(player, "draw_end");
             }
@@ -1991,6 +2080,7 @@ export class Battle {
                 if (this.winner === undefined) {
                     this.advanceMissionGoals(player);
                     this.checkMissionCompletion(player);
+                    this.supplySignaturesForBattlefield(player);
                 }
             }
             else if (this.phase === "main") {

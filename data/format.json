@@ -109,6 +109,9 @@
       "effect": "When your opponent would gain Flux, you may pay 2 Sync and play this card. If you do, prevent that gain.",
       "card_kind": "glitch",
       "card_kind_label": "Glitch",
+      "reaction_triggers": [
+        "opponent_would_gain_flux"
+      ],
       "art_url": "card-art/seal.jpeg",
       "art_alt": "Temporary placeholder art for Seal showing a red cybernetic ward",
       "art_position": "50% 0%"
@@ -381,6 +384,9 @@
       "card_kind": "glitch",
       "card_kind_label": "Glitch \u2022 Jutsu",
       "keyword_line": "Signs \u2014 None",
+      "reaction_triggers": [
+        "own_agent_would_be_deleted"
+      ],
       "art_url": "card-art/substitution_jutsu.jpg",
       "art_alt": "Temporary placeholder artwork for Substitution Jutsu",
       "art_position": "50% 50%"
@@ -405,6 +411,9 @@
       "card_kind_label": "Glitch \u2022 Jutsu \u2022 Signature",
       "keyword_line": "Glitch Jutsu \u2022 Signs \u2014 None",
       "signature": true,
+      "reaction_triggers": [
+        "opponent_would_gain_flux"
+      ],
       "art_url": "card-art/demonic_illusion_hell_viewing_technique.png",
       "art_alt": "Temporary placeholder artwork for Demonic Illusion: Hell Viewing Technique",
       "art_position": "61% 51%"
@@ -523,6 +532,9 @@
       "card_kind": "glitch",
       "card_kind_label": "Glitch",
       "keyword_line": "Flux 2",
+      "reaction_triggers": [
+        "opponent_would_lose_sync"
+      ],
       "art_url": "card-art/flux_capacitor.jpg",
       "art_alt": "Generated flux capacitor card art option 4: A floating capacitor holds a looping ring of soft cyan flux.",
       "art_position": "0% 40%"
@@ -643,7 +655,7 @@
   },
   "submission_schema_version": 1,
   "browser_submission_migration_enabled": true,
-  "fingerprint": "b447c3ab61451a160b8571a69549689f5b948a5a11066fd0939769c3831c99fa",
+  "fingerprint": "b5b6ae550dfa83f34c76350ccf0defee249ddd83ccc430a005b81c5d87edf7af",
   "keyword_definitions": [
     {
       "title": "Flux",
@@ -889,7 +901,7 @@
     }
   ],
   "export_format_id": "next-set-2-patch-4",
-  "export_format_fingerprint": "b447c3ab61451a160b8571a69549689f5b948a5a11066fd0939769c3831c99fa",
+  "export_format_fingerprint": "b5b6ae550dfa83f34c76350ccf0defee249ddd83ccc430a005b81c5d87edf7af",
   "export_card_ids": [
     "victory_point_1",
     "victory_point_2",
@@ -1461,7 +1473,7 @@
       ]
     },
     {
-      "fingerprint": "b447c3ab61451a160b8571a69549689f5b948a5a11066fd0939769c3831c99fa",
+      "fingerprint": "b5b6ae550dfa83f34c76350ccf0defee249ddd83ccc430a005b81c5d87edf7af",
       "format_id": "next-set-2-patch-4",
       "card_ids": [
         "victory_point_1",
