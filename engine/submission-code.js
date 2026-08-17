@@ -178,9 +178,17 @@ function encodeBody(source, cardIds, cards = []) {
     bytes.push(reactions.length);
     for (const rule of reactions) {
         const threshold = rule.quantity_threshold, comparison = COMPARISONS[rule.comparison_operator];
-        if (!Number.isSafeInteger(threshold) || threshold < 0 || threshold > 65535 || comparison === undefined || rule.trigger_type !== "opponent_would_gain_flux")
+        if (!Number.isSafeInteger(threshold) || threshold < 0 || threshold > 65535 || comparison === undefined || !["opponent_would_gain_flux", "opponent_would_lose_sync", "own_agent_would_be_deleted"].includes(rule.trigger_type))
             throw Error("This deck has an invalid Reaction rule.");
-        bytes.push(0, comparison, threshold >> 8, threshold & 255, cardIndex(rule.action_card_id));
+        if (rule.trigger_type === "own_agent_would_be_deleted") {
+            const agents = rule.agent_card_ids;
+            if (agents !== undefined && (!Array.isArray(agents) || !agents.length || agents.length > 255 || new Set(agents).size !== agents.length))
+                throw Error("This deck has an invalid Agent-deletion priority list.");
+            bytes.push(1, COMPARISONS["="], 0, 1, cardIndex(rule.action_card_id), agents?.length ?? 0, ...(agents ?? []).map(cardIndex));
+        }
+        else {
+            bytes.push(rule.trigger_type === "opponent_would_gain_flux" ? 0 : 2, comparison, threshold >> 8, threshold & 255, cardIndex(rule.action_card_id));
+        }
     }
     if (!["play_random_card", "end_turn", undefined].includes(submission.default_action))
         throw Error("This deck has an invalid default action.");
@@ -265,9 +273,23 @@ function decodeBody(raw, cardIds, legacyPrefix) {
         const count = raw[offset++];
         for (let position = 0; position < count; position++) {
             const trigger = raw[offset++], comparison = COMPARISON_VALUES[raw[offset++]], threshold = (raw[offset++] << 8) | raw[offset++], action_card_id = cardAt(raw[offset++]);
-            if (trigger !== 0)
+            if (trigger === 0) {
+                reactions.push({ trigger_type: "opponent_would_gain_flux", comparison_operator: comparison, quantity_threshold: threshold, action_card_id });
+            }
+            else if (trigger === 1) {
+                if (comparison !== "=" || threshold !== 1)
+                    throw Error("That code has an invalid Agent-deletion reaction.");
+                const agentCount = raw[offset++];
+                if (!agentCount)
+                    reactions.push({ trigger_type: "own_agent_would_be_deleted", comparison_operator: "=", quantity_threshold: 1, action_card_id });
+                else
+                    reactions.push({ trigger_type: "own_agent_would_be_deleted", comparison_operator: "=", quantity_threshold: 1, action_card_id, agent_card_ids: Array.from({ length: agentCount }, () => cardAt(raw[offset++])) });
+            }
+            else if (trigger === 2) {
+                reactions.push({ trigger_type: "opponent_would_lose_sync", comparison_operator: comparison, quantity_threshold: threshold, action_card_id });
+            }
+            else
                 throw Error("That code has an invalid reaction.");
-            reactions.push({ trigger_type: "opponent_would_gain_flux", comparison_operator: comparison, quantity_threshold: threshold, action_card_id });
         }
         defaultByte = raw[offset++];
         const byteCount = legacyPrefix === "CD5" ? 2 : Math.max(1, Math.ceil(cardIds.length / 8));

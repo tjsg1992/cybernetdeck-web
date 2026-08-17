@@ -60,6 +60,17 @@ export function narrateBattleEvent(event, context) {
         const [, cardId, source] = detail.split(":");
         return `${player} adds ${context.card(cardId)} to their hand from ${context.card(source)}.`;
     }
+    if (detail.startsWith("signature_already_supplied_this_turn:")) {
+        const [, cardId, source] = detail.split(":");
+        return `${player} already received ${context.card(cardId)} this turn, so ${context.card(source)} supplies no additional copy.`;
+    }
+    if (detail.startsWith("signature_already_in_hand:")) {
+        const [, cardId, source] = detail.split(":");
+        return `${player} already has ${context.card(cardId)} in hand, so ${context.card(source)} supplies no additional copy.`;
+    }
+    if (detail.startsWith("signature_discarded_from_hand:")) {
+        return `${player} discards ${context.card(detail.split(":")[1])} from their hand at the end of their turn.`;
+    }
     if (detail.startsWith("signature_granted:")) {
         const [, cardId, agentId] = detail.split(":");
         return `${context.card(agentId)} gains an additional Signature: ${context.card(cardId)} for the rest of the battle.`;
@@ -203,8 +214,11 @@ export function narrateBattleEvent(event, context) {
             const [, cardId, amount] = fields;
             return `${player} plays ${context.card(cardId)} in response to the opponent gaining ${amount} Flux.`;
         }
-        const [, trigger, cardId, recipient, zone] = fields, response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
-        return `${player} ${zone === "armed" ? "resolves" : "plays"} ${context.card(cardId)} in response to ${response}.`;
+        const [, trigger, cardId, recipient, subject] = fields;
+        if (trigger === "own_agent_would_be_deleted" && subject)
+            return `${player} plays ${context.card(cardId)} to protect ${context.card(subject)} from deletion.`;
+        const response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
+        return `${player} ${subject === "armed" ? "resolves" : "plays"} ${context.card(cardId)} in response to ${response}.`;
     }
     if (detail.startsWith("flux_gain_prevented:")) {
         const [, amount, cardId, outcome] = detail.split(":"), ending = outcome === "deleted" ? " and is deleted." : outcome === "discarded" ? "." : ".";

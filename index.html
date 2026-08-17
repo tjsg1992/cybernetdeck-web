@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=10cfa397b46c"></head>
+<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=fea9e8edbebe"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><div class="header-actions"><a class="whats-new-button" href="whats-new.html">What's New?</a><button id="header-tournament" class="header-tournament" type="button" data-tournament-open hidden>Tournament</button><a class="rules-button" href="rules.html">Rules Reference</a></div></header>
 <section id="latest-tournament" class="tournament-panel" aria-live="polite"><p class="eyebrow">TOURNAMENT</p><button class="primary tournament-open" type="button" data-tournament-open>View tournament results</button></section>
@@ -62,8 +62,8 @@
 <label>Action limit<input id="action-limit" type="number" min="1" value="100000"></label></div></div>
 </div>
 <section id="reaction-program" class="program-panel" role="tabpanel" aria-labelledby="program-tab-reaction" hidden><h3>Reaction rules</h3><p class="sub">Checked any time an event occurs.</p>
-<div class="program-builder-row"><span class="builder-prefix">When</span><label>Trigger<select id="reaction-trigger"><option value="opponent_would_gain_flux">Opponent would gain Flux</option></select></label><label>Comparison<select id="reaction-comparison"><option value=">">More than</option><option value=">=">At least</option><option value="=">Exactly</option><option value="<=">At most</option><option value="<">Fewer than</option></select></label><label>Amount<input id="reaction-threshold" type="number" min="0" step="1" value="0"></label><span class="builder-prefix then-prefix">Then</span><label>Card to play<select id="reaction-card"></select></label></div>
-<div class="row rule-actions"><button id="add-reaction" type="button">Add reaction</button></div><ol id="reactions" class="rules-list"></ol></section></article>
+<div class="program-builder-row"><span class="builder-prefix">When</span><label>Trigger<select id="reaction-trigger"><option value="opponent_would_gain_flux">Opponent would gain Flux</option><option value="opponent_would_lose_sync">Opponent would lose Sync</option><option value="own_agent_would_be_deleted">If Agent were to be deleted</option></select></label><label id="reaction-comparison-wrap">Comparison<select id="reaction-comparison"><option value=">">More than</option><option value=">=">At least</option><option value="=">Exactly</option><option value="<=">At most</option><option value="<">Fewer than</option></select></label><label id="reaction-threshold-wrap">Amount<input id="reaction-threshold" type="number" min="0" step="1" value="0"></label><label id="reaction-agent-wrap" hidden>Agent<select id="reaction-agent"><option value="__reaction_cards__">*Cards*</option></select></label><span class="builder-prefix then-prefix">Then</span><label>Card to play<select id="reaction-card"></select></label><div id="reaction-agent-picker" class="combo-card-picker reaction-agent-picker" hidden><p class="field-hint">Click Agents in preference order. Click a selected Agent again to remove it.</p><p id="reaction-agent-summary" class="combo-summary">No Agents selected.</p><div id="reaction-agent-list" class="combo-card-list"></div></div></div>
+<div class="row rule-actions"><button id="add-reaction" type="button">Add reaction</button><button id="cancel-reaction-edit" type="button" hidden>Cancel edit</button></div><ol id="reactions" class="rules-list"></ol></section></article>
 <aside class="context-panel"><h2>Your deck</h2>
 <div id="program-deck-preview" class="deck-preview"></div>
 <p id="program-deck-summary" class="deck-preview-summary"></p>
@@ -91,4 +91,4 @@
 <div id="log-context" class="log-context"></div><pre id="log">Select a battle from the simulation results.</pre></article>
 </div></section>
 
-</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=82b5a521a5d5"></script></body></html>
+</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=2837417d84f1"></script></body></html>

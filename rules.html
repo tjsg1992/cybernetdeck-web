@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=10cfa397b46c"></head>
+<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=fea9e8edbebe"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
 <article class="rules-reference"><p class="eyebrow">Rules Reference</p><h1>CyberNetDeck Rules</h1>
@@ -17,7 +17,7 @@
 <li><strong>Immutable:</strong> is limited to one copy, starts in your opening hand, and is played before the first turn. It cannot be targeted or removed.</li>
 <li><strong>Glitch:</strong> is played from hand as a reaction to its specified event, then goes to Discard.</li>
 </ul>
-<p>An Agent with a name in the form `Name, Title` is a <strong>Named Agent</strong>. Named Agents with the same Name may coexist. A <strong>Signature</strong> cannot be included in a deck; an Agent may have more than one Signature, and a supplied Signature is added to the Agent&#x27;s existing Signatures. A fresh Signature card is supplied to its controller&#x27;s hand during End and is then played normally.</p>
+<p>An Agent with a name in the form `Name, Title` is a <strong>Named Agent</strong>. Named Agents with the same Name may coexist. A <strong>Signature</strong> cannot be included in a deck; an Agent may have more than one Signature, and a supplied Signature is added to the Agent&#x27;s existing Signatures. A fresh Signature card is supplied when its Agent is played, or after Draw if its Agent is already on the battlefield. Only one copy of each Signature ID can be supplied to a player in one turn. Signature cards follow their normal card rules while in hand; any Signature cards still in hand after Breach resolves at End are discarded.</p>
 <p><strong>Breach N</strong> makes an Agent deal N damage during its controller&#x27;s opponent&#x27;s End phase. Damage targets opposing Agents first, then Sync if no Agent remains.</p>
 <h2>Zones and movement</h2>
 <p>Cards can be in a deck, hand, battlefield, Prepared Jutsu area, Armed Jutsu area, Discard, or Void. <strong>Delete</strong> moves a battlefield card to its controller&#x27;s Discard without resolving it again. <strong>Wipe</strong> moves a card to the Void. The Void is separate from Discard.</p>
@@ -39,7 +39,7 @@
 <p>A <strong>Glitch Jutsu</strong> moves to the public Armed Jutsu area when its Sign sequence is complete. If it has no Signs, it becomes Armed immediately after it is prepared. It waits there until its reaction condition occurs. Resolving an Armed Jutsu does not pay its costs again; afterward it goes to Discard. Armed Jutsu do not occupy the battlefield or form Signs.</p>
 <h2>Missions</h2>
 <p>You may control only one Mission. Adding or playing a Mission fails if another copy is already in your hand or on your battlefield, or if you have completed that Mission this battle. Each Mission name can be played only once per battle.</p>
-<p>At the start of your turn, after you draw, each Mission you control advances its Goal by 1 up to its printed value and then checks its requirement. If the requirement is met, resolve its Complete instruction and delete it. A persistent Signature reward changes future End-phase supplies; it does not put a card in your hand at that moment.</p>
+<p>At the start of your turn, after you draw, each Mission you control advances its Goal by 1 up to its printed value and then checks its requirement. If the requirement is met, resolve its Complete instruction and delete it. A persistent Signature reward is available during the post-Draw Signature checkpoint; it does not put a card in your hand during Mission completion itself.</p>
 <h2>Modules</h2>
 <p>A <strong>Module</strong> is a Daemon subtype that attaches to a card when it enters play. It stays on the battlefield until its effect deletes it. If its attached Agent is deleted, the Module is deleted too. If the Agent&#x27;s deletion is prevented, the Module remains attached.</p>
 <h2>Damage targeting</h2>
@@ -58,7 +58,7 @@
 <li><strong>Start:</strong> The turn begins and its player gains 1 Uplink. Their Bandwidth maximum increases by 1, and their current Bandwidth is restored to that new maximum. Uplink requirements are thresholds, not costs.</li>
 <li><strong>Draw:</strong> Draw one card. Drawing from an empty deck loses the battle.</li>
 <li><strong>Main:</strong> Follow the program while playable cards remain in hand.</li>
-<li><strong>End:</strong> End-phase effects resolve in their normal order. The turn then ends and the other player begins their turn.</li>
+<li><strong>End:</strong> Breach effects resolve, then every Signature card remaining in the active player&#x27;s hand is discarded. The turn then ends and the other player begins their turn.</li>
 </ul>
 <p>Cards pay their listed costs when they are played, including reactions and forced plays. A forced play that cannot pay its costs goes to Discard without resolving. When an effect forces a player to play the top card of their deck, that card follows its normal play restrictions and costs. Unspent Bandwidth does not carry through Start. If a Sync payment reaches 0, zero-Sync effects resolve before the battle checks for a loss.</p>
 <h2>Programs</h2>
@@ -68,5 +68,6 @@
 <p><strong>Play a Combo</strong> is an ordered list of named cards. Unavailable choices are skipped by default and each choice is attempted once. Mark a choice <strong>(all)</strong> to repeat it while another playable copy is available. <strong>Only when all cards in hand</strong> requires every listed card to be in hand. <strong>Cancel if card isn&#x27;t played</strong> stops when the current choice cannot be played. A Combo uses each card&#x27;s normal costs, timing, and restrictions.</p>
 <h2>Reactions</h2>
 <p>A Reaction program is separate from the Action program and has no default action. Whenever an event in the game occurs, the Reaction rules are checked in order. The current turn player gets priority first, followed by the other player, alternating until both players have no eligible Reaction to the event. The first eligible Glitch for the player with priority is played. If no reaction is eligible or its costs cannot be paid, nothing happens.</p>
-<p>A reaction window belongs to one pending event. If a reaction prevents that event, the reaction window closes immediately; no other matching Glitch can be played for that same event. If a reaction resolves without preventing the event and the event remains pending, priority continues to alternate until both players pass.</p></article>
+<p>A reaction window belongs to one pending event. If a reaction prevents that event, the reaction window closes immediately; no other matching Glitch can be played for that same event. If a reaction resolves without preventing the event and the event remains pending, priority continues to alternate until both players pass.</p>
+<p>Agent-deletion reactions may name one Agent or an ordered subset of Agents in the deck. When an effect deletes multiple Agents, the first selected matching Agent in that pending batch becomes the subject of Substitution Jutsu; other Agents continue through the deletion effect if that subject is protected.</p></article>
 </main></body></html>
