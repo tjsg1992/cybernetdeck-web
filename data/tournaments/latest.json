@@ -238,6 +238,7 @@
     "format_version": "cd-ts-1",
     "id": "tournament-20260815T050941Z",
     "published": true,
+    "published_at": "2026-08-15T05:10:12.349360+00:00",
     "replay_assets": {
       "cards": "cards.js",
       "engine": "engine.js"

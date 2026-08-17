@@ -94,7 +94,34 @@ function actionCode(rule) {
     const all = Boolean(rule.action_card_all_ids?.length), cancel = rule.cancel_if_card_not_played === true, only = rule.only_when_all_cards_in_hand === true;
     return only ? (all ? (cancel ? 11 : 10) : (cancel ? 9 : 8)) : (all ? (cancel ? 7 : 6) : (cancel ? 5 : 4));
 }
-function encodeBody(source, cardIds) {
+function accessibleCardIds(decklist, cards = []) {
+    const definitions = new Map(cards.map(card => [card.card_id, card]));
+    const accessible = new Set(Object.entries(decklist).filter(([, count]) => Number(count) > 0).map(([cardId]) => cardId));
+    let changed = true;
+    while (changed) {
+        changed = false;
+        for (const cardId of [...accessible]) {
+            const definition = definitions.get(cardId);
+            if (!definition)
+                continue;
+            const related = [...(definition.adds_card_ids ?? []), definition.signature_card_id];
+            if (definition.mission_grants_signature_card_id && (!definition.mission_signature_agent_card_id || accessible.has(definition.mission_signature_agent_card_id)))
+                related.push(definition.mission_grants_signature_card_id);
+            for (const relatedId of related)
+                if (relatedId && definitions.has(relatedId) && !accessible.has(relatedId)) {
+                    accessible.add(relatedId);
+                    changed = true;
+                }
+        }
+    }
+    return accessible;
+}
+function validateRandomAccess(source, cards = []) {
+    const accessible = accessibleCardIds(source.decklist ?? {}, cards);
+    if ((source.random_card_ids ?? []).some((id) => !accessible.has(id)))
+        throw Error("Random-card choices must be cards in or accessible from the deck.");
+}
+function encodeBody(source, cardIds, cards = []) {
     const submission = migrateSubmission(source), index = new Map(cardIds.map((id, position) => [id, position]));
     const cardIndex = (id) => { const value = index.get(id); if (value === undefined)
         throw Error(`Card ${id} is outside the immutable export catalog.`); return value; };
@@ -159,8 +186,9 @@ function encodeBody(source, cardIds) {
         throw Error("This deck has an invalid default action.");
     bytes.push(submission.default_action === "end_turn" ? 1 : 0);
     const randomIds = submission.random_card_ids ?? Object.keys(submission.decklist ?? {});
-    if (!Array.isArray(randomIds) || randomIds.some((id) => !Object.hasOwn(submission.decklist, id)))
-        throw Error("Random-card choices must be cards in the deck.");
+    if (!Array.isArray(randomIds))
+        throw Error("Random-card choices are malformed.");
+    validateRandomAccess(submission, cards);
     let mask = 0n;
     for (const id of randomIds)
         mask |= 1n << BigInt(cardIndex(id));
@@ -170,7 +198,7 @@ function encodeBody(source, cardIds) {
     return bytes;
 }
 export function encodeSubmission(source, catalog) {
-    const body = encodeBody(source, catalog.card_ids);
+    const body = encodeBody(source, catalog.card_ids, catalog.cards);
     return `CD6.${catalog.format_id}.${b64encode([CURRENT_SUBMISSION_SCHEMA_VERSION, ...hexBytes(catalog.fingerprint), ...body])}`;
 }
 function decodeBody(raw, cardIds, legacyPrefix) {
@@ -262,11 +290,16 @@ export function decodeSubmission(code, catalogs, expectedFormatId) {
         const catalog = catalogs.find(candidate => candidate.fingerprint === fingerprint && candidate.format_id === match[2]);
         if (!catalog)
             throw Error("That deck code's immutable card catalog is unavailable.");
-        return migrateSubmission({ ...decodeBody(raw.slice(33), catalog.card_ids), submission_schema_version: raw[0] });
+        const decoded = migrateSubmission({ ...decodeBody(raw.slice(33), catalog.card_ids), submission_schema_version: raw[0] });
+        validateRandomAccess(decoded, catalog.cards);
+        return decoded;
     }
     const candidates = catalogs.filter(candidate => candidate.format_id === match[2]);
     const uniqueOrders = new Map(candidates.map(candidate => [candidate.card_ids.join("\0"), candidate]));
     if (uniqueOrders.size !== 1)
         throw Error("That legacy deck code is ambiguous and cannot be decoded safely.");
-    return migrateSubmission(decodeBody(raw, [...uniqueOrders.values()][0].card_ids, match[1]));
+    const catalog = [...uniqueOrders.values()][0];
+    const decoded = migrateSubmission(decodeBody(raw, catalog.card_ids, match[1]));
+    validateRandomAccess(decoded, catalog.cards);
+    return decoded;
 }

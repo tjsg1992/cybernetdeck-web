@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=5eab8458ee2e"></head>
+<title>CyberNetDeck</title><link rel="stylesheet" href="app.css?v=10cfa397b46c"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><div class="header-actions"><a class="whats-new-button" href="whats-new.html">What's New?</a><button id="header-tournament" class="header-tournament" type="button" data-tournament-open hidden>Tournament</button><a class="rules-button" href="rules.html">Rules Reference</a></div></header>
 <section id="latest-tournament" class="tournament-panel" aria-live="polite"><p class="eyebrow">TOURNAMENT</p><button class="primary tournament-open" type="button" data-tournament-open>View tournament results</button></section>
@@ -73,7 +73,7 @@
 
 <section id="view-results" class="view" hidden><div class="view-grid">
 <article class="primary-panel"><div class="section-heading"><div>
-<h2>Results</h2></div><div class="results-actions"><button id="revert-to-previous-run" type="button" hidden disabled>Revert to previous run</button><button id="view-opponent-deck" class="primary" type="button" hidden>View opponent deck</button><button class="discord-export" id="export-deck-results">Export for Discord</button></div></div><progress id="simulation-progress" value="0" max="5" hidden></progress>
+<h2>Results</h2></div><div class="results-actions"><button id="revert-to-previous-run" type="button" hidden disabled>Revert to previous run</button><button id="view-opponent-deck" class="primary" type="button" hidden>View opponent deck</button><button class="discord-export" id="export-deck-results">Export for Discord</button></div></div><progress id="simulation-progress" value="0" max="5" hidden></progress><p id="simulation-status" class="simulation-status" role="alert" hidden></p>
 <div id="results-empty" class="empty-state">Submit a programmed deck to see matchup results.</div>
 <div id="results-table-wrap" hidden><div class="table-scroll"><table><thead><tr><th>Opponent</th><th>Wins</th><th>Losses</th><th>Draws</th><th>Win rate</th><th>Avg. turns</th></tr></thead>
 <tbody id="matches"></tbody></table></div></div>
@@ -91,4 +91,4 @@
 <div id="log-context" class="log-context"></div><pre id="log">Select a battle from the simulation results.</pre></article>
 </div></section>
 
-</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=83441a5a6417"></script></body></html>
+</main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><script src="app.js?v=82b5a521a5d5"></script></body></html>

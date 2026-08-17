@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, validateSubmission, } from "./engine.js";
+import { DEFAULT_CONFIG, accessibleCardIds, validateSubmission, } from "./engine.js";
 function deckSize(decklist) {
     return Object.values(decklist).reduce((total, count) => total + (count > 0 ? count : 0), 0);
 }
@@ -20,8 +20,11 @@ function baselineCardIds(baseline, cardIds) {
         .map(([cardId]) => cardId));
     return cardIds.filter((cardId) => baselineIds.has(cardId));
 }
-function submissionForDeck(baseline, decklist) {
-    const randomCardIds = baseline.random_card_ids?.filter((cardId) => (decklist[cardId] ?? 0) > 0);
+function submissionForDeck(baseline, decklist, cards) {
+    const accessible = cards
+        ? accessibleCardIds(decklist, cards)
+        : new Set(Object.keys(decklist));
+    const randomCardIds = baseline.random_card_ids?.filter((cardId) => accessible.has(cardId));
     return {
         ...baseline,
         decklist: copyDeck(decklist),
@@ -31,7 +34,7 @@ function submissionForDeck(baseline, decklist) {
     };
 }
 function makeCandidate(baseline, currentDeck, rootCardId, change, cards, config) {
-    const submission = submissionForDeck(baseline, currentDeck);
+    const submission = submissionForDeck(baseline, currentDeck, cards);
     try {
         validateSubmission(submission, cards, config);
     }

@@ -1,4 +1,11 @@
 /** DOM-free CyberNet Deck rules core. Keep cards declarative and mutations here. */
+function namedAgentName(definition) {
+    if (definition.card_kind !== "agent") {
+        return undefined;
+    }
+    const match = definition.display_name.match(/^([^,]+),\s*(.+)$/);
+    return match?.[1].trim() || undefined;
+}
 export const FORMAT_VERSION = "cd-ts-1";
 export const DEFAULT_CONFIG = {
     minimum_deck_size: 20,
@@ -25,11 +32,7 @@ export class Rng {
         return Math.floor(this.next() * max);
     }
     shuffle(items) {
-        let remainingIterations = items.length;
         for (let i = items.length - 1; i > 0; i--) {
-            if (remainingIterations-- <= 0) {
-                throw new Error("RNG shuffle exceeded its bounded iteration count");
-            }
             const j = this.int(i + 1);
             [items[i], items[j]] = [items[j], items[i]];
         }
@@ -99,45 +102,7 @@ const CARD_KIND_SIGN = {
     daemon: "ox",
     pulse: "tiger",
     glitch: "snake",
-    immutable: "ox",
 };
-function isImmutable(definition) {
-    return definition.card_kind === "immutable" || definition.immutable === true;
-}
-/**
- * Return the stable, cycle-safe closure of named cards a deck can reference
- * while it is being programmed. This is an access set, not a set of card
- * instances: it never puts a Signature into a deck or hand.
- */
-export function accessibleCardIds(decklist, cards) {
-    const accessible = new Set(Object.entries(decklist)
-        .filter(([, count]) => Number(count) > 0)
-        .map(([cardId]) => cardId)
-        .filter((cardId) => Boolean(cards[cardId])));
-    let changed = true;
-    while (changed) {
-        changed = false;
-        for (const cardId of [...accessible]) {
-            const definition = cards[cardId];
-            const related = [
-                ...(definition.adds_card_ids ?? []),
-                definition.signature_card_id,
-            ];
-            if (definition.mission_grants_signature_card_id &&
-                (!definition.mission_signature_agent_card_id ||
-                    accessible.has(definition.mission_signature_agent_card_id))) {
-                related.push(definition.mission_grants_signature_card_id);
-            }
-            for (const relatedId of related) {
-                if (relatedId && cards[relatedId] && !accessible.has(relatedId)) {
-                    accessible.add(relatedId);
-                    changed = true;
-                }
-            }
-        }
-    }
-    return accessible;
-}
 const SIGN_LABELS = {
     ram: "Ram",
     ox: "Ox",
@@ -166,10 +131,10 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
         if (cards[id].signature) {
             throw Error(`Signature card ${id} cannot be included in a deck.`);
         }
-        if (cards[id].jutsu && cards[id].card_kind !== "glitch" && (!Array.isArray(cards[id].signs) || cards[id].signs.some((sign) => !SIGN_LABELS[sign]))) {
-            throw Error(`Jutsu ${id} must have a valid Signs sequence.`);
+        if (cards[id].jutsu && (!cards[id].signs?.length || cards[id].signs.some((sign) => !SIGN_LABELS[sign]))) {
+            throw Error(`Jutsu ${id} must have at least one valid Sign.`);
         }
-        if (isImmutable(cards[id]) && count > 1) {
+        if (cards[id].immutable && count > 1) {
             throw Error(`Immutable card quantity for ${id} cannot exceed one.`);
         }
     }
@@ -185,9 +150,8 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
         submission.default_action !== "end_turn") {
         throw Error("Invalid default action.");
     }
-    const accessible = accessibleCardIds(submission.decklist, cards);
-    if (submission.random_card_ids?.some((id) => !accessible.has(id))) {
-        throw Error("A random-card choice must be in the deck or accessible from the deck.");
+    if (submission.random_card_ids?.some((id) => !submission.decklist[id])) {
+        throw Error("A random-card choice must be in the deck.");
     }
     for (const rule of submission.program) {
         if (![
@@ -225,14 +189,14 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
         }
         if ((rule.action_type === "play_named_card" || rule.action_type === "activate_immutable_card") &&
             (!rule.action_card_id || !cards[rule.action_card_id] ||
-                (rule.action_type === "play_named_card" && isImmutable(cards[rule.action_card_id])) ||
-                (rule.action_type === "activate_immutable_card" && !isImmutable(cards[rule.action_card_id])))) {
+                (rule.action_type === "play_named_card" && cards[rule.action_card_id].immutable) ||
+                (rule.action_type === "activate_immutable_card" && !cards[rule.action_card_id].immutable))) {
             throw Error("Invalid named play card.");
         }
         if (rule.action_type === "play_combo" &&
             (!Array.isArray(rule.action_card_ids) ||
                 rule.action_card_ids.length === 0 ||
-                rule.action_card_ids.some((cardId) => !cardId || !cards[cardId] || isImmutable(cards[cardId])))) {
+                rule.action_card_ids.some((cardId) => !cardId || !cards[cardId] || cards[cardId].immutable))) {
             throw Error("Invalid combo play cards.");
         }
         if (rule.action_card_all_ids !== undefined &&
@@ -250,7 +214,7 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
         }
     }
     for (const rule of reactions) {
-        if (!["opponent_would_gain_flux", "opponent_would_lose_sync", "own_agent_would_be_deleted"].includes(rule.trigger_type) ||
+        if (rule.trigger_type !== "opponent_would_gain_flux" ||
             !OPERATORS.includes(rule.comparison_operator) ||
             !Number.isSafeInteger(rule.quantity_threshold) ||
             rule.quantity_threshold < 0 ||
@@ -279,7 +243,6 @@ export class Battle {
     generatedCardCount = 0;
     canceledComboRule;
     nonMatchingComboRule;
-    activeReactionEvent;
     winner;
     reason = "";
     active = 0;
@@ -306,13 +269,13 @@ export class Battle {
             for (const player of this.players) {
                 this.randomize(player, player.deck);
                 let drawn = 0;
-                for (const immutable of player.deck.filter((card) => isImmutable(card.definition))) {
+                for (const immutable of player.deck.filter((card) => card.definition.immutable)) {
                     this.move(player, immutable, player.deck, player.hand, "deck", "hand");
                 }
                 for (let i = player.hand.length; i < config.starting_hand_size; i++) {
                     drawn += Number(this.draw(player, false));
                 }
-                if (drawn || player.hand.some((card) => isImmutable(card.definition))) {
+                if (drawn || player.hand.some((card) => card.definition.immutable)) {
                     this.note(`${player.id} | opening_hand`);
                 }
             }
@@ -333,14 +296,12 @@ export class Battle {
                         ? { remaining_integrity: definition.integrity }
                         : {}),
                     ...(definition.jutsu ? { formed_signs: 0 } : {}),
-                    ...(definition.card_kind === "mission" ? { mission_progress: 0 } : {}),
                 };
             });
             player.deck = makeCards(playerSetup.deck, "deck");
             player.hand = makeCards(playerSetup.hand, "hand");
             player.battlefield = makeCards(playerSetup.battlefield, "battlefield");
             player.preparedJutsu = makeCards(playerSetup.prepared_jutsu ? [playerSetup.prepared_jutsu] : [], "prepared");
-            player.armedJutsu = makeCards(playerSetup.armed_jutsu, "armed");
             player.discard = makeCards(playerSetup.discard, "discard");
             player.void = makeCards(playerSetup.void, "void");
             player.points = playerSetup.flux ?? 0;
@@ -350,10 +311,6 @@ export class Battle {
             player.maxBandwidth = Math.max(0, playerSetup.bandwidth_max ?? playerSetup.bandwidth ?? 0);
             player.bandwidth = Math.min(player.maxBandwidth, Math.max(0, playerSetup.bandwidth ?? player.maxBandwidth));
             player.cardsPlayedThisTurn = playerSetup.cards_played_this_turn ?? 0;
-            player.completedMissionNames = new Set(playerSetup.completed_mission_names ?? []);
-            player.playedMissionNames = new Set(playerSetup.played_mission_names ?? []);
-            player.signatureGrants = new Map((playerSetup.signature_grants ?? []).map((grant) => [grant.signature_card_id, grant.eligible_agent_card_id]));
-            player.startCount = setup.phase === "start" ? 0 : Math.max(0, (setup.turn ?? 1) - 1);
         }
         this.active = setup.active_player ?? 0;
         this.turnCount = setup.turn ?? 1;
@@ -371,7 +328,6 @@ export class Battle {
                         ? { remaining_integrity: definition.integrity }
                         : {}),
                     ...(definition.jutsu ? { formed_signs: 0 } : {}),
-                    ...(definition.card_kind === "mission" ? { mission_progress: 0 } : {}),
                 });
             }
         }
@@ -385,7 +341,6 @@ export class Battle {
             void: [],
             battlefield: [],
             preparedJutsu: [],
-            armedJutsu: [],
             points: 0,
             sync: 20,
             ki: 0,
@@ -394,22 +349,15 @@ export class Battle {
             maxBandwidth: 0,
             cardsPlayedThisTurn: 0,
             actions: 0,
-            // Older submissions omitted this field. The parser migration treats that
-            // omission as the safe explicit default: end the turn.
-            default_action: submission.default_action ?? "end_turn",
+            default_action: submission.default_action ?? "play_random_card",
             random_card_ids: submission.random_card_ids,
-            completedMissionNames: new Set(),
-            playedMissionNames: new Set(),
-            signatureGrants: new Map(),
-            playCountsThisTurn: {},
-            startCount: 0,
         };
     }
     opponent(player) {
         return this.players[0] === player ? this.players[1] : this.players[0];
     }
     boardCards(player) {
-        return [...player.battlefield, ...player.preparedJutsu, ...player.armedJutsu];
+        return [...player.battlefield, ...player.preparedJutsu];
     }
     namedCardConditionArea(player, condition) {
         if (condition === "in_your_hand") {
@@ -458,7 +406,7 @@ export class Battle {
         return true;
     }
     move(player, card, from, to, fromName, toName) {
-        if (from === player.battlefield && isImmutable(card.definition)) {
+        if (from === player.battlefield && card.definition.immutable) {
             this.note(`${player.id} | immutable_move_prevented:${card.definition.card_id}`);
             return false;
         }
@@ -500,11 +448,6 @@ export class Battle {
             this.finish(this.opponent(player).id, "deck_exhausted");
             return false;
         }
-        const missionReason = this.missionConflict(player, card.definition);
-        if (missionReason) {
-            this.rejectMission(player, card.definition, "draw", missionReason);
-            return false;
-        }
         const moved = this.move(player, card, player.deck, player.hand, "deck", "hand");
         if (moved) {
             drawnCards?.push(card.definition.card_id);
@@ -536,18 +479,15 @@ export class Battle {
     canPayCosts(player, card) {
         return (this.canPayFlux(player, card.flux_cost ?? 0) &&
             this.canPayBandwidth(player, card.bandwidth_cost ?? 0) &&
-            this.canPaySync(player, card.sync_cost ?? 0) &&
-            player.ki >= Math.max(0, card.ki_cost ?? 0));
+            this.canPaySync(player, card.sync_cost ?? 0));
     }
     payCosts(player, card) {
         const fluxCost = Math.max(0, card.flux_cost ?? 0);
         const bandwidthCost = Math.max(0, card.bandwidth_cost ?? 0);
         const syncCost = Math.max(0, card.sync_cost ?? 0);
-        const kiCost = Math.max(0, card.ki_cost ?? 0);
         if (!this.canPayFlux(player, fluxCost) ||
             !this.canPayBandwidth(player, bandwidthCost) ||
-            !this.canPaySync(player, syncCost) ||
-            player.ki < kiCost) {
+            !this.canPaySync(player, syncCost)) {
             return false;
         }
         if (fluxCost) {
@@ -566,58 +506,28 @@ export class Battle {
                 return false;
             }
         }
-        if (kiCost) {
-            this.act(player, `spend ${kiCost} ki`);
-            player.ki -= kiCost;
-            this.note(`${player.id} | ki_paid:${kiCost}:${player.ki}`);
-        }
         return true;
     }
     canPlayRestrictions(player, card) {
-        return ((card.definition.card_kind !== "glitch" || card.definition.jutsu === true) &&
-            !isImmutable(card.definition) &&
+        const name = namedAgentName(card.definition);
+        const duplicateNamedAgent = name !== undefined &&
+            player.battlefield.some((installed) => namedAgentName(installed.definition) === name);
+        return (card.definition.card_kind !== "glitch" &&
             (this.phase === "main" || this.phase === "pregame") &&
+            !duplicateNamedAgent &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
             player.ki >= (card.definition.minimum_ki ?? 0) &&
             (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0) &&
-            ((card.definition.max_plays_per_turn ?? 0) <= 0 ||
-                (player.playCountsThisTurn[card.definition.card_id] ?? 0) < (card.definition.max_plays_per_turn ?? 0)) &&
-            (card.definition.card_kind !== "mission" ||
-                !this.missionConflict(player, card.definition, card)) &&
             (!card.definition.jutsu ||
                 (player.preparedJutsu.length === 0 &&
                     player.battlefield.some((installed) => installed.definition.supports_jutsu_preparation))));
-    }
-    missionConflict(player, definition, candidate) {
-        if (definition.card_kind !== "mission")
-            return undefined;
-        if (player.hand.some((card) => card !== candidate && card.definition.card_id === definition.card_id)) {
-            return "hand";
-        }
-        if (player.battlefield.some((card) => card.definition.card_kind === "mission" && card.definition.card_id === definition.card_id)) {
-            return "battlefield_copy";
-        }
-        if (player.completedMissionNames.has(definition.display_name)) {
-            return "completed";
-        }
-        if (player.playedMissionNames.has(definition.display_name)) {
-            return "played";
-        }
-        if (player.battlefield.some((card) => card.definition.card_kind === "mission")) {
-            return "battlefield_mission";
-        }
-        return undefined;
-    }
-    rejectMission(player, definition, source, reason) {
-        this.note(`${player.id} | mission_rejected:${definition.card_id}:${source}:${reason}`);
     }
     canPlay(player, card) {
         return this.canPlayRestrictions(player, card) && this.canPayCosts(player, card.definition);
     }
     canActivate(player, card) {
-        return (isImmutable(card.definition) &&
+        return (card.definition.immutable === true &&
             card.definition.activation !== "passive" &&
-            !card.activation_used &&
             this.phase === "main" &&
             this.canPayCosts(player, card.definition) &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
@@ -667,15 +577,6 @@ export class Battle {
         player.sync = Math.max(0, value);
         const applied = player.sync - before;
         const actualLoss = Math.max(0, before - player.sync);
-        if (actualLoss && this.players[this.active] !== player && this.winner === undefined) {
-            const event = { type: "opponent_would_lose_sync", recipient: player, amount: actualLoss, source: causingCard?.definition.card_id };
-            this.react(event);
-            if (event.prevented) {
-                player.sync = before;
-                this.note(`${player.id} | sync_loss_prevented:${actualLoss}`);
-                return;
-            }
-        }
         if (source) {
             this.note(`${player.id} | sync_set:${value}:${player.sync}:${source}`);
         }
@@ -724,39 +625,11 @@ export class Battle {
         this.note(`${player.id} | bandwidth:${gain}:${player.bandwidth}:${player.maxBandwidth}`);
     }
     deleteDaemon(player, card, event = "daemon_deleted") {
-        if (isImmutable(card.definition)) {
+        if (card.definition.immutable) {
             return false;
         }
         if (this.move(player, card, player.battlefield, player.discard, "battlefield", "discard")) {
             this.note(`${player.id} | ${event}:${card.definition.card_id}`);
-            return true;
-        }
-        return false;
-    }
-    deleteAgent(player, card, source) {
-        if (card.definition.card_kind !== "agent" || !player.battlefield.includes(card)) {
-            return false;
-        }
-        const event = {
-            type: "own_agent_would_be_deleted",
-            recipient: player,
-            amount: 1,
-            source: source?.definition.card_id,
-            agent: card,
-            causingCard: source,
-        };
-        this.react(event);
-        if (event.prevented || this.winner !== undefined) {
-            return false;
-        }
-        if (this.move(player, card, player.battlefield, player.discard, "battlefield", "discard")) {
-            this.note(`${player.id} | agent_deleted:${card.definition.card_id}`);
-            const attachedModules = player.battlefield.filter((candidate) => candidate.definition.module === true && candidate.attached_to_uid === card.uid);
-            for (const module of attachedModules) {
-                if (this.winner !== undefined)
-                    break;
-                this.deleteDaemon(player, module, "module_deleted_with_agent");
-            }
             return true;
         }
         return false;
@@ -771,11 +644,6 @@ export class Battle {
     addCardsToDeck(player, cardId, amount, shuffle, source) {
         const definition = this.cards[cardId];
         if (!definition) {
-            return;
-        }
-        const missionReason = this.missionConflict(player, definition);
-        if (missionReason) {
-            this.rejectMission(player, definition, source, missionReason);
             return;
         }
         if (definition.signature) {
@@ -808,21 +676,7 @@ export class Battle {
     }
     addSignatureToHand(player, cardId, source) {
         const definition = this.cards[cardId];
-        if (!definition?.signature) {
-            return;
-        }
-        const missionReason = this.missionConflict(player, definition);
-        if (missionReason) {
-            this.rejectMission(player, definition, `signature:${source.definition.card_id}`, missionReason);
-            return;
-        }
-        if (player.hand.some((card) => card.definition.card_id === cardId) ||
-            player.preparedJutsu.some((card) => card.definition.card_id === cardId) ||
-            player.armedJutsu.some((card) => card.definition.card_id === cardId)) {
-            this.note(`${player.id} | signature_already_in_hand:${cardId}:${source.definition.card_id}`);
-            return;
-        }
-        if (!this.act(player, `create ${cardId} in hand`)) {
+        if (!definition?.signature || !this.act(player, `create ${cardId} in hand`)) {
             return;
         }
         this.generatedCardCount++;
@@ -832,56 +686,23 @@ export class Battle {
         });
         this.note(`${player.id} | signature_added_to_hand:${cardId}:${source.definition.card_id}`);
     }
-    resolveStartPhaseTriggers(player) {
-        const providers = player.battlefield.filter((card) => card.definition.mechanics?.some((mechanic) => mechanic.type === "start_turn_damage_other_agents_gain_integrity"));
-        for (const provider of providers) {
-            const mechanic = provider.definition.mechanics?.find((candidate) => candidate.type === "start_turn_damage_other_agents_gain_integrity");
-            if (!mechanic || this.winner !== undefined)
-                continue;
-            let totalLoss = 0;
-            const targets = this.players.flatMap((owner) => owner.battlefield.filter((card) => card !== provider && card.definition.card_kind === "agent" && card.remaining_integrity !== undefined).map((card) => ({ owner, card })));
-            for (const { owner, card } of targets) {
-                if (this.winner !== undefined)
-                    break;
-                const actual = Math.min(Math.max(0, mechanic.amount), Math.max(0, card.remaining_integrity ?? 0));
-                if (!actual || !this.act(owner, `lose ${actual} integrity from ${card.uid}`))
-                    continue;
-                card.remaining_integrity = (card.remaining_integrity ?? 0) - actual;
-                totalLoss += actual;
-                this.note(`${owner.id} | integrity_lost:${card.definition.card_id}:${actual}:${card.remaining_integrity}:${provider.definition.card_id}`);
-                if (card.remaining_integrity === 0)
-                    this.deleteAgent(owner, card, provider);
-            }
-            if (totalLoss && provider.remaining_integrity !== undefined && this.winner === undefined) {
-                provider.remaining_integrity += totalLoss;
-                this.note(`${player.id} | integrity_gained:${provider.definition.card_id}:${totalLoss}:${provider.remaining_integrity}:start_turn`);
-            }
-        }
-    }
     resolveEndPhaseTriggers(player) {
         const opponent = this.opponent(player);
-        const signatureProviders = [...player.battlefield].filter((card) => card.definition.card_kind === "agent" && card.definition.signature_card_id);
+        const signatureProviders = [...player.battlefield].filter((card) => card.definition.card_kind === "agent" &&
+            card.definition.signature_card_id);
         const breachProviders = [...opponent.battlefield].filter((card) => card.definition.card_kind === "agent" &&
-            (card.definition.breach ?? 0) + (card.breach_bonus ?? 0) > 0);
+            (card.definition.breach ?? 0) > 0);
         for (const provider of signatureProviders) {
             if (this.winner !== undefined) {
                 return;
             }
-            if (provider.definition.signature_card_id) {
-                this.addSignatureToHand(player, provider.definition.signature_card_id, provider);
-            }
-        }
-        for (const [signatureCardId, eligibleAgentId] of player.signatureGrants) {
-            const provider = player.battlefield.find((card) => card.definition.card_kind === "agent" &&
-                (!eligibleAgentId || card.definition.card_id === eligibleAgentId));
-            if (provider)
-                this.addSignatureToHand(player, signatureCardId, provider);
+            this.addSignatureToHand(player, provider.definition.signature_card_id, provider);
         }
         for (const provider of breachProviders) {
             if (this.winner !== undefined) {
                 return;
             }
-            const amount = Math.max(0, (provider.definition.breach ?? 0) + (provider.breach_bonus ?? 0));
+            const amount = Math.max(0, provider.definition.breach ?? 0);
             if (!amount || !this.act(opponent, `resolve breach ${provider.definition.card_id}`)) {
                 continue;
             }
@@ -922,7 +743,7 @@ export class Battle {
     dealDamage(source, target, amount, causingCard) {
         const damage = Math.max(0, amount);
         if (!damage) {
-            return false;
+            return;
         }
         const agents = target.battlefield.filter((card) => card.definition.card_kind === "agent" && card.remaining_integrity !== undefined);
         const destroyable = agents.filter((card) => (card.remaining_integrity ?? 0) <= damage);
@@ -932,104 +753,16 @@ export class Battle {
         if (!candidates.length) {
             this.note(`${target.id} | damage:${damage}:sync`);
             this.changeSync(target, -damage, causingCard);
-            return false;
+            return;
         }
-        let agent = candidates[this.rng.int(candidates.length)];
-        const modules = target.battlefield.filter((card) => card.definition.module && card.attached_to_uid === agent?.uid);
-        if (agent && modules.length) {
-            const alternatives = candidates.filter((candidate) => candidate !== agent);
-            if (alternatives.length) {
-                const module = modules[0];
-                const host = agent;
-                const redirectedTarget = alternatives[this.rng.int(alternatives.length)];
-                this.note(`${target.id} | module_redirected_damage:${module.definition.card_id}:${host.definition.card_id}:${redirectedTarget.definition.card_id}`);
-                this.deleteDaemon(target, module, "module_deleted");
-                agent = redirectedTarget;
-            }
-        }
-        if (!agent)
-            return false;
+        const agent = candidates[this.rng.int(candidates.length)];
         if (!this.act(source, `deal ${damage} damage to ${agent.uid}`)) {
-            return false;
+            return;
         }
         agent.remaining_integrity = Math.max(0, (agent.remaining_integrity ?? 0) - damage);
         this.note(`${target.id} | agent_damaged:${agent.definition.card_id}:${damage}:${agent.remaining_integrity}`);
-        if (agent.remaining_integrity === 0)
-            return this.deleteAgent(target, agent, causingCard);
-        return false;
-    }
-    dealDamageChain(source, target, amount, decrement, causingCard) {
-        let damage = Math.max(0, amount);
-        const step = Math.max(1, decrement);
-        while (damage > 0 && this.winner === undefined) {
-            if (!this.dealDamage(source, target, damage, causingCard))
-                break;
-            damage -= step;
-        }
-    }
-    dealDamageByOwnAgentCount(source, causingCard) {
-        const amount = source.battlefield.filter((card) => card.definition.card_kind === "agent").length;
-        if (amount)
-            this.dealDamage(source, this.opponent(source), amount, causingCard);
-    }
-    destroyAllAgentsAndDaemons(source) {
-        const targets = this.players.flatMap((owner) => [...owner.battlefield].map((card) => ({ owner, card }))).filter(({ card }) => (card.definition.card_kind === "agent" || card.definition.card_kind === "daemon") && !isImmutable(card.definition));
-        for (const { owner, card } of targets) {
-            if (this.winner !== undefined)
-                break;
-            if (card.definition.card_kind === "daemon") {
-                this.deleteDaemon(owner, card);
-            }
-            else {
-                this.deleteAgent(owner, card);
-            }
-        }
-        this.note(`${source.id} | scorched_earth_resolved`);
-    }
-    modifyAllOwnAgentsBreach(player, amount, source) {
-        const delta = Math.max(0, amount);
-        for (const agent of player.battlefield.filter((card) => card.definition.card_kind === "agent")) {
-            agent.breach_bonus = (agent.breach_bonus ?? 0) + delta;
-            const currentBreach = (agent.definition.breach ?? 0) + (agent.breach_bonus ?? 0);
-            this.note(`${player.id} | breach_modified:${agent.definition.card_id}:${delta}:${currentBreach}:${source}`);
-        }
-    }
-    gainIntegrityAllAgents(player, amount, source) {
-        const gain = Math.max(0, amount);
-        for (const agent of player.battlefield.filter((card) => card.definition.card_kind === "agent" && card.remaining_integrity !== undefined)) {
-            if (!this.act(player, `gain ${gain} integrity for ${agent.uid}`))
-                break;
-            agent.remaining_integrity = (agent.remaining_integrity ?? 0) + gain;
-            this.note(`${player.id} | integrity_gained:${agent.definition.card_id}:${gain}:${agent.remaining_integrity}:${source}`);
-        }
-    }
-    loseOwnAgentIntegrityForFlux(player, amount, source) {
-        const loss = Math.max(0, amount);
-        if (!loss) {
-            return;
-        }
-        let totalLoss = 0;
-        const agents = [...player.battlefield].filter((card) => card.definition.card_kind === "agent" &&
-            card.remaining_integrity !== undefined &&
-            !isImmutable(card.definition));
-        for (const agent of agents) {
-            if (this.winner !== undefined) {
-                return;
-            }
-            const before = Math.max(0, agent.remaining_integrity ?? 0);
-            const actualLoss = Math.min(loss, before);
-            if (!actualLoss || !this.act(player, `lose ${actualLoss} integrity from ${agent.uid}`)) {
-                continue;
-            }
-            agent.remaining_integrity = before - actualLoss;
-            totalLoss += actualLoss;
-            this.note(`${player.id} | integrity_lost:${agent.definition.card_id}:${actualLoss}:${agent.remaining_integrity}:${source.definition.card_id}`);
-            if (agent.remaining_integrity === 0)
-                this.deleteAgent(player, agent, source);
-        }
-        if (totalLoss && this.winner === undefined) {
-            this.note(`${player.id} | integrity_loss_total:${totalLoss}:${source.definition.card_id}`);
-            this.gain(player, totalLoss, true, source.definition.card_id);
+        if (agent.remaining_integrity === 0 && this.move(target, agent, target.battlefield, target.discard, "battlefield", "discard")) {
+            this.note(`${target.id} | agent_deleted:${agent.definition.card_id}`);
         }
     }
     formPreparedSign(player, prepared, reason) {
@@ -1053,8 +786,6 @@ export class Battle {
             return;
         }
         const matchingSign = CARD_KIND_SIGN[source.definition.card_kind];
-        if (!matchingSign)
-            return;
         if (signs[formed] === matchingSign) {
             this.formPreparedSign(player, prepared, "matching");
             if (player.preparedJutsu[0] === prepared && this.winner === undefined) {
@@ -1080,18 +811,12 @@ export class Battle {
             return;
         }
         this.note(`${player.id} | prepared_jutsu_complete:${prepared.definition.card_id}`);
-        if (prepared.definition.card_kind === "glitch") {
-            if (this.move(player, prepared, player.preparedJutsu, player.armedJutsu, "prepared", "armed")) {
-                this.note(`${player.id} | jutsu_armed:${prepared.definition.card_id}`);
-            }
-            return;
-        }
         if (!this.move(player, prepared, player.preparedJutsu, player.battlefield, "prepared", "battlefield") ||
             !this.act(player, `resolve prepared ${prepared.definition.card_id}`)) {
             return;
         }
         this.resolve(player, prepared);
-        if (this.winner === undefined && prepared.definition.card_kind !== "daemon") {
+        if (this.winner === undefined) {
             if (this.move(player, prepared, player.battlefield, player.discard, "battlefield", "discard")) {
                 this.note(`${player.id} | prepared_jutsu_deleted:${prepared.definition.card_id}`);
             }
@@ -1125,120 +850,34 @@ export class Battle {
             this.note(`${player.id} | agents_created:${created}:${displayName}:${startingIntegrity}:${source}`);
         }
     }
-    createCopiesOfHighestBreachAgent(player, amount, source, eligibleCardIds) {
-        const eligible = eligibleCardIds?.length ? new Set(eligibleCardIds) : undefined;
-        const agents = player.battlefield.filter((card) => card.definition.card_kind === "agent" &&
-            (!eligible || eligible.has(card.definition.card_id)));
-        const sourceAgent = agents.reduce((best, candidate) => {
-            if (!best)
-                return candidate;
-            const bestBreach = (best.definition.breach ?? 0) + (best.breach_bonus ?? 0);
-            const candidateBreach = (candidate.definition.breach ?? 0) + (candidate.breach_bonus ?? 0);
-            return candidateBreach > bestBreach ? candidate : best;
-        }, undefined);
-        if (!sourceAgent)
-            return;
-        for (let index = 0; index < Math.max(0, amount) && this.winner === undefined; index++) {
-            if (!this.act(player, `create copy of ${sourceAgent.definition.card_id}`))
-                break;
-            this.generatedCardCount++;
-            player.battlefield.push({
-                uid: `generated:${player.id}:${this.generatedCardCount}:${sourceAgent.definition.card_id}:copy`,
-                definition: sourceAgent.definition,
-                remaining_integrity: sourceAgent.definition.integrity,
-            });
-        }
-        this.note(`${player.id} | copies_created:${sourceAgent.definition.card_id}:${Math.max(0, amount)}:${source}`);
-    }
-    attachModuleToHighestBreachAgent(player, module) {
-        const target = player.battlefield
-            .filter((card) => card !== module && card.definition.card_kind === "agent")
-            .reduce((best, candidate) => {
-            if (!best)
-                return candidate;
-            const bestBreach = (best.definition.breach ?? 0) + (best.breach_bonus ?? 0);
-            const candidateBreach = (candidate.definition.breach ?? 0) + (candidate.breach_bonus ?? 0);
-            return candidateBreach > bestBreach ? candidate : best;
-        }, undefined);
-        if (target) {
-            module.attached_to_uid = target.uid;
-            this.note(`${player.id} | module_attached:${module.definition.card_id}:${target.definition.card_id}`);
-        }
-        else {
-            this.deleteDaemon(player, module, "module_deleted_no_target");
-        }
-    }
-    missionRequirementMet(player, mission) {
-        const requirement = mission.definition.mission_requirement;
-        return !requirement || (requirement.type === "control_named_agent" &&
-            player.battlefield.some((card) => card.definition.card_kind === "agent" && card.definition.card_id === requirement.card_id));
-    }
-    completeMission(player, mission) {
-        if (!player.battlefield.includes(mission) || !this.missionRequirementMet(player, mission))
-            return;
-        player.completedMissionNames.add(mission.definition.display_name);
-        this.note(`${player.id} | mission_complete:${mission.definition.card_id}`);
-        if (mission.definition.mission_grants_signature_card_id) {
-            player.signatureGrants.set(mission.definition.mission_grants_signature_card_id, mission.definition.mission_signature_agent_card_id);
-            this.note(`${player.id} | signature_granted:${mission.definition.mission_grants_signature_card_id}:${mission.definition.mission_signature_agent_card_id ?? ""}`);
-        }
-        this.resolveMechanics(player, mission, mission.definition.mission_complete_mechanics ?? []);
-        if (this.winner === undefined && this.move(player, mission, player.battlefield, player.discard, "battlefield", "discard")) {
-            this.note(`${player.id} | mission_deleted:${mission.definition.card_id}`);
-        }
-    }
-    advanceMissionGoals(player) {
-        for (const mission of [...player.battlefield].filter((card) => card.definition.card_kind === "mission")) {
-            const goal = Math.max(0, mission.definition.mission_goal ?? 0);
-            if ((mission.mission_progress ?? 0) < goal) {
-                mission.mission_progress = Math.min(goal, (mission.mission_progress ?? 0) + 1);
-                this.note(`${player.id} | mission_progress:${mission.definition.card_id}:${mission.mission_progress}:${goal}`);
-            }
-        }
-    }
-    checkMissionCompletion(player) {
-        for (const mission of [...player.battlefield].filter((card) => card.definition.card_kind === "mission")) {
-            const goal = Math.max(0, mission.definition.mission_goal ?? 0);
-            if ((mission.mission_progress ?? 0) >= goal)
-                this.completeMission(player, mission);
-        }
-    }
     preventersFor(event) {
         return this.opponent(event.recipient).battlefield.filter((card) => card.definition.mechanics?.some((mechanic) => mechanic.type === "prevent_next_opponent_flux_gain"));
     }
     playReaction(player, event) {
         for (const rule of player.reactions) {
-            const ownsWindow = event.type === "opponent_would_gain_flux"
-                ? event.recipient !== player
-                : event.type === "opponent_would_lose_sync"
-                    ? event.recipient === player && this.players[this.active] !== player
-                    : event.recipient === player;
-            if (!ownsWindow || rule.trigger_type !== event.type) {
+            if (event.recipient === player) {
                 continue;
             }
-            const card = player.armedJutsu.find((instance) => instance.definition.card_id === rule.action_card_id) ?? player.hand.find((instance) => instance.definition.card_id === rule.action_card_id && instance.definition.jutsu !== true);
+            const card = player.hand.find((instance) => instance.definition.card_id === rule.action_card_id);
             if (!card ||
                 !card.definition.reaction_triggers?.includes(rule.trigger_type) ||
                 !compare(event.amount, rule.comparison_operator, rule.quantity_threshold)) {
                 continue;
             }
-            const isArmed = player.armedJutsu.includes(card);
-            if (!isArmed && !this.canPayCosts(player, card.definition)) {
+            if (!this.canPayCosts(player, card.definition)) {
                 continue;
             }
             this.note(`${player.id} | reaction_play:${rule.trigger_type}:${card.definition.card_id}:${event.recipient.id}`);
-            if (!(isArmed ? true : this.payCosts(player, card.definition)) ||
-                !this.move(player, card, isArmed ? player.armedJutsu : player.hand, player.discard, isArmed ? "armed" : "hand", "discard")) {
+            if (!this.payCosts(player, card.definition) ||
+                !this.move(player, card, player.hand, player.discard, "hand", "discard")) {
                 continue;
             }
             this.act(player, `resolve reaction ${card.definition.card_id}`);
-            this.activeReactionEvent = event;
-            this.resolve(player, card);
-            this.activeReactionEvent = undefined;
-            if (card.definition.mechanics?.some((mechanic) => mechanic.type === "prevent_triggering_event" || mechanic.type === "prevent_triggering_sync_loss" || mechanic.type === "prevent_all_opponent_flux_gain")) {
+            if (card.definition.mechanics?.some((mechanic) => mechanic.type === "prevent_triggering_event")) {
                 event.prevented = true;
-                this.note(`${event.recipient.id} | ${event.type === "opponent_would_gain_flux" ? "flux_gain" : "sync_loss"}_prevented:${event.amount}:${card.definition.card_id}:discarded`);
+                this.note(`${event.recipient.id} | flux_gain_prevented:${event.amount}:${card.definition.card_id}:discarded`);
             }
+            this.formPreparedSigns(player, card);
             return true;
         }
         return false;
@@ -1246,11 +885,7 @@ export class Battle {
     react(event) {
         let priority = this.players[this.active];
         let passes = 0;
-        let remainingIterations = 2 + 2 * this.players.reduce((total, player) => total + player.hand.length, 0);
         while (this.winner === undefined && !event.prevented && passes < 2) {
-            if (remainingIterations-- <= 0) {
-                throw new Error("Reaction window exceeded its bounded iteration count");
-            }
             if (this.playReaction(priority, event)) {
                 passes = 0;
             }
@@ -1261,16 +896,7 @@ export class Battle {
         }
     }
     gain(player, amount, bonus = true, source) {
-        const requested = Math.max(0, amount);
-        const reductions = player.battlefield.flatMap((card) => (card.definition.mechanics ?? [])
-            .filter((mechanic) => mechanic.type === "reduce_flux_gain")
-            .map((mechanic) => ({ cardId: card.definition.card_id, amount: Math.max(0, mechanic.amount) })));
-        const reduction = Math.min(requested, reductions.reduce((total, entry) => total + entry.amount, 0));
-        const gain = requested - reduction;
-        if (reduction) {
-            const sources = reductions.filter((entry) => entry.amount > 0).map((entry) => entry.cardId);
-            this.note(`${player.id} | flux_gain_reduced:${reduction}:${sources.join(",")}`);
-        }
+        const gain = Math.max(0, amount);
         if (!gain) {
             return;
         }
@@ -1281,11 +907,6 @@ export class Battle {
             source,
         };
         this.note(`${player.id} | pending_flux_gain:${gain}:${source ?? ""}`);
-        const persistentPreventer = this.opponent(player).battlefield.find((card) => card.definition.mechanics?.some((mechanic) => mechanic.type === "prevent_all_opponent_flux_gain"));
-        if (persistentPreventer) {
-            this.note(`${player.id} | flux_gain_prevented:${gain}:${persistentPreventer.definition.card_id}:persistent`);
-            return;
-        }
         const preventers = this.preventersFor(event);
         if (preventers.length) {
             event.prevented = true;
@@ -1309,20 +930,13 @@ export class Battle {
         const applied = player.points - before;
         if (applied && bonus) {
             const bonuses = [];
-            const coreProviders = [];
             for (const daemon of player.battlefield) {
                 for (const mechanic of daemon.definition.mechanics ?? []) {
                     if (mechanic.type === "first_flux_gain_bonus" &&
                         !this.mechanicTriggeredThisTurn(daemon, mechanic.type)) {
                         bonuses.push({ daemon, amount: mechanic.amount });
                     }
-                    if (mechanic.type === "add_core_on_first_flux_gain" && !this.mechanicTriggeredThisTurn(daemon, mechanic.type))
-                        coreProviders.push(daemon);
                 }
-            }
-            for (const provider of coreProviders) {
-                this.markMechanicTriggeredThisTurn(provider, "add_core_on_first_flux_gain");
-                this.addCardsToDeck(player, "victory_point_1", 1, true, provider.definition.card_id);
             }
             for (const { daemon, amount } of bonuses) {
                 this.markMechanicTriggeredThisTurn(daemon, "first_flux_gain_bonus");
@@ -1337,11 +951,6 @@ export class Battle {
         for (const card of lookedAt) {
             if (this.winner !== undefined) {
                 return;
-            }
-            const missionReason = this.missionConflict(player, card.definition);
-            if (missionReason) {
-                this.rejectMission(player, card.definition, `scan:${source}`, missionReason);
-                continue;
             }
             if (matches.has(card.definition.card_id) && this.move(player, card, player.deck, player.hand, "deck", "hand")) {
                 found++;
@@ -1372,39 +981,6 @@ export class Battle {
             return;
         }
         this.discardRandomCard(player);
-    }
-    drawCards(player, amount, source) {
-        const drawnCards = [];
-        let drawn = 0;
-        for (let index = 0; index < Math.max(0, amount) && this.winner === undefined; index++)
-            drawn += Number(this.draw(player, false, drawnCards));
-        if (drawn) {
-            this.note(`${player.id} | draw_many:${drawn}:${source}`);
-            this.snapshotDraw(player, drawnCards);
-        }
-    }
-    collectNamedCardsFromDeck(player, cardIds, endTurn, source) {
-        const ids = new Set(cardIds);
-        const collected = [];
-        for (const card of [...player.deck]) {
-            if (this.winner !== undefined)
-                break;
-            const missionReason = this.missionConflict(player, card.definition);
-            if (missionReason) {
-                this.rejectMission(player, card.definition, `collect:${source}`, missionReason);
-                continue;
-            }
-            if (ids.has(card.definition.card_id) && this.move(player, card, player.deck, player.hand, "deck", "hand")) {
-                collected.push(card.definition.card_id);
-            }
-        }
-        this.note(`${player.id} | cards_moved_from_deck:${collected.join(",")}:${source}`);
-        this.snapshotDeck(player);
-        this.setSync(player, 1, source);
-        if (endTurn && this.winner === undefined) {
-            this.phase = "end";
-            this.note(`${player.id} | end_turn_effect`);
-        }
     }
     discardRandomCard(player) {
         if (!player.hand.length) {
@@ -1453,18 +1029,6 @@ export class Battle {
                 this.snapshotDraw(player, drawnCards);
             }
         }
-        if (playedCard.definition.card_kind === "daemon") {
-            for (const owner of this.players) {
-                for (const provider of owner.battlefield) {
-                    const mechanic = provider.definition.mechanics?.find((candidate) => candidate.type === "first_daemon_play_gain_flux");
-                    if (!mechanic || this.mechanicTriggeredThisTurn(provider, "first_daemon_play_gain_flux"))
-                        continue;
-                    this.markMechanicTriggeredThisTurn(provider, "first_daemon_play_gain_flux");
-                    if (this.act(owner, `resolve ${provider.definition.card_id}`))
-                        this.gain(owner, mechanic.amount, true, provider.definition.card_id);
-                }
-            }
-        }
     }
     playTopCardOfDeck(player, source) {
         const opponent = this.opponent(player);
@@ -1484,33 +1048,13 @@ export class Battle {
         this.note(`${opponent.id} | play_top_card:${card.definition.card_id}:${source}`);
         this.play(opponent, card, true);
     }
-    playTopCardFromDeck(controller, deckOwner, fallback, source) {
-        const card = deckOwner.deck[0];
-        if (!card)
-            return;
-        if (!this.canPlay(controller, card)) {
-            const moved = fallback === "bottom"
-                ? this.move(controller, card, deckOwner.deck, deckOwner.deck, "deck", "deck_bottom")
-                : this.move(controller, card, deckOwner.deck, deckOwner.discard, "deck", "discard");
-            if (moved)
-                this.snapshotDeck(deckOwner);
-            this.note(`${controller.id} | forced_play_failed:${card.definition.card_id}:${source}:${fallback}:${deckOwner.id}`);
-            return;
-        }
-        if (!this.move(controller, card, deckOwner.deck, controller.hand, "deck", "hand"))
-            return;
-        this.snapshotDeck(deckOwner);
-        const deckOwnerSuffix = controller === deckOwner ? "" : `:${deckOwner.id}`;
-        this.note(`${controller.id} | play_top_card:${card.definition.card_id}:${source}${deckOwnerSuffix}`);
-        this.play(controller, card, true, deckOwner);
-    }
-    resolveMechanics(player, card, mechanics) {
-        for (const mechanic of mechanics) {
+    resolve(player, card) {
+        for (const mechanic of card.definition.mechanics ?? []) {
             if (this.winner !== undefined) {
                 return;
             }
             if (mechanic.type === "gain_flux") {
-                this.gain(player, mechanic.amount, true, card.definition.card_id);
+                this.gain(player, mechanic.amount);
             }
             else if (mechanic.type === "gain_ki") {
                 this.gainKi(player, mechanic.amount);
@@ -1523,7 +1067,7 @@ export class Battle {
             }
             else if (mechanic.type === "gain_victory_points_if_at_most") {
                 if (player.points <= mechanic.threshold) {
-                    this.gain(player, mechanic.amount, true, card.definition.card_id);
+                    this.gain(player, mechanic.amount);
                 }
                 else {
                     this.note(`${player.id} | conditional_flux_effect_failed`);
@@ -1549,11 +1093,7 @@ export class Battle {
                 const drawCount = Math.floor(player.deck.length / 2);
                 let drawn = 0;
                 const drawnCards = [];
-                let remainingIterations = drawCount;
                 for (let i = 0; i < drawCount && this.winner === undefined; i++) {
-                    if (remainingIterations-- <= 0) {
-                        throw new Error("Effect draw exceeded its bounded iteration count");
-                    }
                     drawn += Number(this.draw(player, false, drawnCards));
                 }
                 if (drawn) {
@@ -1598,60 +1138,12 @@ export class Battle {
             else if (mechanic.type === "opponent_sync_loss_bonus") {
                 // Persistent trigger; it is applied by resolveSyncLossBonuses.
             }
-            else if (mechanic.type === "lose_own_agent_integrity_for_flux") {
-                this.loseOwnAgentIntegrityForFlux(player, mechanic.amount, card);
-            }
             else if (mechanic.type === "create_agents") {
                 this.createAgents(player, mechanic.amount, mechanic.display_name, mechanic.integrity, card.definition.card_id);
             }
-            else if (mechanic.type === "draw_cards") {
-                this.drawCards(player, mechanic.amount, card.definition.card_id);
-            }
-            else if (mechanic.type === "gain_integrity_all_agents") {
-                this.gainIntegrityAllAgents(player, mechanic.amount, card.definition.card_id);
-            }
-            else if (mechanic.type === "modify_all_own_agents_breach") {
-                this.modifyAllOwnAgentsBreach(player, mechanic.amount, card.definition.card_id);
-            }
-            else if (mechanic.type === "create_copies_of_highest_breach_agent") {
-                this.createCopiesOfHighestBreachAgent(player, mechanic.amount, card.definition.card_id, mechanic.eligible_card_ids);
-            }
-            else if (mechanic.type === "prevent_triggering_agent_deletion") {
-                const event = this.activeReactionEvent;
-                if (event?.type === "own_agent_would_be_deleted" && event.agent) {
-                    event.prevented = true;
-                    const before = Math.max(0, event.agent.remaining_integrity ?? 0);
-                    event.agent.remaining_integrity = Math.max(mechanic.minimum_integrity, event.agent.remaining_integrity ?? 0);
-                    this.note(`${player.id} | agent_deletion_prevented:${event.agent.definition.card_id}:${event.agent.remaining_integrity - before}:${event.agent.remaining_integrity}`);
-                }
-            }
-            else if (mechanic.type === "module_attach_highest_breach_protect") {
-                this.attachModuleToHighestBreachAgent(player, card);
-            }
-            else if (mechanic.type === "destroy_all_agents_and_daemons") {
-                this.destroyAllAgentsAndDaemons(player);
-            }
-            else if (mechanic.type === "play_top_card_of_deck") {
-                this.playTopCardFromDeck(player, mechanic.target === "opponent" ? this.opponent(player) : player, mechanic.fallback, card.definition.card_id);
-            }
-            else if (mechanic.type === "deal_damage_chain") {
-                this.dealDamageChain(player, this.opponent(player), mechanic.amount, mechanic.decrement, card);
-            }
-            else if (mechanic.type === "deal_damage_by_own_agent_count") {
-                this.dealDamageByOwnAgentCount(player, card);
-            }
-            else if (mechanic.type === "first_daemon_play_gain_flux" || mechanic.type === "reduce_flux_gain" || mechanic.type === "prevent_all_opponent_flux_gain" || mechanic.type === "add_core_on_first_flux_gain" || mechanic.type === "start_turn_damage_other_agents_gain_integrity" || mechanic.type === "prevent_triggering_sync_loss" || mechanic.type === "lose_at_setup_if_deck_contains") {
-                // Persistent, trigger-window, or setup mechanics resolve outside the card's play event.
-            }
-            else if (mechanic.type === "collect_named_cards_from_deck") {
-                this.collectNamedCardsFromDeck(player, mechanic.card_ids, mechanic.end_turn, card.definition.card_id);
-            }
         }
     }
-    resolve(player, card) {
-        this.resolveMechanics(player, card, card.definition.mechanics ?? []);
-    }
-    play(player, card, fromDeck = false, discardOwner = player) {
+    play(player, card, fromDeck = false) {
         if (!this.canPlay(player, card)) {
             return false;
         }
@@ -1668,11 +1160,7 @@ export class Battle {
             if (this.phase === "main") {
                 player.cardsPlayedThisTurn++;
             }
-            player.playCountsThisTurn[card.definition.card_id] = (player.playCountsThisTurn[card.definition.card_id] ?? 0) + 1;
             this.note(`${player.id} | jutsu_prepared:${card.definition.card_id}`);
-            if (!(card.definition.signs ?? []).length && this.winner === undefined) {
-                this.resolvePreparedJutsu(player, card);
-            }
             return this.winner === undefined;
         }
         if (!this.move(player, card, player.hand, player.battlefield, "hand", "battlefield")) {
@@ -1681,16 +1169,12 @@ export class Battle {
         if (this.phase === "main") {
             player.cardsPlayedThisTurn++;
         }
-        player.playCountsThisTurn[card.definition.card_id] = (player.playCountsThisTurn[card.definition.card_id] ?? 0) + 1;
-        if (card.definition.card_kind === "mission") {
-            player.playedMissionNames.add(card.definition.display_name);
-        }
         this.act(player, `resolve ${card.definition.card_id}`);
         this.resolve(player, card);
         this.resolvePlayTriggers(player, card);
         this.formPreparedSigns(player, card);
         if (card.definition.card_kind === "pulse") {
-            this.move(player, card, player.battlefield, discardOwner.discard, "battlefield", "discard");
+            this.move(player, card, player.battlefield, player.discard, "battlefield", "discard");
         }
         if (player.points >= this.config.victory_points_to_win) {
             this.finish(player.id, "flux");
@@ -1705,7 +1189,6 @@ export class Battle {
         if (!this.payCosts(player, card.definition)) {
             return false;
         }
-        card.activation_used = true;
         player.cardsPlayedThisTurn++;
         this.act(player, `resolve ${card.definition.card_id}`);
         this.resolve(player, card);
@@ -1718,7 +1201,7 @@ export class Battle {
         return (restricted
             ? player.hand.filter((card) => !player.random_card_ids ||
                 player.random_card_ids.includes(card.definition.card_id))
-            : player.hand).filter((card) => card.definition.card_kind !== "glitch" && !isImmutable(card.definition));
+            : player.hand).filter((card) => card.definition.card_kind !== "glitch" && !card.definition.immutable);
     }
     canAct(player, rule) {
         if (rule.action_type === "end_turn") {
@@ -1869,20 +1352,13 @@ export class Battle {
             this.act(player, `${player.id} enters ${phase} phase`);
             if (phase === "start") {
                 player.cardsPlayedThisTurn = 0;
-                player.playCountsThisTurn = {};
-                player.startCount++;
                 this.note(`${player.id} | ${extraTurnSource ? `turn_start:extra_turn:${extraTurnSource}` : "turn_start"}`);
                 this.gainUplink(player, 1);
                 this.increaseBandwidthMaxAndRestore(player, 1);
-                this.resolveStartPhaseTriggers(player);
                 this.snapshot(player, "start");
             }
             else if (phase === "draw") {
                 this.draw(player);
-                if (this.winner === undefined) {
-                    this.advanceMissionGoals(player);
-                    this.checkMissionCompletion(player);
-                }
                 this.snapshot(player, "draw_end");
             }
             else if (phase === "main") {
@@ -1904,14 +1380,13 @@ export class Battle {
         while (this.winner === undefined &&
             this.phase === "main" &&
             (player.hand.length ||
-                player.battlefield.some((card) => isImmutable(card.definition)))) {
+                player.battlefield.some((card) => card.definition.immutable))) {
             const rule = player.program.find((candidate) => !canceledRules.has(candidate) && this.matching(player, candidate));
             const action = rule ?? {
                 condition_type: "if_able",
                 action_type: player.default_action,
                 default_random: true,
             };
-            const actionCountBefore = this.actionCount;
             if (!this.action(player, action)) {
                 if (rule !== undefined &&
                     (this.canceledComboRule === rule || this.nonMatchingComboRule === rule)) {
@@ -1922,12 +1397,6 @@ export class Battle {
                     continue;
                 }
                 break;
-            }
-            // Every successful main-phase action must pass through `act`. Keep this
-            // invariant outside the action dispatcher so a corrupted dispatcher
-            // cannot spin forever without consuming the battle action budget.
-            if (this.actionCount <= actionCountBefore) {
-                throw new Error("main-phase action made no accounted progress");
             }
             canceledRules.clear();
         }
@@ -1945,15 +1414,8 @@ export class Battle {
         this.note("system | pregame_start");
         const ordered = [this.players[this.active], this.opponent(this.players[this.active])];
         for (const player of ordered) {
-            const setupCards = [...player.deck, ...player.hand];
-            const setupLoss = setupCards.some((card) => isImmutable(card.definition) && (card.definition.setup_mechanics ?? []).some((mechanic) => mechanic.type === "lose_at_setup_if_deck_contains" && player.deck.some((candidate) => mechanic.card_ids.includes(candidate.definition.card_id))));
-            if (setupLoss) {
-                this.note(`${player.id} | setup_loss:core_values`);
-                this.finish(this.opponent(player).id, "core_values");
-                return;
-            }
             for (const card of [...player.hand]) {
-                if (!isImmutable(card.definition) || this.winner !== undefined) {
+                if (!card.definition.immutable || this.winner !== undefined) {
                     continue;
                 }
                 this.note(`${player.id} | play:${card.definition.card_id}`);
@@ -1962,38 +1424,12 @@ export class Battle {
         }
     }
     run() {
-        // `Battle` is a terminal state machine. Replaying an already-completed
-        // instance may inspect its record, but must not append a second turn or
-        // accept any later gameplay transition.
-        if (this.winner !== undefined) {
-            return this.record(1, 0);
-        }
         if (this.scenarioSetup) {
             const player = this.players[this.active];
             this.phase = this.scenarioSetup.phase ?? "main";
             this.note(`${player.id} | turn_start`);
             this.act(player, `${player.id} enters ${this.phase} phase`);
-            if (this.scenarioSetup.players[player.id].resolve_prepared_jutsu && player.preparedJutsu[0]) {
-                const prepared = player.preparedJutsu[0];
-                prepared.formed_signs = (prepared.definition.signs ?? []).length;
-                this.resolvePreparedJutsu(player, prepared);
-            }
-            else if (this.phase === "start") {
-                player.cardsPlayedThisTurn = 0;
-                player.playCountsThisTurn = {};
-                player.startCount++;
-                this.gainUplink(player, 1);
-                this.increaseBandwidthMaxAndRestore(player, 1);
-                this.resolveStartPhaseTriggers(player);
-            }
-            else if (this.phase === "draw") {
-                this.draw(player);
-                if (this.winner === undefined) {
-                    this.advanceMissionGoals(player);
-                    this.checkMissionCompletion(player);
-                }
-            }
-            else if (this.phase === "main") {
+            if (this.phase === "main") {
                 this.runMainPhase(player);
             }
             else {

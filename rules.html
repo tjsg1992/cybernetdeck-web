@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=5eab8458ee2e"></head>
+<title>Rules Reference · CyberNetDeck</title><link rel="stylesheet" href="app.css?v=10cfa397b46c"></head>
 <body><main>
 <header class="app-header"><h1>CyberNetDeck</h1><a class="rules-button" href="index.html">&larr; Back to deck builder</a></header>
 <article class="rules-reference"><p class="eyebrow">Rules Reference</p><h1>CyberNetDeck Rules</h1>
@@ -60,10 +60,11 @@
 <li><strong>Main:</strong> Follow the program while playable cards remain in hand.</li>
 <li><strong>End:</strong> End-phase effects resolve in their normal order. The turn then ends and the other player begins their turn.</li>
 </ul>
-<p>Cards pay their listed costs when they are played, including reactions and forced plays. A forced play that cannot pay its costs goes to Discard without resolving. Unspent Bandwidth does not carry through Start. If a Sync payment reaches 0, zero-Sync effects resolve before the battle checks for a loss.</p>
+<p>Cards pay their listed costs when they are played, including reactions and forced plays. A forced play that cannot pay its costs goes to Discard without resolving. When an effect forces a player to play the top card of their deck, that card follows its normal play restrictions and costs. Unspent Bandwidth does not carry through Start. If a Sync payment reaches 0, zero-Sync effects resolve before the battle checks for a loss.</p>
 <h2>Programs</h2>
 <p>An Action program is an ordered list of rules. During Main, the first rule whose condition is true and whose action can be performed is used. Actions can play a named card, play a Combo, activate an Immutable, play a random card, or end the turn. If no rule is selected, the default action is used.</p>
-<p>Conditions can check whether a named card is in hand or on either side of the board. A public Prepared Jutsu beneath its preparing card is also on that player&#x27;s board. Quantity conditions compare Cards in deck, Cards in hand, Cards on board, Flux, Ki, Bandwidth, or Sync for Your or Opponent&#x27;s player.</p>
+<p>Conditions can check whether a named card is in hand or on either side of the board. A public Prepared Jutsu beneath its preparing card is on that player&#x27;s board too. Quantity conditions compare Cards in deck, Cards in hand, Cards on board, Flux, Ki, Bandwidth, or Sync for Your or Opponent&#x27;s player.</p>
+<p>Programming choices include every card in your deck and every card reachable through its add-to-deck results, named Signatures, and eligible Mission Signatures. This does not create a card or bypass normal costs, timing, or zone restrictions; a Signature must still be supplied to your hand before it can be played.</p>
 <p><strong>Play a Combo</strong> is an ordered list of named cards. Unavailable choices are skipped by default and each choice is attempted once. Mark a choice <strong>(all)</strong> to repeat it while another playable copy is available. <strong>Only when all cards in hand</strong> requires every listed card to be in hand. <strong>Cancel if card isn&#x27;t played</strong> stops when the current choice cannot be played. A Combo uses each card&#x27;s normal costs, timing, and restrictions.</p>
 <h2>Reactions</h2>
 <p>A Reaction program is separate from the Action program and has no default action. Whenever an event in the game occurs, the Reaction rules are checked in order. The current turn player gets priority first, followed by the other player, alternating until both players have no eligible Reaction to the event. The first eligible Glitch for the player with priority is played. If no reaction is eligible or its costs cannot be paid, nothing happens.</p>

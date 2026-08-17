@@ -1,5 +1,5 @@
 {
-  "format_id": "next-set-2-patch-3",
+  "format_id": "next-set-2-patch-4",
   "format_version": "cd-ts-1",
   "cards": [
     {
@@ -345,6 +345,8 @@
       "card_kind_label": "Mission \u2022 Signature",
       "keyword_line": "Bandwidth 1 \u2022 Goal 1",
       "signature": true,
+      "mission_grants_signature_card_id": "shadow_clone_jutsu",
+      "mission_signature_agent_card_id": "naruto_knuckleheaded_ninja",
       "art_url": "card-art/vandalize_hokage_monument.png",
       "art_alt": "Temporary placeholder artwork for Vandalize the Hokage Monument",
       "art_position": "50% 50%"
@@ -641,7 +643,7 @@
   },
   "submission_schema_version": 1,
   "browser_submission_migration_enabled": true,
-  "fingerprint": "ea5dea24e6d5a0f601676302c3742a60d2c7141b73f2db67ed2ddaf37ec4cc62",
+  "fingerprint": "819bc4c210fc9f886ff8c10fa09fcfc72134bc7ac7a1611e31d6e9482d746a59",
   "keyword_definitions": [
     {
       "title": "Flux",
@@ -886,8 +888,8 @@
       "definition": "A passive Immutable has no activation and cannot be selected by an Activate action."
     }
   ],
-  "export_format_id": "next-set-2-patch-3",
-  "export_format_fingerprint": "ea5dea24e6d5a0f601676302c3742a60d2c7141b73f2db67ed2ddaf37ec4cc62",
+  "export_format_id": "next-set-2-patch-4",
+  "export_format_fingerprint": "819bc4c210fc9f886ff8c10fa09fcfc72134bc7ac7a1611e31d6e9482d746a59",
   "export_card_ids": [
     "victory_point_1",
     "victory_point_2",
@@ -1402,6 +1404,65 @@
     {
       "fingerprint": "ea5dea24e6d5a0f601676302c3742a60d2c7141b73f2db67ed2ddaf37ec4cc62",
       "format_id": "next-set-2-patch-3",
+      "card_ids": [
+        "victory_point_1",
+        "victory_point_2",
+        "threefold_siphon",
+        "sparkleback_totem",
+        "throttle",
+        "overcharge_gambit",
+        "download_scan",
+        "cursed_seal",
+        "five_l",
+        "time_walk",
+        "seal",
+        "dixie_flatline",
+        "one_more_roll",
+        "air_five_l",
+        "charge_ki",
+        "scrappy_kamehameha",
+        "farmer_with_shotgun",
+        "raditz_invader",
+        "double_sunday",
+        "matt_daemon",
+        "rampant_growth",
+        "crush_card_virus",
+        "garbage_collection",
+        "core_a_core",
+        "two_cores_in_a_box",
+        "admin_override",
+        "virus_beetle",
+        "ninjutsu",
+        "clone_jutsu",
+        "fire_release_great_fireball",
+        "naruto_knuckleheaded_ninja",
+        "vandalize_hokage_monument",
+        "shadow_clone_jutsu",
+        "transformation_jutsu",
+        "substitution_jutsu",
+        "kakashi_distracted_mentor",
+        "demonic_illusion_hell_viewing_technique",
+        "dragon_install",
+        "system_backdoor",
+        "red_ribbon_funding",
+        "scorched_earth",
+        "core_values",
+        "the_points_icon",
+        "keyboard_roll",
+        "kernel_exploit",
+        "junk_food",
+        "soul_warden",
+        "flux_capacitor",
+        "special_beam_cannon",
+        "core_for_all",
+        "blood_shadow",
+        "spirit_bomb",
+        "cultivate"
+      ]
+    },
+    {
+      "fingerprint": "819bc4c210fc9f886ff8c10fa09fcfc72134bc7ac7a1611e31d6e9482d746a59",
+      "format_id": "next-set-2-patch-4",
       "card_ids": [
         "victory_point_1",
         "victory_point_2",
