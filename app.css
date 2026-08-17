@@ -146,7 +146,7 @@ main{max-width:1500px;margin:auto;padding:24px}.sub,small,.field-hint{color:#aab
 
 /* The standalone What's New page uses the same card face, but its cards are
  * allowed to grow with their printed text instead of clipping long effects. */
-.whats-new-card-grid .card-selection .builder-card{height:auto;min-height:420px}
+ .whats-new-card-grid .card-selection .builder-card{height:480px;min-height:480px}
 .whats-new-card-grid .card-selection .card-rules{flex:1 1 auto;min-height:0;overflow:visible}
 .whats-new-card-grid .card-titlebar h4{white-space:normal;overflow-wrap:anywhere}
 .whats-new-card-grid .card-term{color:#294b6b!important}
