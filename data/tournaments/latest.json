@@ -441,6 +441,7 @@
     "format_version": "cd-ts-1",
     "id": "tournament-20260819T135005Z",
     "published": true,
+    "published_at": "2026-08-19T14:01:35.323242+00:00",
     "replay_assets": {
       "card-rules": "card-rules.js",
       "card-specs": "card-specs.js",
