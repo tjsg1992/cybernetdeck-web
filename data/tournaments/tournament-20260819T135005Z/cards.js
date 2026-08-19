@@ -1,6 +1,8 @@
-export const CARD_POOL = {
+import { compileCardSpec } from "./card-rules.js";
+import { CARD_SPECS } from "./card-specs.js";
+const LEGACY_CARD_POOL = {
     victory_point_1: { card_id: "victory_point_1", display_name: "Core", effect: "Gain 1 Flux.", card_kind: "pulse", mechanics: [{ type: "gain_flux", amount: 1 }] },
-    victory_point_2: { card_id: "victory_point_2", display_name: "Twin Core", effect: "Gain 2 Flux.", card_kind: "pulse", mechanics: [{ type: "gain_flux", amount: 2 }] },
+    victory_point_2: { card_id: "victory_point_2", display_name: "Twin Core", effect: "Gain 2 Flux.", card_kind: "pulse", keyword_line: "Bandwidth 1", bandwidth_cost: 1, mechanics: [{ type: "gain_flux", amount: 2 }] },
     threefold_siphon: { card_id: "threefold_siphon", display_name: "Spirit Gun", effect: "Remove 3 Flux from your opponent.", card_kind: "pulse", mechanics: [{ type: "remove_opponent_victory_points", amount: 3 }] },
     sparkleback_totem: { card_id: "sparkleback_totem", display_name: "One For All", effect: "The first time each turn you gain Flux, gain 1 additional Flux.", card_kind: "daemon", mechanics: [{ type: "first_flux_gain_bonus", amount: 1 }] },
     throttle: { card_id: "throttle", display_name: "Throttle", effect: "The next time your opponent would gain Flux, prevent that gain. Then, delete Throttle.", card_kind: "daemon", mechanics: [{ type: "prevent_next_opponent_flux_gain" }] },
@@ -9,27 +11,55 @@ export const CARD_POOL = {
     cursed_seal: { card_id: "cursed_seal", display_name: "Cursed Seal", effect: "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn.", card_kind: "pulse", mechanics: [{ type: "set_own_sync_and_draw_half_deck", sync: 1 }, { type: "end_own_turn" }] },
     five_l: { card_id: "five_l", display_name: "5L", effect: "Reduce your opponent's Sync by 1.", card_kind: "pulse", mechanics: [{ type: "remove_opponent_sync", amount: 1 }] },
     one_more_roll: { card_id: "one_more_roll", display_name: "One More Roll", effect: "If your hand is empty, draw two cards. Otherwise, discard a card at random.", card_kind: "pulse", mechanics: [{ type: "draw_two_if_hand_empty_otherwise_discard_random" }] },
-    air_five_l: { card_id: "air_five_l", display_name: "Air 5L", effect: "Your opponent loses 2 Sync. You lose 1 Sync.", card_kind: "pulse", mechanics: [{ type: "remove_opponent_sync", amount: 2 }, { type: "remove_own_sync", amount: 1 }] },
-    charge_ki: { card_id: "charge_ki", display_name: "Charge Ki", effect: "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.", card_kind: "daemon", immutable: true, requires_no_prior_play: true, mechanics: [{ type: "gain_ki", amount: 1 }, { type: "end_own_turn" }] },
+    air_five_l: { card_id: "air_five_l", display_name: "Air 5L", effect: "Your opponent loses 2 Sync. You lose 1 Sync.", card_kind: "pulse", keyword_line: "Bandwidth 1", bandwidth_cost: 1, mechanics: [{ type: "remove_opponent_sync", amount: 2 }, { type: "remove_own_sync", amount: 1 }] },
+    charge_ki: { card_id: "charge_ki", display_name: "Charge Ki", effect: "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.", card_kind: "immutable", immutable: true, requires_no_prior_play: true, mechanics: [{ type: "gain_ki", amount: 1 }, { type: "end_own_turn" }] },
     scrappy_kamehameha: { card_id: "scrappy_kamehameha", display_name: "Scrappy Kamehameha", effect: "Play this card only if you have 1 or more Ki. When it enters play, it deals 3 damage.", card_kind: "pulse", minimum_ki: 1, bandwidth_cost: 1, mechanics: [{ type: "deal_damage", amount: 3 }] },
     farmer_with_shotgun: { card_id: "farmer_with_shotgun", display_name: "Farmer With Shotgun", effect: "", card_kind: "agent", integrity: 1 },
     raditz_invader: { card_id: "raditz_invader", display_name: "Raditz, Invader", effect: "", card_kind: "agent", keyword_line: "Bandwidth 2 • Integrity 4 • Breach 1 • Signature: Double Sunday", bandwidth_cost: 2, integrity: 4, breach: 1, signature_card_id: "double_sunday" },
-    double_sunday: { card_id: "double_sunday", display_name: "Double Sunday", effect: "Deal 1 damage. Then deal 1 damage.", card_kind: "pulse", keyword_line: "Ki 1 • Signature", signature: true, minimum_ki: 1, mechanics: [{ type: "deal_damage", amount: 1 }, { type: "deal_damage", amount: 1 }] },
-    ninjutsu: { card_id: "ninjutsu", display_name: "Ninjutsu", effect: "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.", card_kind: "daemon", immutable: true, activation: "passive", supports_jutsu_preparation: true },
+    double_sunday: { card_id: "double_sunday", display_name: "Double Sunday", effect: "Deal 1 damage. Then deal 1 damage.", card_kind: "pulse", keyword_line: "Ki 1", signature: true, minimum_ki: 1, mechanics: [{ type: "deal_damage", amount: 1 }, { type: "deal_damage", amount: 1 }] },
+    ninjutsu: { card_id: "ninjutsu", display_name: "Ninjutsu", effect: "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.", card_kind: "immutable", immutable: true, activation: "passive", supports_jutsu_preparation: true },
     clone_jutsu: { card_id: "clone_jutsu", display_name: "Clone Jutsu", effect: "Create two Clone Agents, each with Integrity 1.", card_kind: "pulse", jutsu: true, signs: ["ram", "ram"], mechanics: [{ type: "create_agents", amount: 2, display_name: "Clone", integrity: 1 }] },
     fire_release_great_fireball: { card_id: "fire_release_great_fireball", display_name: "Fire Release: Great Fireball Technique", effect: "Deal 6 damage to your opponent.", card_kind: "pulse", jutsu: true, signs: ["tiger", "ox", "tiger"], bandwidth_cost: 2, mechanics: [{ type: "deal_damage", amount: 6 }] },
     dragon_install: { card_id: "dragon_install", display_name: "Dragon Install", effect: "Lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync.", card_kind: "daemon", mechanics: [{ type: "remove_own_sync", amount: 8 }, { type: "opponent_sync_loss_bonus", amount: 1 }] },
     time_walk: { card_id: "time_walk", display_name: "Time Walk", effect: "Pay 10 Flux: At the end of your turn, take an extra turn.", card_kind: "pulse", flux_cost: 10, mechanics: [{ type: "queue_extra_turn" }] },
     seal: { card_id: "seal", display_name: "Seal", effect: "When your opponent would gain Flux, you may pay 2 Sync and play this card. If you do, prevent that gain.", card_kind: "glitch", sync_cost: 2, reaction_triggers: ["opponent_would_gain_flux"], mechanics: [{ type: "prevent_triggering_event" }] },
     dixie_flatline: { card_id: "dixie_flatline", display_name: "Dixie Flatline", effect: "When your Sync becomes 0, set your Sync to 3, then delete this card.", card_kind: "daemon", mechanics: [{ type: "restore_sync_when_zero_and_delete_self", sync: 3 }] },
-    matt_daemon: { card_id: "matt_daemon", display_name: "Matt Daemon", effect: "The first time each turn another Matt Daemon enters play under your control, draw a card.", card_kind: "daemon", bandwidth_cost: 1, mechanics: [{ type: "draw_when_another_copy_played" }] },
+    matt_daemon: { card_id: "matt_daemon", display_name: "Matt Daemon", effect: "The first time each turn another Matt Daemon enters play under your control, draw a card.", card_kind: "daemon", bandwidth_cost: 2, mechanics: [{ type: "draw_when_another_copy_played" }] },
     crush_card_virus: { card_id: "crush_card_virus", display_name: "Crush Card Virus", effect: "If your opponent has a Daemon card in play, destroy a random Daemon card they control.", card_kind: "pulse", mechanics: [{ type: "destroy_random_opponent_daemon" }] },
     garbage_collection: { card_id: "garbage_collection", display_name: "Garbage Collection", effect: "Shuffle two random cards from your Discard into your deck. Then wipe this card.", card_kind: "pulse", mechanics: [{ type: "recover_random_discard", amount: 2 }, { type: "wipe_this_card" }] },
-    virus_beetle: { card_id: "virus_beetle", display_name: "Virus Beetle", effect: "Your opponent discards a card at random.", card_kind: "pulse", mechanics: [{ type: "discard_random_card", target: "opponent" }] },
+    virus_beetle: { card_id: "virus_beetle", display_name: "Virus Beetle", effect: "Your opponent discards a card at random.", card_kind: "pulse", keyword_line: "Bandwidth 1", bandwidth_cost: 1, mechanics: [{ type: "discard_random_card", target: "opponent" }] },
     core_a_core: { card_id: "core_a_core", display_name: "Core-a-Core", effect: "Gain 1 Flux. Then add a Core card to your deck and shuffle.", card_kind: "pulse", adds_card_ids: ["victory_point_1"], mechanics: [{ type: "gain_flux", amount: 1 }, { type: "add_cards_to_deck", card_id: "victory_point_1", amount: 1, shuffle: true }] },
     two_cores_in_a_box: { card_id: "two_cores_in_a_box", display_name: "Two Cores (in a box)", effect: "Add two Core cards to your deck and shuffle.", card_kind: "pulse", adds_card_ids: ["victory_point_1"], mechanics: [{ type: "add_cards_to_deck", card_id: "victory_point_1", amount: 2, shuffle: true }] },
     admin_override: { card_id: "admin_override", display_name: "Admin Override", effect: "Gain 1 Sync. Then, your opponent plays the top card of their deck.", card_kind: "pulse", mechanics: [{ type: "gain_own_sync", amount: 1 }, { type: "play_top_card_of_opponent_deck" }] }
 };
+function stableValue(value) {
+    if (Array.isArray(value))
+        return value.map(stableValue);
+    if (value && typeof value === "object") {
+        return Object.fromEntries(Object.entries(value).sort(([left], [right]) => left.localeCompare(right)).map(([key, item]) => [key, stableValue(item)]));
+    }
+    return value;
+}
+function comparableDefinition(definition) {
+    const { effect: _effect, mechanics, ...metadata } = definition;
+    return stableValue({ metadata, mechanics: mechanics ?? [] });
+}
+const COMPILED_CARD_CATALOG = Object.fromEntries(Object.entries(CARD_SPECS).map(([cardId, spec]) => {
+    const result = compileCardSpec(spec, LEGACY_CARD_POOL);
+    const errors = result.diagnostics.filter((diagnostic) => diagnostic.severity === "error");
+    if (!result.value || errors.length) {
+        throw new Error(`Card rule compiler rejected ${cardId}: ${errors.map((diagnostic) => diagnostic.message).join("; ")}`);
+    }
+    const legacy = LEGACY_CARD_POOL[cardId];
+    if (legacy && JSON.stringify(comparableDefinition(result.value)) !== JSON.stringify(comparableDefinition(legacy))) {
+        throw new Error(`Card rule compiler changed metadata or mechanics for ${cardId}.`);
+    }
+    return [cardId, result.value];
+}));
+const missingSpecs = Object.keys(LEGACY_CARD_POOL).filter((cardId) => !CARD_SPECS[cardId]);
+if (missingSpecs.length)
+    throw new Error(`Card rule compiler is missing active card specifications: ${missingSpecs.join(", ")}`);
+export const CARD_POOL = COMPILED_CARD_CATALOG;
 const prefer = (...ids) => ids.map(id => ({ condition_type: "card_in_hand", condition_card_id: id, action_type: "play_named_card", action_card_id: id }));
 const deck = (name, owner_name, decklist, ids) => ({ name, owner_name, decklist, program: prefer(...ids) });
 export const SAMPLE_DECKS = [deck("Spirit Arsenal", "Avery", { victory_point_1: 6, victory_point_2: 4, threefold_siphon: 4, sparkleback_totem: 3, overcharge_gambit: 3 }, ["sparkleback_totem", "overcharge_gambit", "threefold_siphon", "victory_point_2", "victory_point_1"]), deck("Power of Friendship", "Blake", { victory_point_1: 4, victory_point_2: 6, threefold_siphon: 2, sparkleback_totem: 4, overcharge_gambit: 4 }, ["overcharge_gambit", "sparkleback_totem", "victory_point_2", "threefold_siphon", "victory_point_1"]), deck("Limit Breakers", "Casey", { victory_point_1: 2, victory_point_2: 3, threefold_siphon: 3, sparkleback_totem: 4, overcharge_gambit: 8 }, ["overcharge_gambit", "sparkleback_totem", "threefold_siphon", "victory_point_2", "victory_point_1"]), deck("Balanced Victory", "Drew", { victory_point_1: 5, victory_point_2: 5, threefold_siphon: 4, sparkleback_totem: 4, overcharge_gambit: 2 }, ["threefold_siphon", "sparkleback_totem", "victory_point_2", "overcharge_gambit", "victory_point_1"]), deck("Wild Mix", "Emery", { victory_point_1: 8, victory_point_2: 2, threefold_siphon: 5, sparkleback_totem: 2, overcharge_gambit: 3 }, ["threefold_siphon", "victory_point_1", "overcharge_gambit", "sparkleback_totem", "victory_point_2"])];

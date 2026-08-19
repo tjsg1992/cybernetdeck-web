@@ -1,0 +1,450 @@
+{
+  "cards": [
+    {
+      "card_id": "victory_point_1",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Core",
+      "effect": "Gain 1 Flux."
+    },
+    {
+      "card_id": "victory_point_2",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Twin Core",
+      "effect": "Gain 2 Flux.",
+      "keyword_line": "Bandwidth 1"
+    },
+    {
+      "card_id": "threefold_siphon",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Spirit Gun",
+      "effect": "Remove 3 Flux from your opponent."
+    },
+    {
+      "card_id": "sparkleback_totem",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "One For All",
+      "effect": "The first time each turn you gain Flux, gain 1 additional Flux."
+    },
+    {
+      "card_id": "throttle",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Throttle",
+      "effect": "The next time your opponent would gain Flux, prevent that gain. Then, delete Throttle."
+    },
+    {
+      "card_id": "overcharge_gambit",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Kaioken",
+      "effect": "If you have 5 or fewer Flux, gain 6 Flux."
+    },
+    {
+      "card_id": "download_scan",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Download",
+      "effect": "Look at the top 5 cards of your deck and add any Core cards to your hand. Then, put the remaining cards on the bottom in the same order."
+    },
+    {
+      "card_id": "cursed_seal",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Cursed Seal",
+      "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down. End your turn."
+    },
+    {
+      "card_id": "five_l",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "5L",
+      "effect": "Your opponent loses 1 Sync."
+    },
+    {
+      "card_id": "time_walk",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Time Walk",
+      "effect": "Pay 10 Flux: At the end of your turn, take an extra turn."
+    },
+    {
+      "card_id": "seal",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch",
+      "display_name": "Seal",
+      "effect": "When your opponent would gain Flux, you may pay 2 Sync and play this card. If you do, prevent that gain.",
+      "reaction_triggers": [
+        "opponent_would_gain_flux"
+      ]
+    },
+    {
+      "card_id": "dixie_flatline",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Dixie Flatline",
+      "effect": "When your Sync becomes 0, set your Sync to 3, then delete this card."
+    },
+    {
+      "card_id": "one_more_roll",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "One More Roll",
+      "effect": "If your hand is empty, draw two cards. Otherwise, discard a card at random."
+    },
+    {
+      "card_id": "air_five_l",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Air 5L",
+      "effect": "Your opponent loses 2 Sync. You lose 1 Sync.",
+      "keyword_line": "Bandwidth 1"
+    },
+    {
+      "card_id": "charge_ki",
+      "card_kind": "immutable",
+      "card_kind_label": "Immutable",
+      "display_name": "Charge Ki",
+      "effect": "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.",
+      "immutable": true
+    },
+    {
+      "card_id": "scrappy_kamehameha",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Scrappy Kamehameha",
+      "effect": "Play this card only if you have 1 or more Ki. When it enters play, it deals 3 damage.",
+      "keyword_line": "Bandwidth 1"
+    },
+    {
+      "card_id": "farmer_with_shotgun",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Farmer With Shotgun",
+      "effect": "",
+      "keyword_line": "Integrity 1"
+    },
+    {
+      "card_id": "raditz_invader",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Raditz, Invader",
+      "effect": "",
+      "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Double Sunday",
+      "signature_card_id": "double_sunday"
+    },
+    {
+      "card_id": "double_sunday",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Signature",
+      "display_name": "Double Sunday",
+      "effect": "Deal 1 damage. Deal 1 damage.",
+      "keyword_line": "Ki 1",
+      "signature": true
+    },
+    {
+      "card_id": "matt_daemon",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Matt Daemon",
+      "effect": "The first time each turn another Matt Daemon enters play under your control, draw a card.",
+      "keyword_line": "Bandwidth 2"
+    },
+    {
+      "card_id": "rampant_growth",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Rampant Growth",
+      "effect": "All Agents you control lose 1 Integrity. Gain 1 Flux for each Integrity lost this way.",
+      "keyword_line": "Bandwidth 2"
+    },
+    {
+      "card_id": "crush_card_virus",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Crush Card Virus",
+      "effect": "If your opponent has a Daemon card in play, destroy a random Daemon card they control."
+    },
+    {
+      "card_id": "garbage_collection",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Garbage Collection",
+      "effect": "Shuffle 2 random cards from your Discard into your deck. Then wipe this card."
+    },
+    {
+      "adds_card_ids": [
+        "victory_point_1"
+      ],
+      "card_id": "core_a_core",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Core-a-Core",
+      "effect": "Gain 1 Flux. Add a Core card to your deck and shuffle."
+    },
+    {
+      "adds_card_ids": [
+        "victory_point_1"
+      ],
+      "card_id": "two_cores_in_a_box",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Two Cores (in a box)",
+      "effect": "Add 2 Core cards to your deck and shuffle."
+    },
+    {
+      "card_id": "admin_override",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Admin Override",
+      "effect": "Gain 1 Sync. Your opponent plays the top card of their deck."
+    },
+    {
+      "card_id": "virus_beetle",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Virus Beetle",
+      "effect": "Your opponent discards a card at random.",
+      "keyword_line": "Bandwidth 1"
+    },
+    {
+      "activation": "passive",
+      "card_id": "ninjutsu",
+      "card_kind": "immutable",
+      "card_kind_label": "Immutable",
+      "display_name": "Ninjutsu",
+      "effect": "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.",
+      "immutable": true,
+      "supports_jutsu_preparation": true
+    },
+    {
+      "card_id": "clone_jutsu",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu",
+      "display_name": "Clone Jutsu",
+      "effect": "Create 2 Clone Agents, each with Integrity 1.",
+      "keyword_line": "Signs \u2014 Ram, Ram"
+    },
+    {
+      "card_id": "fire_release_great_fireball",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu",
+      "display_name": "Fire Release: Great Fireball Technique",
+      "effect": "Deal 6 damage.",
+      "keyword_line": "Bandwidth 2 \u2022 Signs \u2014 Tiger, Ox, Tiger"
+    },
+    {
+      "card_id": "naruto_knuckleheaded_ninja",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Naruto, Knuckleheaded Ninja",
+      "effect": "",
+      "keyword_line": "Bandwidth 1 \u2022 Integrity 2 \u2022 Breach 1 \u2022 Signature: Vandalize the Hokage Monument",
+      "signature_card_id": "vandalize_hokage_monument"
+    },
+    {
+      "card_id": "vandalize_hokage_monument",
+      "card_kind": "mission",
+      "card_kind_label": "Mission \u2022 Signature",
+      "display_name": "Vandalize the Hokage Monument",
+      "effect": "When this enters play, gain 1 Flux. This Mission completes only while you control Naruto, Knuckleheaded Ninja. Complete \u2014 For the rest of the battle, Naruto Agents you own gain an additional Signature: Shadow Clone Jutsu; then gain 2 Flux.",
+      "keyword_line": "Bandwidth 1 \u2022 Goal 1",
+      "mission_grants_signature_card_id": "shadow_clone_jutsu",
+      "mission_signature_agent_card_id": "naruto_knuckleheaded_ninja",
+      "signature": true
+    },
+    {
+      "card_id": "shadow_clone_jutsu",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse \u2022 Jutsu \u2022 Signature",
+      "display_name": "Shadow Clone Jutsu",
+      "effect": "Choose the Naruto Agent you control with the highest Breach, breaking ties by oldest. Create 2 printed copies of it.",
+      "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Ram",
+      "signature": true
+    },
+    {
+      "card_id": "transformation_jutsu",
+      "card_kind": "daemon",
+      "card_kind_label": "Module \u2022 Jutsu",
+      "display_name": "Transformation Jutsu",
+      "effect": "When this enters play, attach it to the Agent you control with the highest Breach. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.",
+      "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Snake"
+    },
+    {
+      "card_id": "substitution_jutsu",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch \u2022 Jutsu",
+      "display_name": "Substitution Jutsu",
+      "effect": "You lose 2 Sync. When an Agent you control would be deleted, you may resolve this card. If you do, prevent that deletion, set that Agent's Integrity to 1 if it is lower, then deal 1 damage to your opponent.",
+      "keyword_line": "Signs \u2014 None",
+      "reaction_triggers": [
+        "own_agent_would_be_deleted"
+      ]
+    },
+    {
+      "card_id": "kakashi_distracted_mentor",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Kakashi, Distracted Mentor",
+      "effect": "",
+      "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Demonic Illusion: Hell Viewing Technique",
+      "signature_card_id": "demonic_illusion_hell_viewing_technique"
+    },
+    {
+      "card_id": "demonic_illusion_hell_viewing_technique",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch \u2022 Jutsu \u2022 Signature",
+      "display_name": "Demonic Illusion: Hell Viewing Technique",
+      "effect": "Whenever your opponent would gain Flux, prevent that Flux gain.",
+      "keyword_line": "Glitch Jutsu \u2022 Signs \u2014 None",
+      "reaction_triggers": [
+        "opponent_would_gain_flux"
+      ],
+      "signature": true
+    },
+    {
+      "card_id": "dragon_install",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Dragon Install",
+      "effect": "You lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync."
+    },
+    {
+      "card_id": "system_backdoor",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "System Backdoor",
+      "effect": "Play the top card of your opponent's deck if able. If not, put it on the bottom of their deck.",
+      "keyword_line": "Bandwidth 1"
+    },
+    {
+      "card_id": "red_ribbon_funding",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Red Ribbon Funding",
+      "effect": "Agents you control gain Breach 1.",
+      "keyword_line": "Bandwidth 1"
+    },
+    {
+      "card_id": "scorched_earth",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Scorched Earth",
+      "effect": "Delete every Agent and Daemon on both battlefields.",
+      "keyword_line": "Bandwidth 3"
+    },
+    {
+      "activation": "active",
+      "card_id": "core_values",
+      "card_kind": "immutable",
+      "card_kind_label": "Immutable",
+      "display_name": "Core Values",
+      "effect": "At the start of the battle, if you have any Core or Twin Core cards in your deck, you lose. You can activate this card once per battle to move all Core and Twin Core cards from your deck to your hand, set your Sync to 1, and end your turn."
+    },
+    {
+      "card_id": "the_points_icon",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "The Points Icon",
+      "effect": "Gain 20 Flux.",
+      "keyword_line": "Bandwidth 10 \u2022 Flux 15"
+    },
+    {
+      "card_id": "keyboard_roll",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Keyboard Roll",
+      "effect": "Play the top card of your deck if able. If not, put it into your discard pile. Lose 1 Sync."
+    },
+    {
+      "card_id": "kernel_exploit",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Kernel Exploit",
+      "effect": "Your opponent loses 10 Sync. Gain 10 Flux.",
+      "keyword_line": "Bandwidth 10"
+    },
+    {
+      "card_id": "junk_food",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Junk Food",
+      "effect": "Draw 3 cards, then end your turn."
+    },
+    {
+      "card_id": "soul_warden",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Soul Warden",
+      "effect": "The first time a Daemon is successfully played each turn, gain 1 Flux.",
+      "keyword_line": "Integrity 1"
+    },
+    {
+      "card_id": "flux_capacitor",
+      "card_kind": "glitch",
+      "card_kind_label": "Glitch",
+      "display_name": "Flux Capacitor",
+      "effect": "When you would lose Sync during your opponent's turn, you may pay 2 Flux and play this card. If you do, prevent that Sync loss.",
+      "keyword_line": "Flux 2",
+      "reaction_triggers": [
+        "opponent_would_lose_sync"
+      ]
+    },
+    {
+      "card_id": "special_beam_cannon",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Special Beam Cannon",
+      "effect": "Deal 4 damage. If this deletes an Agent, deal damage again, reduced by 1, and repeat until the next damage amount would be 0.",
+      "keyword_line": "Ki cost 1"
+    },
+    {
+      "card_id": "core_for_all",
+      "card_kind": "daemon",
+      "card_kind_label": "Daemon",
+      "display_name": "Core for All",
+      "effect": "The first time each turn you gain Flux, add a Core to your deck and shuffle."
+    },
+    {
+      "card_id": "blood_shadow",
+      "card_kind": "agent",
+      "card_kind_label": "Agent",
+      "display_name": "Blood Shadow, Spawn of the Bleeding Phoenix",
+      "effect": "At the start of your turn, all other Agents on both battlefields lose 1 Integrity. This Agent gains 1 Integrity for each Integrity lost this way. Whenever you would gain Flux, gain 1 less Flux instead.",
+      "keyword_line": "Integrity 1"
+    },
+    {
+      "card_id": "spirit_bomb",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Spirit Bomb",
+      "effect": "Deal 1 damage for each Agent you control.",
+      "keyword_line": "Ki 2"
+    },
+    {
+      "card_id": "cultivate",
+      "card_kind": "pulse",
+      "card_kind_label": "Pulse",
+      "display_name": "Cultivate",
+      "effect": "All Agents you control gain 1 Integrity.",
+      "keyword_line": "Bandwidth 2"
+    }
+  ],
+  "created_at": "2026-08-19T13:50:05.768341+00:00",
+  "format_fingerprint": "43785889cc3d8612d885629ef108f2ec40cd023f9e52da01a0369737d2fae396",
+  "format_id": "next-set-2-patch-4",
+  "format_version": "cd-ts-1",
+  "id": "tournament-20260819T135005Z",
+  "published": true,
+  "replay_assets": {
+    "card-rules": "card-rules.js",
+    "card-specs": "card-specs.js",
+    "cards": "cards.js",
+    "engine": "engine.js"
+  },
+  "rules_fingerprint": "9ef988cf358900c3ee11b35e0bdb6fc9efa3cddb46bfe86a5b4ceb81fe63f416",
+  "tournament_seed": 2673428693
+}

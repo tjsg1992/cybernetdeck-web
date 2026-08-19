@@ -1,5 +1,5 @@
 {
-  "snapshot_id": "tournament-20260815T050941Z",
+  "snapshot_id": "tournament-20260819T135005Z",
   "manifest": {
     "cards": [
       {
@@ -14,7 +14,8 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Twin Core",
-        "effect": "Gain 2 Flux."
+        "effect": "Gain 2 Flux.",
+        "keyword_line": "Bandwidth 1"
       },
       {
         "card_id": "threefold_siphon",
@@ -56,14 +57,14 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Cursed Seal",
-        "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down, then end your turn."
+        "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down. End your turn."
       },
       {
         "card_id": "five_l",
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "5L",
-        "effect": "Reduce your opponent's Sync by 1."
+        "effect": "Your opponent loses 1 Sync."
       },
       {
         "card_id": "time_walk",
@@ -77,7 +78,10 @@
         "card_kind": "glitch",
         "card_kind_label": "Glitch",
         "display_name": "Seal",
-        "effect": "When your opponent would gain Flux, you may pay 2 Sync and play this card. If you do, prevent that gain."
+        "effect": "When your opponent would gain Flux, you may pay 2 Sync and play this card. If you do, prevent that gain.",
+        "reaction_triggers": [
+          "opponent_would_gain_flux"
+        ]
       },
       {
         "card_id": "dixie_flatline",
@@ -98,12 +102,13 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Air 5L",
-        "effect": "Your opponent loses 2 Sync. You lose 1 Sync."
+        "effect": "Your opponent loses 2 Sync. You lose 1 Sync.",
+        "keyword_line": "Bandwidth 1"
       },
       {
         "card_id": "charge_ki",
-        "card_kind": "daemon",
-        "card_kind_label": "Daemon \u2022 Immutable",
+        "card_kind": "immutable",
+        "card_kind_label": "Immutable",
         "display_name": "Charge Ki",
         "effect": "Activate this card only if you haven't played a card this turn. Gain 1 Ki. End your turn.",
         "immutable": true
@@ -138,8 +143,8 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse \u2022 Signature",
         "display_name": "Double Sunday",
-        "effect": "Deal 1 damage. Then deal 1 damage.",
-        "keyword_line": "Ki 1 \u2022 Signature",
+        "effect": "Deal 1 damage. Deal 1 damage.",
+        "keyword_line": "Ki 1",
         "signature": true
       },
       {
@@ -148,7 +153,15 @@
         "card_kind_label": "Daemon",
         "display_name": "Matt Daemon",
         "effect": "The first time each turn another Matt Daemon enters play under your control, draw a card.",
-        "keyword_line": "Bandwidth 1"
+        "keyword_line": "Bandwidth 2"
+      },
+      {
+        "card_id": "rampant_growth",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Rampant Growth",
+        "effect": "All Agents you control lose 1 Integrity. Gain 1 Flux for each Integrity lost this way.",
+        "keyword_line": "Bandwidth 2"
       },
       {
         "card_id": "crush_card_virus",
@@ -162,7 +175,7 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Garbage Collection",
-        "effect": "Shuffle two random cards from your Discard into your deck. Then wipe this card."
+        "effect": "Shuffle 2 random cards from your Discard into your deck. Then wipe this card."
       },
       {
         "adds_card_ids": [
@@ -172,7 +185,7 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Core-a-Core",
-        "effect": "Gain 1 Flux. Then add a Core card to your deck and shuffle."
+        "effect": "Gain 1 Flux. Add a Core card to your deck and shuffle."
       },
       {
         "adds_card_ids": [
@@ -182,27 +195,28 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Two Cores (in a box)",
-        "effect": "Add two Core cards to your deck and shuffle."
+        "effect": "Add 2 Core cards to your deck and shuffle."
       },
       {
         "card_id": "admin_override",
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Admin Override",
-        "effect": "Gain 1 Sync. Then, your opponent plays the top card of their deck."
+        "effect": "Gain 1 Sync. Your opponent plays the top card of their deck."
       },
       {
         "card_id": "virus_beetle",
         "card_kind": "pulse",
         "card_kind_label": "Pulse",
         "display_name": "Virus Beetle",
-        "effect": "Your opponent discards a card at random."
+        "effect": "Your opponent discards a card at random.",
+        "keyword_line": "Bandwidth 1"
       },
       {
         "activation": "passive",
         "card_id": "ninjutsu",
-        "card_kind": "daemon",
-        "card_kind_label": "Daemon \u2022 Immutable",
+        "card_kind": "immutable",
+        "card_kind_label": "Immutable",
         "display_name": "Ninjutsu",
         "effect": "You may play a Jutsu as a Prepared Jutsu by paying its non-Sign costs and putting it beneath this card instead of resolving it. You can't have more than one Prepared Jutsu beneath this card at a time.",
         "immutable": true,
@@ -213,7 +227,7 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse \u2022 Jutsu",
         "display_name": "Clone Jutsu",
-        "effect": "Create two Clone Agents, each with Integrity 1.",
+        "effect": "Create 2 Clone Agents, each with Integrity 1.",
         "keyword_line": "Signs \u2014 Ram, Ram"
       },
       {
@@ -221,67 +235,251 @@
         "card_kind": "pulse",
         "card_kind_label": "Pulse \u2022 Jutsu",
         "display_name": "Fire Release: Great Fireball Technique",
-        "effect": "Deal 6 damage to your opponent.",
+        "effect": "Deal 6 damage.",
         "keyword_line": "Bandwidth 2 \u2022 Signs \u2014 Tiger, Ox, Tiger"
+      },
+      {
+        "card_id": "naruto_knuckleheaded_ninja",
+        "card_kind": "agent",
+        "card_kind_label": "Agent",
+        "display_name": "Naruto, Knuckleheaded Ninja",
+        "effect": "",
+        "keyword_line": "Bandwidth 1 \u2022 Integrity 2 \u2022 Breach 1 \u2022 Signature: Vandalize the Hokage Monument",
+        "signature_card_id": "vandalize_hokage_monument"
+      },
+      {
+        "card_id": "vandalize_hokage_monument",
+        "card_kind": "mission",
+        "card_kind_label": "Mission \u2022 Signature",
+        "display_name": "Vandalize the Hokage Monument",
+        "effect": "When this enters play, gain 1 Flux. This Mission completes only while you control Naruto, Knuckleheaded Ninja. Complete \u2014 For the rest of the battle, Naruto Agents you own gain an additional Signature: Shadow Clone Jutsu; then gain 2 Flux.",
+        "keyword_line": "Bandwidth 1 \u2022 Goal 1",
+        "mission_grants_signature_card_id": "shadow_clone_jutsu",
+        "mission_signature_agent_card_id": "naruto_knuckleheaded_ninja",
+        "signature": true
+      },
+      {
+        "card_id": "shadow_clone_jutsu",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse \u2022 Jutsu \u2022 Signature",
+        "display_name": "Shadow Clone Jutsu",
+        "effect": "Choose the Naruto Agent you control with the highest Breach, breaking ties by oldest. Create 2 printed copies of it.",
+        "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Ram",
+        "signature": true
+      },
+      {
+        "card_id": "transformation_jutsu",
+        "card_kind": "daemon",
+        "card_kind_label": "Module \u2022 Jutsu",
+        "display_name": "Transformation Jutsu",
+        "effect": "When this enters play, attach it to the Agent you control with the highest Breach. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.",
+        "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Snake"
+      },
+      {
+        "card_id": "substitution_jutsu",
+        "card_kind": "glitch",
+        "card_kind_label": "Glitch \u2022 Jutsu",
+        "display_name": "Substitution Jutsu",
+        "effect": "You lose 2 Sync. When an Agent you control would be deleted, you may resolve this card. If you do, prevent that deletion, set that Agent's Integrity to 1 if it is lower, then deal 1 damage to your opponent.",
+        "keyword_line": "Signs \u2014 None",
+        "reaction_triggers": [
+          "own_agent_would_be_deleted"
+        ]
+      },
+      {
+        "card_id": "kakashi_distracted_mentor",
+        "card_kind": "agent",
+        "card_kind_label": "Agent",
+        "display_name": "Kakashi, Distracted Mentor",
+        "effect": "",
+        "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Demonic Illusion: Hell Viewing Technique",
+        "signature_card_id": "demonic_illusion_hell_viewing_technique"
+      },
+      {
+        "card_id": "demonic_illusion_hell_viewing_technique",
+        "card_kind": "glitch",
+        "card_kind_label": "Glitch \u2022 Jutsu \u2022 Signature",
+        "display_name": "Demonic Illusion: Hell Viewing Technique",
+        "effect": "Whenever your opponent would gain Flux, prevent that Flux gain.",
+        "keyword_line": "Glitch Jutsu \u2022 Signs \u2014 None",
+        "reaction_triggers": [
+          "opponent_would_gain_flux"
+        ],
+        "signature": true
       },
       {
         "card_id": "dragon_install",
         "card_kind": "daemon",
         "card_kind_label": "Daemon",
         "display_name": "Dragon Install",
-        "effect": "Lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync."
+        "effect": "You lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync."
+      },
+      {
+        "card_id": "system_backdoor",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "System Backdoor",
+        "effect": "Play the top card of your opponent's deck if able. If not, put it on the bottom of their deck.",
+        "keyword_line": "Bandwidth 1"
+      },
+      {
+        "card_id": "red_ribbon_funding",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Red Ribbon Funding",
+        "effect": "Agents you control gain Breach 1.",
+        "keyword_line": "Bandwidth 1"
+      },
+      {
+        "card_id": "scorched_earth",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Scorched Earth",
+        "effect": "Delete every Agent and Daemon on both battlefields.",
+        "keyword_line": "Bandwidth 3"
+      },
+      {
+        "activation": "active",
+        "card_id": "core_values",
+        "card_kind": "immutable",
+        "card_kind_label": "Immutable",
+        "display_name": "Core Values",
+        "effect": "At the start of the battle, if you have any Core or Twin Core cards in your deck, you lose. You can activate this card once per battle to move all Core and Twin Core cards from your deck to your hand, set your Sync to 1, and end your turn."
+      },
+      {
+        "card_id": "the_points_icon",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "The Points Icon",
+        "effect": "Gain 20 Flux.",
+        "keyword_line": "Bandwidth 10 \u2022 Flux 15"
+      },
+      {
+        "card_id": "keyboard_roll",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Keyboard Roll",
+        "effect": "Play the top card of your deck if able. If not, put it into your discard pile. Lose 1 Sync."
+      },
+      {
+        "card_id": "kernel_exploit",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Kernel Exploit",
+        "effect": "Your opponent loses 10 Sync. Gain 10 Flux.",
+        "keyword_line": "Bandwidth 10"
+      },
+      {
+        "card_id": "junk_food",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Junk Food",
+        "effect": "Draw 3 cards, then end your turn."
+      },
+      {
+        "card_id": "soul_warden",
+        "card_kind": "agent",
+        "card_kind_label": "Agent",
+        "display_name": "Soul Warden",
+        "effect": "The first time a Daemon is successfully played each turn, gain 1 Flux.",
+        "keyword_line": "Integrity 1"
+      },
+      {
+        "card_id": "flux_capacitor",
+        "card_kind": "glitch",
+        "card_kind_label": "Glitch",
+        "display_name": "Flux Capacitor",
+        "effect": "When you would lose Sync during your opponent's turn, you may pay 2 Flux and play this card. If you do, prevent that Sync loss.",
+        "keyword_line": "Flux 2",
+        "reaction_triggers": [
+          "opponent_would_lose_sync"
+        ]
+      },
+      {
+        "card_id": "special_beam_cannon",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Special Beam Cannon",
+        "effect": "Deal 4 damage. If this deletes an Agent, deal damage again, reduced by 1, and repeat until the next damage amount would be 0.",
+        "keyword_line": "Ki cost 1"
+      },
+      {
+        "card_id": "core_for_all",
+        "card_kind": "daemon",
+        "card_kind_label": "Daemon",
+        "display_name": "Core for All",
+        "effect": "The first time each turn you gain Flux, add a Core to your deck and shuffle."
+      },
+      {
+        "card_id": "blood_shadow",
+        "card_kind": "agent",
+        "card_kind_label": "Agent",
+        "display_name": "Blood Shadow, Spawn of the Bleeding Phoenix",
+        "effect": "At the start of your turn, all other Agents on both battlefields lose 1 Integrity. This Agent gains 1 Integrity for each Integrity lost this way. Whenever you would gain Flux, gain 1 less Flux instead.",
+        "keyword_line": "Integrity 1"
+      },
+      {
+        "card_id": "spirit_bomb",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Spirit Bomb",
+        "effect": "Deal 1 damage for each Agent you control.",
+        "keyword_line": "Ki 2"
+      },
+      {
+        "card_id": "cultivate",
+        "card_kind": "pulse",
+        "card_kind_label": "Pulse",
+        "display_name": "Cultivate",
+        "effect": "All Agents you control gain 1 Integrity.",
+        "keyword_line": "Bandwidth 2"
       }
     ],
-    "created_at": "2026-08-15T05:09:41.072880+00:00",
-    "format_fingerprint": "0b5a90df68248b7825e6e4578ffe78233b39210fad96c7019b3a172449fdaab6",
-    "format_id": "next-set-2-patch-1",
+    "created_at": "2026-08-19T13:50:05.768341+00:00",
+    "format_fingerprint": "43785889cc3d8612d885629ef108f2ec40cd023f9e52da01a0369737d2fae396",
+    "format_id": "next-set-2-patch-4",
     "format_version": "cd-ts-1",
-    "id": "tournament-20260815T050941Z",
+    "id": "tournament-20260819T135005Z",
     "published": true,
-    "published_at": "2026-08-15T05:10:12.349360+00:00",
     "replay_assets": {
+      "card-rules": "card-rules.js",
+      "card-specs": "card-specs.js",
       "cards": "cards.js",
       "engine": "engine.js"
     },
-    "rules_fingerprint": "c1bac7ef46847b25781f707aa5ffbec8408f4b10950ae03cb94c8dc0c52c95b6",
-    "tournament_seed": 765610782
+    "rules_fingerprint": "9ef988cf358900c3ee11b35e0bdb6fc9efa3cddb46bfe86a5b4ceb81fe63f416",
+    "tournament_seed": 2673428693
   },
   "standings": [
     {
-      "deck_name": "26 Lightning Bolts and a Dream",
-      "discord_user_id": "173986825889644544",
-      "player_name": "Colin",
-      "total_wins": 4354
-    },
-    {
-      "deck_name": "Cotton Hill",
-      "discord_user_id": "163009224090058753",
-      "player_name": "Noonan",
-      "total_wins": 3409
-    },
-    {
-      "deck_name": "Full Control",
-      "discord_user_id": "221460738928017408",
-      "player_name": "Stella",
-      "total_wins": 2736
-    },
-    {
-      "deck_name": "Katon: Goukakyu no 2-tsu!",
+      "deck_name": "Snack Wardens",
       "discord_user_id": "184439858255626240",
       "player_name": "Taylor",
-      "total_wins": 2377
+      "total_wins": 3646
     },
     {
-      "deck_name": "Matt Daemon flies too close to the sun",
+      "deck_name": "If you give guns to shadow clones they still shoot normal bullets",
+      "discord_user_id": "173986825889644544",
+      "player_name": "Colin",
+      "total_wins": 2816
+    },
+    {
+      "deck_name": "Star Wars Attack of the Clones",
       "discord_user_id": "173981293229506561",
       "player_name": "Alex",
-      "total_wins": 1805
+      "total_wins": 2455
     },
     {
-      "deck_name": "the same old sync",
+      "deck_name": "You think I know what I'm doing?",
       "discord_user_id": "134208646606356480",
       "player_name": "Eli",
-      "total_wins": 319
+      "total_wins": 808
+    },
+    {
+      "deck_name": "Junichiro Hill",
+      "discord_user_id": "163009224090058753",
+      "player_name": "Noonan",
+      "total_wins": 275
     }
   ],
   "decks": [
@@ -289,18 +487,24 @@
       "discord_user_id": "134208646606356480",
       "player_name": "Eli",
       "submission": {
-        "name": "the same old sync",
+        "name": "You think I know what I'm doing?",
         "owner_name": "Rawhide Kobayashi",
         "decklist": {
           "threefold_siphon": 5,
           "cursed_seal": 1,
-          "five_l": 5,
-          "dixie_flatline": 3,
-          "air_five_l": 9,
+          "dixie_flatline": 2,
+          "air_five_l": 10,
           "admin_override": 5,
-          "dragon_install": 2
+          "dragon_install": 1,
+          "keyboard_roll": 5,
+          "kernel_exploit": 1
         },
         "program": [
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "keyboard_roll"
+          },
           {
             "condition_type": "quantity_compare",
             "action_type": "play_named_card",
@@ -309,6 +513,15 @@
             "quantity_threshold": 10,
             "action_card_id": "threefold_siphon",
             "quantity_target": "opponent"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity": "bandwidth",
+            "comparison_operator": ">=",
+            "quantity_threshold": 10,
+            "action_card_id": "kernel_exploit",
+            "quantity_target": "your"
           },
           {
             "condition_type": "card_is",
@@ -338,49 +551,36 @@
             "condition_type": "if_able",
             "action_type": "play_named_card",
             "action_card_id": "air_five_l"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "five_l"
           }
         ],
         "reactions": [],
         "default_action": "play_random_card",
         "random_card_ids": [
-          "cursed_seal",
-          "five_l"
+          "cursed_seal"
         ],
         "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-1"
+        "format_id": "next-set-2-patch-4"
       }
     },
     {
       "discord_user_id": "163009224090058753",
       "player_name": "Noonan",
       "submission": {
-        "name": "Cotton Hill",
+        "name": "Junichiro Hill",
         "owner_name": "NNBJ",
         "decklist": {
-          "one_more_roll": 1,
-          "charge_ki": 1,
-          "raditz_invader": 4,
-          "crush_card_virus": 1,
-          "virus_beetle": 23
+          "farmer_with_shotgun": 11,
+          "rampant_growth": 1,
+          "junk_food": 9
         },
         "program": [
           {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "double_sunday"
-          },
-          {
             "condition_type": "quantity_compare",
             "action_type": "play_named_card",
-            "quantity": "cards_in_hand",
-            "comparison_operator": "=",
-            "quantity_threshold": 1,
-            "action_card_id": "one_more_roll",
+            "quantity": "cards_in_deck",
+            "comparison_operator": "<",
+            "quantity_threshold": 4,
+            "action_card_id": "farmer_with_shotgun",
             "quantity_target": "your"
           },
           {
@@ -388,300 +588,222 @@
             "action_type": "play_named_card",
             "quantity": "cards_on_board",
             "comparison_operator": ">=",
-            "quantity_threshold": 1,
-            "action_card_id": "crush_card_virus",
-            "quantity_target": "opponent"
+            "quantity_threshold": 10,
+            "action_card_id": "rampant_growth",
+            "quantity_target": "your"
           },
           {
             "condition_type": "quantity_compare",
             "action_type": "play_named_card",
-            "quantity": "cards_in_hand",
+            "quantity": "cards_in_deck",
             "comparison_operator": ">=",
-            "quantity_threshold": 1,
-            "action_card_id": "virus_beetle",
-            "quantity_target": "opponent"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "raditz_invader"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "activate_immutable_card",
-            "action_card_id": "charge_ki"
+            "quantity_threshold": 4,
+            "action_card_id": "junk_food",
+            "quantity_target": "your"
           }
         ],
         "reactions": [],
         "default_action": "end_turn",
         "random_card_ids": [],
         "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-1"
+        "format_id": "next-set-2-patch-4"
       }
     },
     {
       "discord_user_id": "173981293229506561",
       "player_name": "Alex",
       "submission": {
-        "name": "Matt Daemon flies too close to the sun",
+        "name": "Star Wars Attack of the Clones",
         "owner_name": "\"Hope you're toe\" Johnson",
         "decklist": {
-          "matt_daemon": 11,
-          "virus_beetle": 8,
           "ninjutsu": 1,
-          "fire_release_great_fireball": 10
+          "clone_jutsu": 5,
+          "naruto_knuckleheaded_ninja": 11,
+          "red_ribbon_funding": 3,
+          "junk_food": 5,
+          "cultivate": 5
         },
         "program": [
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "fire_release_great_fireball"
+            "action_card_id": "naruto_knuckleheaded_ninja"
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "matt_daemon"
+            "action_card_id": "vandalize_hokage_monument"
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "virus_beetle"
-          }
-        ],
-        "reactions": [
-          {
-            "trigger_type": "opponent_would_gain_flux",
-            "comparison_operator": ">=",
-            "quantity_threshold": 2,
-            "action_card_id": "seal"
-          }
-        ],
-        "default_action": "end_turn",
-        "random_card_ids": [],
-        "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-1"
-      }
-    },
-    {
-      "discord_user_id": "173986825889644544",
-      "player_name": "Colin",
-      "submission": {
-        "name": "26 Lightning Bolts and a Dream",
-        "owner_name": "Phen",
-        "decklist": {
-          "five_l": 2,
-          "one_more_roll": 1,
-          "charge_ki": 1,
-          "scrappy_kamehameha": 26
-        },
-        "program": [
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "sync",
-            "comparison_operator": "=",
-            "quantity_threshold": 1,
-            "action_card_id": "five_l",
-            "quantity_target": "opponent"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "activate_immutable_card",
-            "quantity": "ki",
-            "comparison_operator": "=",
-            "quantity_threshold": 0,
-            "action_card_id": "charge_ki",
-            "quantity_target": "your"
+            "action_card_id": "shadow_clone_jutsu"
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "scrappy_kamehameha"
+            "action_card_id": "clone_jutsu"
           },
           {
-            "condition_type": "quantity_compare",
+            "condition_type": "card_is",
             "action_type": "play_named_card",
-            "quantity": "cards_in_hand",
-            "comparison_operator": "=",
-            "quantity_threshold": 1,
-            "action_card_id": "one_more_roll",
-            "quantity_target": "your"
+            "condition_card_id": "naruto_knuckleheaded_ninja",
+            "card_condition": "on_your_side_of_board",
+            "action_card_id": "red_ribbon_funding"
+          },
+          {
+            "condition_type": "card_is",
+            "action_type": "play_named_card",
+            "condition_card_id": "naruto_knuckleheaded_ninja",
+            "card_condition": "on_your_side_of_board",
+            "action_card_id": "cultivate"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "junk_food"
           }
         ],
         "reactions": [],
         "default_action": "end_turn",
         "random_card_ids": [],
         "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-1"
+        "format_id": "next-set-2-patch-4"
+      }
+    },
+    {
+      "discord_user_id": "173986825889644544",
+      "player_name": "Colin",
+      "submission": {
+        "name": "If you give guns to shadow clones they still shoot normal bullets",
+        "owner_name": "Phen",
+        "decklist": {
+          "ninjutsu": 1,
+          "clone_jutsu": 5,
+          "naruto_knuckleheaded_ninja": 10,
+          "substitution_jutsu": 1,
+          "dragon_install": 1,
+          "red_ribbon_funding": 5,
+          "junk_food": 7
+        },
+        "program": [
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "substitution_jutsu"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_combo",
+            "action_card_ids": [
+              "shadow_clone_jutsu",
+              "naruto_knuckleheaded_ninja"
+            ],
+            "cancel_if_card_not_played": true
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "shadow_clone_jutsu"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_combo",
+            "action_card_ids": [
+              "clone_jutsu",
+              "naruto_knuckleheaded_ninja"
+            ],
+            "cancel_if_card_not_played": true
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "vandalize_hokage_monument"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity": "cards_on_board",
+            "comparison_operator": ">",
+            "quantity_threshold": 5,
+            "action_card_id": "red_ribbon_funding",
+            "quantity_target": "your"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "naruto_knuckleheaded_ninja"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "dragon_install"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity": "cards_in_deck",
+            "comparison_operator": ">",
+            "quantity_threshold": 5,
+            "action_card_id": "junk_food",
+            "quantity_target": "your"
+          }
+        ],
+        "reactions": [],
+        "default_action": "end_turn",
+        "random_card_ids": [
+          "clone_jutsu"
+        ],
+        "submission_schema_version": 1,
+        "format_id": "next-set-2-patch-4"
       }
     },
     {
       "discord_user_id": "184439858255626240",
       "player_name": "Taylor",
       "submission": {
-        "name": "Katon: Goukakyu no 2-tsu!",
+        "name": "Snack Wardens",
         "owner_name": "Loth",
         "decklist": {
-          "seal": 1,
-          "air_five_l": 11,
-          "matt_daemon": 12,
-          "crush_card_virus": 1,
-          "ninjutsu": 1,
-          "fire_release_great_fireball": 4
+          "victory_point_2": 8,
+          "sparkleback_totem": 7,
+          "junk_food": 9,
+          "soul_warden": 6
         },
         "program": [
           {
             "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "fire_release_great_fireball"
+            "action_type": "play_combo",
+            "action_card_ids": [
+              "soul_warden",
+              "sparkleback_totem",
+              "matt_daemon",
+              "victory_point_1",
+              "victory_point_2"
+            ],
+            "action_card_all_ids": [
+              "sparkleback_totem",
+              "soul_warden",
+              "matt_daemon",
+              "victory_point_2",
+              "victory_point_1"
+            ]
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "matt_daemon"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "crush_card_virus"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "sync",
-            "comparison_operator": "<=",
-            "quantity_threshold": 2,
-            "action_card_id": "air_five_l",
-            "quantity_target": "opponent"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "sync",
-            "comparison_operator": ">",
-            "quantity_threshold": 1,
-            "action_card_id": "air_five_l",
-            "quantity_target": "your"
+            "action_card_id": "junk_food"
           }
         ],
-        "reactions": [
-          {
-            "trigger_type": "opponent_would_gain_flux",
-            "comparison_operator": ">",
-            "quantity_threshold": 2,
-            "action_card_id": "seal"
-          }
-        ],
-        "default_action": "end_turn",
-        "random_card_ids": [],
-        "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-1"
-      }
-    },
-    {
-      "discord_user_id": "221460738928017408",
-      "player_name": "Stella",
-      "submission": {
-        "name": "Full Control",
-        "owner_name": "Stella",
-        "decklist": {
-          "seal": 4,
-          "dixie_flatline": 4,
-          "charge_ki": 1,
-          "farmer_with_shotgun": 1,
-          "raditz_invader": 3,
-          "matt_daemon": 7,
-          "crush_card_virus": 2,
-          "garbage_collection": 3,
-          "virus_beetle": 5
-        },
-        "program": [
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "farmer_with_shotgun"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "raditz_invader"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "double_sunday"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_in_deck",
-            "comparison_operator": "<=",
-            "quantity_threshold": 6,
-            "action_card_id": "garbage_collection",
-            "quantity_target": "your"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_on_board",
-            "comparison_operator": ">=",
-            "quantity_threshold": 1,
-            "action_card_id": "crush_card_virus",
-            "quantity_target": "opponent"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_in_hand",
-            "comparison_operator": ">=",
-            "quantity_threshold": 1,
-            "action_card_id": "virus_beetle",
-            "quantity_target": "opponent"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "cards_in_deck",
-            "comparison_operator": ">=",
-            "quantity_threshold": 6,
-            "action_card_id": "matt_daemon",
-            "quantity_target": "your"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "activate_immutable_card",
-            "quantity": "ki",
-            "comparison_operator": "=",
-            "quantity_threshold": 0,
-            "action_card_id": "charge_ki",
-            "quantity_target": "your"
-          },
-          {
-            "condition_type": "card_is",
-            "action_type": "end_turn",
-            "condition_card_id": "dixie_flatline",
-            "card_condition": "on_your_side_of_board"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "dixie_flatline"
-          }
-        ],
-        "reactions": [
-          {
-            "trigger_type": "opponent_would_gain_flux",
-            "comparison_operator": ">",
-            "quantity_threshold": 0,
-            "action_card_id": "seal"
-          }
-        ],
+        "reactions": [],
         "default_action": "end_turn",
         "random_card_ids": [
-          "seal"
+          "victory_point_2",
+          "sparkleback_totem",
+          "soul_warden"
         ],
         "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-1"
+        "format_id": "next-set-2-patch-4"
       }
     }
   ],
@@ -691,11 +813,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "163009224090058753",
       "summary": {
-        "average_turns": 14.0,
+        "average_turns": 8.4,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 30,
-        "second_wins": 970
+        "first_wins": 725,
+        "second_wins": 275
       }
     },
     {
@@ -703,11 +825,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "173981293229506561",
       "summary": {
-        "average_turns": 9.7,
+        "average_turns": 6.9,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 199,
-        "second_wins": 801
+        "first_wins": 1,
+        "second_wins": 999
       }
     },
     {
@@ -715,11 +837,11 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 5.7,
+        "average_turns": 6.2,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 5,
-        "second_wins": 995
+        "first_wins": 79,
+        "second_wins": 921
       }
     },
     {
@@ -727,143 +849,83 @@
       "first_discord_user_id": "134208646606356480",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 6.6,
+        "average_turns": 6.0,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 46,
-        "second_wins": 954
+        "first_wins": 3,
+        "second_wins": 997
       }
     },
     {
       "matchup_id": "matchup-005",
-      "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "221460738928017408",
+      "first_discord_user_id": "163009224090058753",
+      "second_discord_user_id": "173981293229506561",
       "summary": {
-        "average_turns": 12.9,
+        "average_turns": 10.5,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 39,
-        "second_wins": 961
+        "first_wins": 0,
+        "second_wins": 1000
       }
     },
     {
       "matchup_id": "matchup-006",
       "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 21.5,
+        "average_turns": 8.6,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 843,
-        "second_wins": 157
+        "first_wins": 0,
+        "second_wins": 1000
       }
     },
     {
       "matchup_id": "matchup-007",
       "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "173986825889644544",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 23.2,
+        "average_turns": 7.3,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 108,
-        "second_wins": 892
+        "first_wins": 0,
+        "second_wins": 1000
       }
     },
     {
       "matchup_id": "matchup-008",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "184439858255626240",
+      "first_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 14.9,
+        "average_turns": 11.9,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 597,
-        "second_wins": 403
+        "first_wins": 339,
+        "second_wins": 661
       }
     },
     {
       "matchup_id": "matchup-009",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "221460738928017408",
+      "first_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 30.4,
+        "average_turns": 7.6,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 891,
-        "second_wins": 109
+        "first_wins": 117,
+        "second_wins": 883
       }
     },
     {
       "matchup_id": "matchup-010",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "173986825889644544",
-      "summary": {
-        "average_turns": 10.4,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 175,
-        "second_wins": 825
-      }
-    },
-    {
-      "matchup_id": "matchup-011",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "184439858255626240",
-      "summary": {
-        "average_turns": 10.0,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 526,
-        "second_wins": 474
-      }
-    },
-    {
-      "matchup_id": "matchup-012",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "221460738928017408",
-      "summary": {
-        "average_turns": 18.8,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 146,
-        "second_wins": 854
-      }
-    },
-    {
-      "matchup_id": "matchup-013",
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 6.8,
+        "average_turns": 7.1,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 850,
-        "second_wins": 150
-      }
-    },
-    {
-      "matchup_id": "matchup-014",
-      "first_discord_user_id": "173986825889644544",
-      "second_discord_user_id": "221460738928017408",
-      "summary": {
-        "average_turns": 25.3,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 792,
-        "second_wins": 208
-      }
-    },
-    {
-      "matchup_id": "matchup-015",
-      "first_discord_user_id": "184439858255626240",
-      "second_discord_user_id": "221460738928017408",
-      "summary": {
-        "average_turns": 14.6,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 396,
-        "second_wins": 604
+        "first_wins": 234,
+        "second_wins": 766
       }
     }
   ]
