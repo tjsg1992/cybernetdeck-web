@@ -1,17 +1,23 @@
 [
   {
-    "name": "the same old sync",
+    "name": "You think I know what I'm doing?",
     "owner_name": "Eli",
     "decklist": {
       "threefold_siphon": 5,
       "cursed_seal": 1,
-      "five_l": 5,
-      "dixie_flatline": 3,
-      "air_five_l": 9,
+      "dixie_flatline": 2,
+      "air_five_l": 10,
       "admin_override": 5,
-      "dragon_install": 2
+      "dragon_install": 1,
+      "keyboard_roll": 5,
+      "kernel_exploit": 1
     },
     "program": [
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "keyboard_roll"
+      },
       {
         "condition_type": "quantity_compare",
         "action_type": "play_named_card",
@@ -20,6 +26,15 @@
         "quantity_threshold": 10,
         "action_card_id": "threefold_siphon",
         "quantity_target": "opponent"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "bandwidth",
+        "comparison_operator": ">=",
+        "quantity_threshold": 10,
+        "action_card_id": "kernel_exploit",
+        "quantity_target": "your"
       },
       {
         "condition_type": "card_is",
@@ -49,45 +64,32 @@
         "condition_type": "if_able",
         "action_type": "play_named_card",
         "action_card_id": "air_five_l"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "five_l"
       }
     ],
     "reactions": [],
     "default_action": "play_random_card",
     "random_card_ids": [
-      "cursed_seal",
-      "five_l"
+      "cursed_seal"
     ],
     "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-1"
+    "format_id": "next-set-2-patch-4"
   },
   {
-    "name": "Cotton Hill",
+    "name": "Junichiro Hill",
     "owner_name": "Noonan",
     "decklist": {
-      "one_more_roll": 1,
-      "charge_ki": 1,
-      "raditz_invader": 4,
-      "crush_card_virus": 1,
-      "virus_beetle": 23
+      "farmer_with_shotgun": 11,
+      "rampant_growth": 1,
+      "junk_food": 9
     },
     "program": [
       {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "double_sunday"
-      },
-      {
         "condition_type": "quantity_compare",
         "action_type": "play_named_card",
-        "quantity": "cards_in_hand",
-        "comparison_operator": "=",
-        "quantity_threshold": 1,
-        "action_card_id": "one_more_roll",
+        "quantity": "cards_in_deck",
+        "comparison_operator": "<",
+        "quantity_threshold": 4,
+        "action_card_id": "farmer_with_shotgun",
         "quantity_target": "your"
       },
       {
@@ -95,283 +97,209 @@
         "action_type": "play_named_card",
         "quantity": "cards_on_board",
         "comparison_operator": ">=",
-        "quantity_threshold": 1,
-        "action_card_id": "crush_card_virus",
-        "quantity_target": "opponent"
+        "quantity_threshold": 10,
+        "action_card_id": "rampant_growth",
+        "quantity_target": "your"
       },
       {
         "condition_type": "quantity_compare",
         "action_type": "play_named_card",
-        "quantity": "cards_in_hand",
+        "quantity": "cards_in_deck",
         "comparison_operator": ">=",
-        "quantity_threshold": 1,
-        "action_card_id": "virus_beetle",
-        "quantity_target": "opponent"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "raditz_invader"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "activate_immutable_card",
-        "action_card_id": "charge_ki"
+        "quantity_threshold": 4,
+        "action_card_id": "junk_food",
+        "quantity_target": "your"
       }
     ],
     "reactions": [],
     "default_action": "end_turn",
     "random_card_ids": [],
     "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-1"
+    "format_id": "next-set-2-patch-4"
   },
   {
-    "name": "Matt Daemon flies too close to the sun",
+    "name": "Star Wars Attack of the Clones",
     "owner_name": "Alex",
     "decklist": {
-      "matt_daemon": 11,
-      "virus_beetle": 8,
       "ninjutsu": 1,
-      "fire_release_great_fireball": 10
+      "clone_jutsu": 5,
+      "naruto_knuckleheaded_ninja": 11,
+      "red_ribbon_funding": 3,
+      "junk_food": 5,
+      "cultivate": 5
     },
     "program": [
       {
         "condition_type": "if_able",
         "action_type": "play_named_card",
-        "action_card_id": "fire_release_great_fireball"
+        "action_card_id": "naruto_knuckleheaded_ninja"
       },
       {
         "condition_type": "if_able",
         "action_type": "play_named_card",
-        "action_card_id": "matt_daemon"
+        "action_card_id": "vandalize_hokage_monument"
       },
       {
         "condition_type": "if_able",
         "action_type": "play_named_card",
-        "action_card_id": "virus_beetle"
-      }
-    ],
-    "reactions": [
-      {
-        "trigger_type": "opponent_would_gain_flux",
-        "comparison_operator": ">=",
-        "quantity_threshold": 2,
-        "action_card_id": "seal"
-      }
-    ],
-    "default_action": "end_turn",
-    "random_card_ids": [],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-1"
-  },
-  {
-    "name": "26 Lightning Bolts and a Dream",
-    "owner_name": "Colin",
-    "decklist": {
-      "five_l": 2,
-      "one_more_roll": 1,
-      "charge_ki": 1,
-      "scrappy_kamehameha": 26
-    },
-    "program": [
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "sync",
-        "comparison_operator": "=",
-        "quantity_threshold": 1,
-        "action_card_id": "five_l",
-        "quantity_target": "opponent"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "activate_immutable_card",
-        "quantity": "ki",
-        "comparison_operator": "=",
-        "quantity_threshold": 0,
-        "action_card_id": "charge_ki",
-        "quantity_target": "your"
+        "action_card_id": "shadow_clone_jutsu"
       },
       {
         "condition_type": "if_able",
         "action_type": "play_named_card",
-        "action_card_id": "scrappy_kamehameha"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "cards_in_hand",
-        "comparison_operator": "=",
-        "quantity_threshold": 1,
-        "action_card_id": "one_more_roll",
-        "quantity_target": "your"
-      }
-    ],
-    "reactions": [],
-    "default_action": "end_turn",
-    "random_card_ids": [],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-1"
-  },
-  {
-    "name": "Katon: Goukakyu no 2-tsu!",
-    "owner_name": "Taylor",
-    "decklist": {
-      "seal": 1,
-      "air_five_l": 11,
-      "matt_daemon": 12,
-      "crush_card_virus": 1,
-      "ninjutsu": 1,
-      "fire_release_great_fireball": 4
-    },
-    "program": [
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "fire_release_great_fireball"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "matt_daemon"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "crush_card_virus"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "sync",
-        "comparison_operator": "<=",
-        "quantity_threshold": 2,
-        "action_card_id": "air_five_l",
-        "quantity_target": "opponent"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "sync",
-        "comparison_operator": ">",
-        "quantity_threshold": 1,
-        "action_card_id": "air_five_l",
-        "quantity_target": "your"
-      }
-    ],
-    "reactions": [
-      {
-        "trigger_type": "opponent_would_gain_flux",
-        "comparison_operator": ">",
-        "quantity_threshold": 2,
-        "action_card_id": "seal"
-      }
-    ],
-    "default_action": "end_turn",
-    "random_card_ids": [],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-1"
-  },
-  {
-    "name": "Full Control",
-    "owner_name": "Stella",
-    "decklist": {
-      "seal": 4,
-      "dixie_flatline": 4,
-      "charge_ki": 1,
-      "farmer_with_shotgun": 1,
-      "raditz_invader": 3,
-      "matt_daemon": 7,
-      "crush_card_virus": 2,
-      "garbage_collection": 3,
-      "virus_beetle": 5
-    },
-    "program": [
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "farmer_with_shotgun"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "raditz_invader"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "double_sunday"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "cards_in_deck",
-        "comparison_operator": "<=",
-        "quantity_threshold": 6,
-        "action_card_id": "garbage_collection",
-        "quantity_target": "your"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "cards_on_board",
-        "comparison_operator": ">=",
-        "quantity_threshold": 1,
-        "action_card_id": "crush_card_virus",
-        "quantity_target": "opponent"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "cards_in_hand",
-        "comparison_operator": ">=",
-        "quantity_threshold": 1,
-        "action_card_id": "virus_beetle",
-        "quantity_target": "opponent"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "cards_in_deck",
-        "comparison_operator": ">=",
-        "quantity_threshold": 6,
-        "action_card_id": "matt_daemon",
-        "quantity_target": "your"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "activate_immutable_card",
-        "quantity": "ki",
-        "comparison_operator": "=",
-        "quantity_threshold": 0,
-        "action_card_id": "charge_ki",
-        "quantity_target": "your"
+        "action_card_id": "clone_jutsu"
       },
       {
         "condition_type": "card_is",
-        "action_type": "end_turn",
-        "condition_card_id": "dixie_flatline",
-        "card_condition": "on_your_side_of_board"
+        "action_type": "play_named_card",
+        "condition_card_id": "naruto_knuckleheaded_ninja",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "red_ribbon_funding"
+      },
+      {
+        "condition_type": "card_is",
+        "action_type": "play_named_card",
+        "condition_card_id": "naruto_knuckleheaded_ninja",
+        "card_condition": "on_your_side_of_board",
+        "action_card_id": "cultivate"
       },
       {
         "condition_type": "if_able",
         "action_type": "play_named_card",
-        "action_card_id": "dixie_flatline"
+        "action_card_id": "junk_food"
       }
     ],
-    "reactions": [
+    "reactions": [],
+    "default_action": "end_turn",
+    "random_card_ids": [],
+    "submission_schema_version": 1,
+    "format_id": "next-set-2-patch-4"
+  },
+  {
+    "name": "If you give guns to shadow clones they still shoot normal bullets",
+    "owner_name": "Colin",
+    "decklist": {
+      "ninjutsu": 1,
+      "clone_jutsu": 5,
+      "naruto_knuckleheaded_ninja": 10,
+      "substitution_jutsu": 1,
+      "dragon_install": 1,
+      "red_ribbon_funding": 5,
+      "junk_food": 7
+    },
+    "program": [
       {
-        "trigger_type": "opponent_would_gain_flux",
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "substitution_jutsu"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_combo",
+        "action_card_ids": [
+          "shadow_clone_jutsu",
+          "naruto_knuckleheaded_ninja"
+        ],
+        "cancel_if_card_not_played": true
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "shadow_clone_jutsu"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_combo",
+        "action_card_ids": [
+          "clone_jutsu",
+          "naruto_knuckleheaded_ninja"
+        ],
+        "cancel_if_card_not_played": true
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "vandalize_hokage_monument"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "cards_on_board",
         "comparison_operator": ">",
-        "quantity_threshold": 0,
-        "action_card_id": "seal"
+        "quantity_threshold": 5,
+        "action_card_id": "red_ribbon_funding",
+        "quantity_target": "your"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "naruto_knuckleheaded_ninja"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "dragon_install"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity": "cards_in_deck",
+        "comparison_operator": ">",
+        "quantity_threshold": 5,
+        "action_card_id": "junk_food",
+        "quantity_target": "your"
       }
     ],
+    "reactions": [],
     "default_action": "end_turn",
     "random_card_ids": [
-      "seal"
+      "clone_jutsu"
     ],
     "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-1"
+    "format_id": "next-set-2-patch-4"
+  },
+  {
+    "name": "Snack Wardens",
+    "owner_name": "Taylor",
+    "decklist": {
+      "victory_point_2": 8,
+      "sparkleback_totem": 7,
+      "junk_food": 9,
+      "soul_warden": 6
+    },
+    "program": [
+      {
+        "condition_type": "if_able",
+        "action_type": "play_combo",
+        "action_card_ids": [
+          "soul_warden",
+          "sparkleback_totem",
+          "matt_daemon",
+          "victory_point_1",
+          "victory_point_2"
+        ],
+        "action_card_all_ids": [
+          "sparkleback_totem",
+          "soul_warden",
+          "matt_daemon",
+          "victory_point_2",
+          "victory_point_1"
+        ]
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "junk_food"
+      }
+    ],
+    "reactions": [],
+    "default_action": "end_turn",
+    "random_card_ids": [
+      "victory_point_2",
+      "sparkleback_totem",
+      "soul_warden"
+    ],
+    "submission_schema_version": 1,
+    "format_id": "next-set-2-patch-4"
   }
 ]
