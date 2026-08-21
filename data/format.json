@@ -1,6 +1,12 @@
 {
-  "format_id": "next-set-2-patch-4",
+  "format_id": "next-set-2-patch-5",
   "format_version": "cd-ts-1",
+  "runtime_assets": [
+    "engine.js",
+    "cards.js",
+    "card-rules.js",
+    "card-specs.js"
+  ],
   "cards": [
     {
       "card_id": "victory_point_1",
@@ -8,6 +14,8 @@
       "effect": "Gain 1 Flux.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "https://images.unsplash.com/photo-1518568740560-333139a27e72?auto=format&fit=crop&w=900&q=85",
       "art_alt": "A luminous blue crystal formation",
       "art_position": "center"
@@ -19,6 +27,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 1",
+      "archetypes": [],
+      "bandwidth_cost": 1,
       "art_url": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=85",
       "art_alt": "Twin celestial lights in deep space",
       "art_position": "center"
@@ -29,6 +39,8 @@
       "effect": "Remove 3 Flux from your opponent.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "https://wallpapers.com/images/hd/yusuke-urameshi-spirit-gun-pose-zdgv4yd25lr5zg66.jpg",
       "art_alt": "Yusuke Urameshi firing the Spirit Gun",
       "art_position": "center"
@@ -39,6 +51,8 @@
       "effect": "The first time each turn you gain Flux, gain 1 additional Flux.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2023/04/My-Hero-Academia-One-For-All-temporada-6.jpg?quality=80&resize=1280%2C1735&ssl=1",
       "art_alt": "Deku with the One For All bearers",
       "art_position": "center 18%"
@@ -49,6 +63,8 @@
       "effect": "The next time your opponent would gain Flux, prevent that gain. Then, delete Throttle.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/throttle.jpg",
       "art_alt": "Temporary placeholder art for Throttle showing a blue rate-limit firewall",
       "art_position": "50% 35%"
@@ -59,6 +75,8 @@
       "effect": "If you have 5 or fewer Flux, gain 6 Flux.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "https://wallpapersok.com/images/high/goku-red-kaioken-aura-2yivgcz9ybmljr4j.jpg",
       "art_alt": "Goku powering up with a red Kaioken aura",
       "art_position": "center 22%"
@@ -69,6 +87,8 @@
       "effect": "Look at the top 5 cards of your deck and add any Core cards to your hand. Then, put the remaining cards on the bottom in the same order.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/download_scan.jpg",
       "art_alt": "Placeholder artwork for Download",
       "art_position": "34% 49%"
@@ -79,6 +99,8 @@
       "effect": "Reduce your Sync to 1, draw half your remaining deck rounded down. End your turn.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/cursed_seal.png",
       "art_alt": "Sasuke in his first-stage Cursed Seal form from the Naruto anime",
       "art_position": "0% 0%"
@@ -89,6 +111,8 @@
       "effect": "Your opponent loses 1 Sync.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/five_l.png",
       "art_alt": "Sol Badguy performing a fast standing light attack in Guilty Gear -Strive-",
       "art_position": "0% 0%"
@@ -99,6 +123,8 @@
       "effect": "Pay 10 Flux: At the end of your turn, take an extra turn.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/time_walk.jpg",
       "art_alt": "Placeholder artwork for Time Walk",
       "art_position": "50% 48%"
@@ -112,6 +138,8 @@
       "reaction_triggers": [
         "opponent_would_gain_flux"
       ],
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/seal.jpeg",
       "art_alt": "Temporary placeholder art for Seal showing a red cybernetic ward",
       "art_position": "50% 0%"
@@ -122,6 +150,8 @@
       "effect": "When your Sync becomes 0, set your Sync to 3, then delete this card.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/dixie_flatline.jpg",
       "art_alt": "Temporary placeholder card art for Dixie Flatline",
       "art_position": "0% 38%"
@@ -132,6 +162,8 @@
       "effect": "If your hand is empty, draw two cards. Otherwise, discard a card at random.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/one_more_roll.jpg",
       "art_alt": "Placeholder artwork for One More Roll",
       "art_position": "31% 0%"
@@ -143,6 +175,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 1",
+      "archetypes": [],
+      "bandwidth_cost": 1,
       "art_url": "card-art/air_five_l.png",
       "art_alt": "Placeholder artwork for Air 5L",
       "art_position": "84% 44%"
@@ -154,6 +188,10 @@
       "card_kind": "immutable",
       "card_kind_label": "Immutable",
       "immutable": true,
+      "archetypes": [
+        "Ki"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/charge_ki.png",
       "art_alt": "Temporary placeholder artwork for Charge Ki",
       "art_position": "49% 0%"
@@ -165,6 +203,10 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 1",
+      "archetypes": [
+        "Ki"
+      ],
+      "bandwidth_cost": 1,
       "art_url": "card-art/scrappy_kamehameha.jpg",
       "art_alt": "Temporary placeholder artwork for Scrappy Kamehameha",
       "art_position": "54% 0%"
@@ -176,6 +218,8 @@
       "card_kind": "agent",
       "card_kind_label": "Agent",
       "keyword_line": "Integrity 1",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/farmer_with_shotgun.png",
       "art_alt": "Temporary placeholder artwork for Farmer With Shotgun",
       "art_position": "50% 0%"
@@ -188,6 +232,10 @@
       "card_kind_label": "Agent",
       "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Double Sunday",
       "signature_card_id": "double_sunday",
+      "archetypes": [
+        "Ki"
+      ],
+      "bandwidth_cost": 2,
       "art_url": "card-art/raditz_invader.png",
       "art_alt": "Raditz, Invader standing on a beach in Saiyan armor",
       "art_position": "50% 0%"
@@ -200,6 +248,10 @@
       "card_kind_label": "Pulse \u2022 Signature",
       "keyword_line": "Ki 1",
       "signature": true,
+      "archetypes": [
+        "Ki"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/double_sunday.jpg",
       "art_alt": "Raditz firing the Double Sunday attack",
       "art_position": "50% 0%"
@@ -211,6 +263,8 @@
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
       "keyword_line": "Bandwidth 2",
+      "archetypes": [],
+      "bandwidth_cost": 2,
       "art_url": "card-art/matt_daemon.jpg",
       "art_alt": "Temporary placeholder artwork for Matt Daemon",
       "art_position": "50% 26%"
@@ -222,6 +276,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 2",
+      "archetypes": [],
+      "bandwidth_cost": 2,
       "art_url": "card-art/rampant_growth.png",
       "art_alt": "Generated rampant growth card art option 1: Luminous data vines spread around a small agent silhouette in a cyber-garden.",
       "art_position": "50% 50%"
@@ -232,6 +288,8 @@
       "effect": "If your opponent has a Daemon card in play, destroy a random Daemon card they control.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/crush_card_virus.webp",
       "art_alt": "Temporary placeholder artwork for Crush Card Virus",
       "art_position": "50% 42%"
@@ -242,6 +300,8 @@
       "effect": "Shuffle 2 random cards from your Discard into your deck. Then wipe this card.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/garbage_collection.jpg",
       "art_alt": "Temporary placeholder artwork for Garbage Collection",
       "art_position": "50% 36%"
@@ -255,6 +315,8 @@
       "adds_card_ids": [
         "victory_point_1"
       ],
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/core_a_core.png",
       "art_alt": "Temporary placeholder artwork for Core-a-Core",
       "art_position": "50% 0%"
@@ -268,6 +330,8 @@
       "adds_card_ids": [
         "victory_point_1"
       ],
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/two_cores_in_a_box.png",
       "art_alt": "Temporary placeholder artwork for Two Cores (in a box)",
       "art_position": "50% 39%"
@@ -278,6 +342,8 @@
       "effect": "Gain 1 Sync. Your opponent plays the top card of their deck.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/admin_override.webp",
       "art_alt": "Temporary placeholder artwork for Admin Override",
       "art_position": "50% 18%"
@@ -289,6 +355,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 1",
+      "archetypes": [],
+      "bandwidth_cost": 1,
       "art_url": "card-art/virus_beetle.webp",
       "art_alt": "Temporary placeholder artwork for Virus Beetle",
       "art_position": "61% 46%"
@@ -302,6 +370,10 @@
       "immutable": true,
       "activation": "passive",
       "supports_jutsu_preparation": true,
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/ninjutsu.svg",
       "art_alt": "Naruto forms hand seals as shadow clones begin to appear",
       "art_position": "50% 40%"
@@ -313,6 +385,10 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse \u2022 Jutsu",
       "keyword_line": "Signs \u2014 Ram, Ram",
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/clone_jutsu.png",
       "art_alt": "Naruto creates shadow clones in a rocky training area",
       "art_position": "0% 100%"
@@ -324,6 +400,10 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse \u2022 Jutsu",
       "keyword_line": "Bandwidth 2 \u2022 Signs \u2014 Tiger, Ox, Tiger",
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 2,
       "art_url": "card-art/fire_release_great_fireball.jpg",
       "art_alt": "Sasuke unleashes a Great Fireball Technique",
       "art_position": "50% 42%"
@@ -336,6 +416,10 @@
       "card_kind_label": "Agent",
       "keyword_line": "Bandwidth 1 \u2022 Integrity 2 \u2022 Breach 1 \u2022 Signature: Vandalize the Hokage Monument",
       "signature_card_id": "vandalize_hokage_monument",
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 1,
       "art_url": "card-art/naruto_knuckleheaded_ninja.jpg",
       "art_alt": "Temporary placeholder artwork for Naruto, Knuckleheaded Ninja",
       "art_position": "50% 50%"
@@ -350,6 +434,10 @@
       "signature": true,
       "mission_grants_signature_card_id": "shadow_clone_jutsu",
       "mission_signature_agent_card_id": "naruto_knuckleheaded_ninja",
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 1,
       "art_url": "card-art/vandalize_hokage_monument.png",
       "art_alt": "Temporary placeholder artwork for Vandalize the Hokage Monument",
       "art_position": "50% 50%"
@@ -362,6 +450,10 @@
       "card_kind_label": "Pulse \u2022 Jutsu \u2022 Signature",
       "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Ram",
       "signature": true,
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 1,
       "art_url": "card-art/shadow_clone_jutsu.webp",
       "art_alt": "Temporary placeholder artwork for Shadow Clone Jutsu",
       "art_position": "50% 50%"
@@ -369,10 +461,20 @@
     {
       "card_id": "transformation_jutsu",
       "display_name": "Transformation Jutsu",
-      "effect": "When this enters play, attach it to the Agent you control with the highest Breach. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.",
+      "effect": "When this enters play, attach it to an Agent you specify. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.",
       "card_kind": "daemon",
       "card_kind_label": "Module \u2022 Jutsu",
       "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Snake",
+      "module": true,
+      "programmed_target": {
+        "controller": "self",
+        "card_kind": "agent",
+        "zone": "battlefield"
+      },
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 1,
       "art_url": "card-art/transformation_jutsu.webp",
       "art_alt": "Temporary placeholder artwork for Transformation Jutsu",
       "art_position": "50% 50%"
@@ -387,6 +489,15 @@
       "reaction_triggers": [
         "own_agent_would_be_deleted"
       ],
+      "programmed_target": {
+        "controller": "self",
+        "card_kind": "agent",
+        "zone": "battlefield"
+      },
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/substitution_jutsu.jpg",
       "art_alt": "Temporary placeholder artwork for Substitution Jutsu",
       "art_position": "50% 50%"
@@ -399,6 +510,10 @@
       "card_kind_label": "Agent",
       "keyword_line": "Bandwidth 2 \u2022 Integrity 4 \u2022 Breach 1 \u2022 Signature: Demonic Illusion: Hell Viewing Technique",
       "signature_card_id": "demonic_illusion_hell_viewing_technique",
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 2,
       "art_url": "card-art/kakashi_distracted_mentor.jpg",
       "art_alt": "Temporary placeholder artwork for Kakashi, Distracted Mentor",
       "art_position": "50% 19%"
@@ -414,6 +529,10 @@
       "reaction_triggers": [
         "opponent_would_gain_flux"
       ],
+      "archetypes": [
+        "Ninjutsu"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/demonic_illusion_hell_viewing_technique.png",
       "art_alt": "Temporary placeholder artwork for Demonic Illusion: Hell Viewing Technique",
       "art_position": "61% 51%"
@@ -424,6 +543,8 @@
       "effect": "You lose 8 Sync. Whenever a card you control causes your opponent to lose Sync, they lose an additional 1 Sync.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/dragon_install.jpg",
       "art_alt": "Temporary placeholder artwork for Dragon Install, a red cyberpunk transformation",
       "art_position": "100% 38%"
@@ -435,6 +556,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 1",
+      "archetypes": [],
+      "bandwidth_cost": 1,
       "art_url": "card-art/system_backdoor.png",
       "art_alt": "Temporary wide placeholder for System Backdoor",
       "art_position": "50% 50%"
@@ -446,6 +569,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 1",
+      "archetypes": [],
+      "bandwidth_cost": 1,
       "art_url": "card-art/red_ribbon_funding.jpg",
       "art_alt": "Red Ribbon Army reference artwork",
       "art_position": "50% 0%"
@@ -457,6 +582,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 3",
+      "archetypes": [],
+      "bandwidth_cost": 3,
       "art_url": "card-art/scorched_earth.png",
       "art_alt": "Generated Scorched Earth card art option 1: Charred signal obelisk surrounded by a quiet ring of ember-lit heat.",
       "art_position": "49% 49%"
@@ -468,6 +595,8 @@
       "card_kind": "immutable",
       "card_kind_label": "Immutable",
       "activation": "active",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/core_values.png",
       "art_alt": "Generated core values card art option 2: A radiant geometric core rests in a quiet digital sanctuary.",
       "art_position": "50% 50%"
@@ -479,6 +608,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 10 \u2022 Flux 15",
+      "archetypes": [],
+      "bandwidth_cost": 10,
       "art_url": "card-art/the_points_icon.png",
       "art_alt": "Generated the points icon card art option 3: A simple radiant flux token floats above a quiet cyber plaza.",
       "art_position": "50% 50%"
@@ -489,6 +620,8 @@
       "effect": "Play the top card of your deck if able. If not, put it into your discard pile. Lose 1 Sync.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/keyboard_roll.png",
       "art_alt": "Generated keyboard roll card art option 3: A glowing keyboard key rolls along a soft stream of digital light.",
       "art_position": "50% 50%"
@@ -500,6 +633,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 10",
+      "archetypes": [],
+      "bandwidth_cost": 10,
       "art_url": "card-art/kernel_exploit.png",
       "art_alt": "Generated kernel exploit card art option 1: A cracked luminous kernel core leaks a controlled stream of cyan energy.",
       "art_position": "50% 50%"
@@ -510,6 +645,8 @@
       "effect": "Draw 3 cards, then end your turn.",
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/junk_food.png",
       "art_alt": "Generated junk food card art option 1: A simple glowing snack form rests beside abstract data cards in a pastel cyber-cafe.",
       "art_position": "50% 50%"
@@ -521,6 +658,8 @@
       "card_kind": "agent",
       "card_kind_label": "Agent",
       "keyword_line": "Integrity 1",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/soul_warden.png",
       "art_alt": "Generated Soul Warden card art option 1: Luminous cyber-guardian seated beside a glowing soul-orb in a quiet digital shrine.",
       "art_position": "50% 50%"
@@ -535,6 +674,8 @@
       "reaction_triggers": [
         "opponent_would_lose_sync"
       ],
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/flux_capacitor.jpg",
       "art_alt": "Generated flux capacitor card art option 4: A floating capacitor holds a looping ring of soft cyan flux.",
       "art_position": "0% 40%"
@@ -546,6 +687,10 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Ki cost 1",
+      "archetypes": [
+        "Ki"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/special_beam_cannon.webp",
       "art_alt": "Piccolo Special Beam Cannon reference artwork",
       "art_position": "50% 98%"
@@ -556,6 +701,8 @@
       "effect": "The first time each turn you gain Flux, add a Core to your deck and shuffle.",
       "card_kind": "daemon",
       "card_kind_label": "Daemon",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/core_for_all.png",
       "art_alt": "Industrial reactor table where a red-orange core is placed into a shared central socket with cables from several stations.",
       "art_position": "50% 50%"
@@ -567,6 +714,8 @@
       "card_kind": "agent",
       "card_kind_label": "Agent",
       "keyword_line": "Integrity 1",
+      "archetypes": [],
+      "bandwidth_cost": 0,
       "art_url": "card-art/blood_shadow.jpg",
       "art_alt": "Generated blood shadow card art option 1: A dark phoenix-like shadow form glows softly with blood-red ember light.",
       "art_position": "77% 55%"
@@ -578,6 +727,10 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Ki 2",
+      "archetypes": [
+        "Ki"
+      ],
+      "bandwidth_cost": 0,
       "art_url": "card-art/spirit_bomb.jpg",
       "art_alt": "Spirit Bomb reference artwork",
       "art_position": "50% 0%"
@@ -589,6 +742,8 @@
       "card_kind": "pulse",
       "card_kind_label": "Pulse",
       "keyword_line": "Bandwidth 2",
+      "archetypes": [],
+      "bandwidth_cost": 2,
       "art_url": "card-art/cultivate.png",
       "art_alt": "Warm terracotta garden bed with a sturdy seedling, copper irrigation traces, and hard afternoon light.",
       "art_position": "50% 50%"
@@ -653,15 +808,13 @@
     "minimum_deck_size": 20,
     "maximum_deck_size": 30
   },
-  "runtime_assets": [
-    "engine.js",
-    "cards.js",
-    "card-rules.js",
-    "card-specs.js"
-  ],
   "submission_schema_version": 1,
   "browser_submission_migration_enabled": true,
-  "fingerprint": "43785889cc3d8612d885629ef108f2ec40cd023f9e52da01a0369737d2fae396",
+  "fingerprint": "72a565b40b64fa8428105b83f44e4861f3ddff26f9e62e968f611d9286801061",
+  "archetypes": [
+    "Ki",
+    "Ninjutsu"
+  ],
   "keyword_definitions": [
     {
       "title": "Flux",
@@ -906,8 +1059,8 @@
       "definition": "A passive Immutable has no activation and cannot be selected by an Activate action."
     }
   ],
-  "export_format_id": "next-set-2-patch-4",
-  "export_format_fingerprint": "43785889cc3d8612d885629ef108f2ec40cd023f9e52da01a0369737d2fae396",
+  "export_format_id": "next-set-2-patch-5",
+  "export_format_fingerprint": "72a565b40b64fa8428105b83f44e4861f3ddff26f9e62e968f611d9286801061",
   "export_card_ids": [
     "victory_point_1",
     "victory_point_2",
@@ -1481,6 +1634,65 @@
     {
       "fingerprint": "b5b6ae550dfa83f34c76350ccf0defee249ddd83ccc430a005b81c5d87edf7af",
       "format_id": "next-set-2-patch-4",
+      "card_ids": [
+        "victory_point_1",
+        "victory_point_2",
+        "threefold_siphon",
+        "sparkleback_totem",
+        "throttle",
+        "overcharge_gambit",
+        "download_scan",
+        "cursed_seal",
+        "five_l",
+        "time_walk",
+        "seal",
+        "dixie_flatline",
+        "one_more_roll",
+        "air_five_l",
+        "charge_ki",
+        "scrappy_kamehameha",
+        "farmer_with_shotgun",
+        "raditz_invader",
+        "double_sunday",
+        "matt_daemon",
+        "rampant_growth",
+        "crush_card_virus",
+        "garbage_collection",
+        "core_a_core",
+        "two_cores_in_a_box",
+        "admin_override",
+        "virus_beetle",
+        "ninjutsu",
+        "clone_jutsu",
+        "fire_release_great_fireball",
+        "naruto_knuckleheaded_ninja",
+        "vandalize_hokage_monument",
+        "shadow_clone_jutsu",
+        "transformation_jutsu",
+        "substitution_jutsu",
+        "kakashi_distracted_mentor",
+        "demonic_illusion_hell_viewing_technique",
+        "dragon_install",
+        "system_backdoor",
+        "red_ribbon_funding",
+        "scorched_earth",
+        "core_values",
+        "the_points_icon",
+        "keyboard_roll",
+        "kernel_exploit",
+        "junk_food",
+        "soul_warden",
+        "flux_capacitor",
+        "special_beam_cannon",
+        "core_for_all",
+        "blood_shadow",
+        "spirit_bomb",
+        "cultivate"
+      ]
+    },
+    {
+      "fingerprint": "72a565b40b64fa8428105b83f44e4861f3ddff26f9e62e968f611d9286801061",
+      "format_id": "next-set-2-patch-5",
       "card_ids": [
         "victory_point_1",
         "victory_point_2",

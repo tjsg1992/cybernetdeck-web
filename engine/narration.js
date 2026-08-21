@@ -151,7 +151,7 @@ export function narrateBattleEvent(event, context) {
         return `${player}'s attached ${context.card(detail.split(":")[1])} is deleted with its Agent.`;
     }
     if (detail.startsWith("module_deleted_no_target:")) {
-        return `${player}'s ${context.card(detail.split(":")[1])} is deleted because no Agent was available to attach it to.`;
+        return `${player}'s ${context.card(detail.split(":")[1])} is deleted because no programmed Agent was available to attach it to.`;
     }
     if (detail.startsWith("module_deleted:")) {
         return `${player}'s ${context.card(detail.split(":")[1])} is deleted after redirecting damage.`;
@@ -214,11 +214,12 @@ export function narrateBattleEvent(event, context) {
             const [, cardId, amount] = fields;
             return `${player} plays ${context.card(cardId)} in response to the opponent gaining ${amount} Flux.`;
         }
-        const [, trigger, cardId, recipient, subject] = fields;
+        const [, trigger, cardId, recipient, subject, source] = fields;
+        const verb = source === "charged" || subject === "charged" ? "resolves" : "plays";
         if (trigger === "own_agent_would_be_deleted" && subject)
-            return `${player} plays ${context.card(cardId)} to protect ${context.card(subject)} from deletion.`;
+            return `${player} ${verb} ${context.card(cardId)} to protect ${context.card(subject)} from deletion.`;
         const response = trigger === "opponent_would_gain_flux" ? `${context.player(recipient)} gaining Flux` : "the triggering event";
-        return `${player} ${subject === "charged" ? "resolves" : "plays"} ${context.card(cardId)} in response to ${response}.`;
+        return `${player} ${verb} ${context.card(cardId)} in response to ${response}.`;
     }
     if (detail.startsWith("flux_gain_prevented:")) {
         const [, amount, cardId, outcome] = detail.split(":"), ending = outcome === "deleted" ? " and is deleted." : outcome === "discarded" ? "." : ".";

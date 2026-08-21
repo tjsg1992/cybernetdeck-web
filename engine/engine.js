@@ -49,8 +49,10 @@ const QUANTITY_KINDS = [
 const LEGACY_QUANTITIES = [
     "cards_in_your_deck",
     "cards_in_your_hand",
+    "cards_in_your_discard",
     "cards_in_opponent_deck",
     "cards_in_opponent_hand",
+    "cards_in_opponent_discard",
     "cards_on_your_board",
     "cards_on_opponent_board",
     "your_flux",
@@ -66,6 +68,7 @@ const STRUCTURED_QUANTITY_MAP = {
     your: {
         cards_in_deck: "cards_in_your_deck",
         cards_in_hand: "cards_in_your_hand",
+        cards_in_discard: "cards_in_your_discard",
         cards_on_board: "cards_on_your_board",
         flux: "your_flux",
         ki: "your_ki",
@@ -75,6 +78,7 @@ const STRUCTURED_QUANTITY_MAP = {
     opponent: {
         cards_in_deck: "cards_in_opponent_deck",
         cards_in_hand: "cards_in_opponent_hand",
+        cards_in_discard: "cards_in_opponent_discard",
         cards_on_board: "cards_on_opponent_board",
         flux: "opponent_flux",
         ki: "opponent_ki",
@@ -180,6 +184,13 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
     if (!Array.isArray(reactions) || reactions.length > 10) {
         throw Error("A reaction program may contain at most 10 rules.");
     }
+    const cardPrograms = submission.card_programs ?? [];
+    if (!Array.isArray(cardPrograms) || cardPrograms.length > 255) {
+        throw Error("A card program list may contain at most 255 cards.");
+    }
+    if (submission.card_programs !== undefined && reactions.length > 0) {
+        throw Error("A submission cannot mix legacy reactions with card programs.");
+    }
     if (submission.default_action !== undefined &&
         submission.default_action !== "play_random_card" &&
         submission.default_action !== "end_turn") {
@@ -188,6 +199,35 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
     const accessible = accessibleCardIds(submission.decklist, cards);
     if (submission.random_card_ids?.some((id) => !accessible.has(id))) {
         throw Error("A random-card choice must be in the deck or accessible from the deck.");
+    }
+    const programmedCardIds = new Set();
+    for (const cardProgram of cardPrograms) {
+        const definition = cards[cardProgram?.card_id];
+        if (!cardProgram ||
+            typeof cardProgram !== "object" ||
+            !definition ||
+            !accessible.has(cardProgram.card_id) ||
+            programmedCardIds.has(cardProgram.card_id) ||
+            (!definition.reaction_triggers?.length && !definition.programmed_target) ||
+            !Array.isArray(cardProgram.reaction_conditions) ||
+            cardProgram.reaction_conditions.length > 5 ||
+            cardProgram.reaction_conditions.some((condition) => !condition ||
+                !definition.reaction_triggers?.includes(condition.trigger_type) ||
+                !OPERATORS.includes(condition.comparison_operator) ||
+                !Number.isSafeInteger(condition.quantity_threshold) ||
+                condition.quantity_threshold < 0 ||
+                condition.quantity_threshold > 65535) ||
+            !Array.isArray(cardProgram.target_card_ids) ||
+            cardProgram.target_card_ids.length > 255 ||
+            new Set(cardProgram.target_card_ids).size !== cardProgram.target_card_ids.length ||
+            (!definition.programmed_target && cardProgram.target_card_ids.length > 0) ||
+            cardProgram.target_card_ids.some((cardId) => !accessible.has(cardId) ||
+                cards[cardId]?.card_kind !== definition.programmed_target?.card_kind) ||
+            (cardProgram.allow_multiple_modules_per_agent !== undefined &&
+                (definition.module !== true || typeof cardProgram.allow_multiple_modules_per_agent !== "boolean"))) {
+            throw Error("Invalid card program.");
+        }
+        programmedCardIds.add(cardProgram.card_id);
     }
     for (const rule of submission.program) {
         if (![
@@ -254,13 +294,14 @@ export function validateSubmission(submission, cards, config = DEFAULT_CONFIG) {
             !OPERATORS.includes(rule.comparison_operator) ||
             !Number.isSafeInteger(rule.quantity_threshold) ||
             rule.quantity_threshold < 0 ||
+            rule.quantity_threshold > 65535 ||
             !cards[rule.action_card_id] ||
             cards[rule.action_card_id].card_kind !== "glitch" ||
             !cards[rule.action_card_id].reaction_triggers?.includes(rule.trigger_type) ||
             (rule.agent_card_ids !== undefined && (!Array.isArray(rule.agent_card_ids) ||
                 rule.agent_card_ids.length === 0 ||
                 new Set(rule.agent_card_ids).size !== rule.agent_card_ids.length ||
-                rule.agent_card_ids.some((cardId) => !submission.decklist[cardId] || cards[cardId]?.card_kind !== "agent")))) {
+                rule.agent_card_ids.some((cardId) => !accessible.has(cardId) || cards[cardId]?.card_kind !== "agent")))) {
             throw Error("Invalid reaction rule.");
         }
     }
@@ -384,6 +425,16 @@ export class Battle {
         return {
             id,
             program: submission.program,
+            cardPrograms: submission.card_programs ?? (submission.reactions ?? []).map((rule) => ({
+                card_id: rule.action_card_id,
+                reaction_conditions: [{
+                        trigger_type: rule.trigger_type,
+                        comparison_operator: rule.comparison_operator,
+                        quantity_threshold: rule.quantity_threshold,
+                    }],
+                target_card_ids: rule.agent_card_ids ?? [],
+                legacy_default_target: rule.trigger_type === "own_agent_would_be_deleted" && rule.agent_card_ids === undefined,
+            })),
             reactions: submission.reactions ?? [],
             deck,
             hand: [],
@@ -421,6 +472,12 @@ export class Battle {
     namedCardConditionArea(player, condition) {
         if (condition === "in_your_hand") {
             return player.hand;
+        }
+        if (condition === "in_prepared_jutsu") {
+            return player.preparedJutsu;
+        }
+        if (condition === "in_charged_jutsu") {
+            return player.chargedJutsu;
         }
         const target = condition === "on_your_side_of_board" ? player : this.opponent(player);
         return this.boardCards(target);
@@ -580,6 +637,13 @@ export class Battle {
         }
         return true;
     }
+    cardProgram(player, cardId) {
+        return player.cardPrograms.find((program) => program.card_id === cardId);
+    }
+    hasConfiguredProgrammedTarget(player, definition) {
+        const program = this.cardProgram(player, definition.card_id);
+        return !definition.programmed_target || Boolean(program?.target_card_ids.length || program?.legacy_default_target);
+    }
     canPlayRestrictions(player, card) {
         return ((card.definition.card_kind !== "glitch" || card.definition.jutsu === true) &&
             !isImmutable(card.definition) &&
@@ -587,6 +651,7 @@ export class Battle {
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
             player.ki >= (card.definition.minimum_ki ?? 0) &&
             (!card.definition.requires_no_prior_play || player.cardsPlayedThisTurn === 0) &&
+            this.hasConfiguredProgrammedTarget(player, card.definition) &&
             ((card.definition.max_plays_per_turn ?? 0) <= 0 ||
                 (player.playCountsThisTurn[card.definition.card_id] ?? 0) < (card.definition.max_plays_per_turn ?? 0)) &&
             (card.definition.card_kind !== "mission" ||
@@ -624,7 +689,7 @@ export class Battle {
     canActivate(player, card) {
         return (isImmutable(card.definition) &&
             card.definition.activation !== "passive" &&
-            !card.activation_used &&
+            (card.definition.activation_limit !== "once_per_battle" || !card.activation_used) &&
             this.phase === "main" &&
             this.canPayCosts(player, card.definition) &&
             player.uplink >= (card.definition.uplink_requirement ?? 0) &&
@@ -852,9 +917,10 @@ export class Battle {
             this.rejectMission(player, definition, `signature:${source.definition.card_id}`, missionReason);
             return false;
         }
-        if (player.hand.some((card) => card.definition.card_id === cardId) ||
-            player.preparedJutsu.some((card) => card.definition.card_id === cardId) ||
-            player.chargedJutsu.some((card) => card.definition.card_id === cardId)) {
+        // A Signature is suppressed only when that named copy is already in hand.
+        // Prepared and Charged Jutsu are separate zones, so an earlier copy that
+        // has left the hand must not prevent a fresh supply this turn.
+        if (player.hand.some((card) => card.definition.card_id === cardId)) {
             this.note(`${player.id} | signature_already_in_hand:${cardId}:${source.definition.card_id}`);
             return false;
         }
@@ -1226,6 +1292,37 @@ export class Battle {
         }
         this.note(`${player.id} | copies_created:${sourceAgent.definition.card_id}:${Math.max(0, amount)}:${source}`);
     }
+    programmedTarget(player, source, candidates) {
+        const targetMetadata = source.definition.programmed_target;
+        const program = this.cardProgram(player, source.definition.card_id);
+        if (!targetMetadata || !program?.target_card_ids.length)
+            return undefined;
+        for (const targetCardId of program.target_card_ids) {
+            const target = candidates.find((candidate) => candidate !== source &&
+                candidate.definition.card_id === targetCardId &&
+                candidate.definition.card_kind === targetMetadata.card_kind &&
+                (source.definition.module !== true ||
+                    program.allow_multiple_modules_per_agent !== false ||
+                    !player.battlefield.some((installed) => installed.definition.module === true &&
+                        installed.definition.card_id === source.definition.card_id &&
+                        installed.attached_to_uid === candidate.uid)));
+            if (target)
+                return target;
+        }
+        return undefined;
+    }
+    attachModuleToProgrammedTarget(player, module) {
+        const target = this.programmedTarget(player, module, player.battlefield);
+        if (target) {
+            module.attached_to_uid = target.uid;
+            this.note(`${player.id} | module_attached:${module.definition.card_id}:${target.definition.card_id}`);
+        }
+        else {
+            this.note(`${player.id} | programmed_target_missing:${module.definition.card_id}`);
+            this.deleteDaemon(player, module, "module_deleted_no_target");
+        }
+    }
+    /** Frozen conformance fixtures call this schema-v1 helper directly. */
     attachModuleToHighestBreachAgent(player, module) {
         const target = player.battlefield
             .filter((card) => card !== module && card.definition.card_kind === "agent")
@@ -1283,25 +1380,32 @@ export class Battle {
         return this.opponent(event.recipient).battlefield.filter((card) => card.definition.mechanics?.some((mechanic) => mechanic.type === "prevent_next_opponent_flux_gain"));
     }
     playReaction(player, event) {
-        for (const rule of player.reactions) {
-            const ownsWindow = event.type === "opponent_would_gain_flux"
-                ? event.recipient !== player
-                : event.type === "opponent_would_lose_sync"
-                    ? event.recipient === player && this.players[this.active] !== player
-                    : event.recipient === player;
-            if (!ownsWindow || rule.trigger_type !== event.type) {
+        const ownsWindow = event.type === "opponent_would_gain_flux"
+            ? event.recipient !== player
+            : event.type === "opponent_would_lose_sync"
+                ? event.recipient === player && this.players[this.active] !== player
+                : event.recipient === player;
+        if (!ownsWindow)
+            return false;
+        for (const program of player.cardPrograms) {
+            if (!program.reaction_conditions.some((condition) => condition.trigger_type === event.type &&
+                compare(event.amount, condition.comparison_operator, condition.quantity_threshold))) {
                 continue;
             }
-            const reactionAgent = event.type === "own_agent_would_be_deleted" && rule.agent_card_ids
-                ? rule.agent_card_ids.map((cardId) => event.pendingAgents?.find((candidate) => candidate.definition.card_id === cardId)).find((candidate) => Boolean(candidate))
-                : event.agent;
+            const definition = this.cards[program.card_id];
+            if (!definition?.reaction_triggers?.includes(event.type))
+                continue;
+            const reactionAgent = event.type !== "own_agent_would_be_deleted"
+                ? event.agent
+                : program.legacy_default_target
+                    ? event.agent
+                    : this.programmedTarget(player, { uid: `program:${program.card_id}`, definition }, event.pendingAgents ?? (event.agent ? [event.agent] : []));
             if (event.type === "own_agent_would_be_deleted" && !reactionAgent) {
                 continue;
             }
-            const card = player.chargedJutsu.find((instance) => instance.definition.card_id === rule.action_card_id) ?? player.hand.find((instance) => instance.definition.card_id === rule.action_card_id && instance.definition.jutsu !== true);
+            const card = player.chargedJutsu.find((instance) => instance.definition.card_id === program.card_id) ?? player.hand.find((instance) => instance.definition.card_id === program.card_id && instance.definition.jutsu !== true);
             if (!card ||
-                !card.definition.reaction_triggers?.includes(rule.trigger_type) ||
-                !compare(event.amount, rule.comparison_operator, rule.quantity_threshold)) {
+                !card.definition.reaction_triggers?.includes(event.type)) {
                 continue;
             }
             const isCharged = player.chargedJutsu.includes(card);
@@ -1312,7 +1416,8 @@ export class Battle {
                 event.agent = reactionAgent;
             }
             const reactionTarget = event.type === "own_agent_would_be_deleted" ? `:${event.agent?.definition.card_id ?? ""}` : "";
-            this.note(`${player.id} | reaction_play:${rule.trigger_type}:${card.definition.card_id}:${event.recipient.id}${reactionTarget}`);
+            const reactionSource = isCharged ? ":charged" : "";
+            this.note(`${player.id} | reaction_play:${event.type}:${card.definition.card_id}:${event.recipient.id}${reactionTarget}${reactionSource}`);
             if (!(isCharged ? true : this.payCosts(player, card.definition)) ||
                 !this.move(player, card, isCharged ? player.chargedJutsu : player.hand, player.discard, isCharged ? "charged" : "hand", "discard")) {
                 continue;
@@ -1332,7 +1437,7 @@ export class Battle {
     react(event) {
         let priority = this.players[this.active];
         let passes = 0;
-        let remainingIterations = 2 + 2 * this.players.reduce((total, player) => total + player.hand.length, 0);
+        let remainingIterations = 2 + 2 * this.players.reduce((total, player) => total + player.hand.length + player.chargedJutsu.length, 0);
         while (this.winner === undefined && !event.prevented && passes < 2) {
             if (remainingIterations-- <= 0) {
                 throw new Error("Reaction window exceeded its bounded iteration count");
@@ -1712,7 +1817,7 @@ export class Battle {
                 }
             }
             else if (mechanic.type === "module_attach_highest_breach_protect") {
-                this.attachModuleToHighestBreachAgent(player, card);
+                this.attachModuleToProgrammedTarget(player, card);
             }
             else if (mechanic.type === "destroy_all_agents_and_daemons") {
                 this.destroyAllAgentsAndDaemons(player);
@@ -1792,7 +1897,9 @@ export class Battle {
         if (!this.payCosts(player, card.definition)) {
             return false;
         }
-        card.activation_used = true;
+        if (card.definition.activation_limit === "once_per_battle") {
+            card.activation_used = true;
+        }
         player.cardsPlayedThisTurn++;
         this.act(player, `resolve ${card.definition.card_id}`);
         this.resolve(player, card);
@@ -1902,29 +2009,33 @@ export class Battle {
                 ? opponent.deck.length
                 : quantityKey === "cards_in_your_hand"
                     ? player.hand.length
-                    : quantityKey === "cards_in_opponent_hand"
-                        ? opponent.hand.length
-                        : quantityKey === "cards_on_your_board"
-                            ? this.boardCards(player).length
-                            : quantityKey === "cards_on_opponent_board"
-                                ? this.boardCards(opponent).length
-                                : quantityKey === "your_flux"
-                                    ? player.points
-                                    : quantityKey === "opponent_flux"
-                                        ? opponent.points
-                                        : quantityKey === "your_ki"
-                                            ? player.ki
-                                            : quantityKey === "opponent_ki"
-                                                ? opponent.ki
-                                                : quantityKey === "your_bandwidth"
-                                                    ? player.bandwidth
-                                                    : quantityKey === "opponent_bandwidth"
-                                                        ? opponent.bandwidth
-                                                        : quantityKey === "your_sync"
-                                                            ? player.sync
-                                                            : quantityKey === "opponent_sync"
-                                                                ? opponent.sync
-                                                                : 0;
+                    : quantityKey === "cards_in_your_discard"
+                        ? player.discard.length
+                        : quantityKey === "cards_in_opponent_hand"
+                            ? opponent.hand.length
+                            : quantityKey === "cards_in_opponent_discard"
+                                ? opponent.discard.length
+                                : quantityKey === "cards_on_your_board"
+                                    ? this.boardCards(player).length
+                                    : quantityKey === "cards_on_opponent_board"
+                                        ? this.boardCards(opponent).length
+                                        : quantityKey === "your_flux"
+                                            ? player.points
+                                            : quantityKey === "opponent_flux"
+                                                ? opponent.points
+                                                : quantityKey === "your_ki"
+                                                    ? player.ki
+                                                    : quantityKey === "opponent_ki"
+                                                        ? opponent.ki
+                                                        : quantityKey === "your_bandwidth"
+                                                            ? player.bandwidth
+                                                            : quantityKey === "opponent_bandwidth"
+                                                                ? opponent.bandwidth
+                                                                : quantityKey === "your_sync"
+                                                                    ? player.sync
+                                                                    : quantityKey === "opponent_sync"
+                                                                        ? opponent.sync
+                                                                        : 0;
         const condition = rule.condition_type === "if_able"
             ? true
             : rule.condition_type === "card_in_hand"

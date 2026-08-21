@@ -107,7 +107,7 @@ function printMechanic(mechanic, spec, catalog) {
             : "If you do, prevent that Sync loss.";
         case "create_copies_of_highest_breach_agent": return `Choose the Agent you control with the highest Breach. Create ${mechanic.amount} printed copies of it.`;
         case "prevent_triggering_agent_deletion": return `When an Agent you control would be deleted, you may resolve this card. If you do, prevent that deletion, set that Agent's Integrity to ${mechanic.minimum_integrity} if it is lower, then deal 1 damage to your opponent.`;
-        case "module_attach_highest_breach_protect": return "When this enters play, attach it to the Agent you control with the highest Breach. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.";
+        case "module_attach_highest_breach_protect": return "When this enters play, attach it to an Agent you specify. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.";
         default: {
             const exhaustive = mechanic;
             return exhaustive;
@@ -299,7 +299,7 @@ export function parseEffectText(text, catalog = {}) {
         const amount = normalized.match(/Create (\d+) printed copies/i);
         return { value: mechanicNode({ type: "create_copies_of_highest_breach_agent", amount: Number(amount?.[1] ?? 1), eligible_card_ids: ["naruto_knuckleheaded_ninja"] }), diagnostics: [] };
     }
-    if (/^When this enters play, attach it to the Agent you control with the highest Breach\./i.test(normalized)) {
+    if (/^When this enters play, attach it to an Agent you specify\./i.test(normalized)) {
         return { value: mechanicNode({ type: "module_attach_highest_breach_protect" }), diagnostics: [] };
     }
     // Substitution's leading Sync instruction is its play cost. It remains in
@@ -588,12 +588,12 @@ export function auditCardCatalog(catalog) {
     return { supported, unsupported };
 }
 export function metadataFromDefinition(definition) {
-    const { card_id, display_name, card_kind, immutable, activation, supports_jutsu_preparation, jutsu, signs, integrity, breach, signature, signature_card_id, uplink_requirement, minimum_ki, ki_cost, requires_no_prior_play, flux_cost, bandwidth_cost, sync_cost, adds_card_ids, reaction_triggers, } = definition;
+    const { card_id, display_name, card_kind, immutable, activation, activation_limit, supports_jutsu_preparation, jutsu, signs, integrity, breach, signature, signature_card_id, uplink_requirement, minimum_ki, ki_cost, requires_no_prior_play, flux_cost, bandwidth_cost, sync_cost, adds_card_ids, reaction_triggers, module, programmed_target, } = definition;
     return {
-        card_id, display_name, card_kind, immutable, activation, supports_jutsu_preparation,
+        card_id, display_name, card_kind, immutable, activation, activation_limit, supports_jutsu_preparation,
         jutsu, signs, integrity, breach, signature, signature_card_id, uplink_requirement,
         minimum_ki, ki_cost, requires_no_prior_play, flux_cost, bandwidth_cost, sync_cost,
-        adds_card_ids, reaction_triggers,
+        adds_card_ids, reaction_triggers, module, programmed_target,
     };
 }
 export function formatDiagnostics(diagnostics) {

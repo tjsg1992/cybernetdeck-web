@@ -132,4 +132,37 @@ export class DeckStore {
             body: JSON.stringify({ records }),
         });
     }
+    async listProgramRecipes(cardId) {
+        const query = cardId ? `?card_id=${encodeURIComponent(cardId)}` : "";
+        return this.request(`/v1/program-recipes${query}`);
+    }
+    async createProgramRecipe(input) {
+        return this.request("/v1/program-recipes", {
+            method: "POST",
+            body: JSON.stringify(input),
+        });
+    }
+    async selectProgramRecipe(cardId, recipeId) {
+        const result = await this.request(`/v1/program-recipe-preferences/${encodeURIComponent(cardId)}`, {
+            method: "PUT",
+            body: JSON.stringify({ recipe_id: recipeId }),
+        });
+        return result.preference;
+    }
+    async removeProgramRecipe(recipeId) {
+        await this.request(`/v1/program-recipes/${encodeURIComponent(recipeId)}`, { method: "DELETE" });
+    }
+    async shareProgramRecipe(recipeId) {
+        return this.request(`/v1/program-recipes/${encodeURIComponent(recipeId)}/share`, { method: "POST" });
+    }
+    async listSharedProgramRecipes(cardId) {
+        const result = await this.request(`/v1/shared-program-recipes?card_id=${encodeURIComponent(cardId)}`);
+        return result.shared_recipes;
+    }
+    async saveSharedProgramRecipe(sharedId) {
+        return this.request(`/v1/shared-program-recipes/${encodeURIComponent(sharedId)}/save`, { method: "POST" });
+    }
+    async unshareProgramRecipe(sharedId) {
+        await this.request(`/v1/shared-program-recipes/${encodeURIComponent(sharedId)}`, { method: "DELETE" });
+    }
 }
