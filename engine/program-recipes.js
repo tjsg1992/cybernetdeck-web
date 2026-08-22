@@ -36,13 +36,17 @@ export function recipeIsCompatible(recipe, availableCardIds) {
             && Number(trigger.quantity_threshold) <= 65535;
     });
 }
-export function selectedRecipesByCard(recipes, preferences) {
+export function selectedRecipesByCard(recipes, preferences, sharedFallbacks = []) {
     const byId = new Map(recipes.map((recipe) => [recipe.id, recipe]));
     const selected = new Map();
     for (const preference of preferences) {
         const recipe = byId.get(preference.recipe_id);
         if (recipe && recipe.card_id === preference.card_id)
             selected.set(preference.card_id, recipe);
+    }
+    for (const recipe of sharedFallbacks) {
+        if (!selected.has(recipe.card_id))
+            selected.set(recipe.card_id, recipe);
     }
     return selected;
 }
