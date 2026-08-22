@@ -1,167 +1,69 @@
 [
   {
-    "name": "You think I know what I'm doing?",
-    "owner_name": "Eli",
-    "decklist": {
-      "threefold_siphon": 5,
-      "cursed_seal": 1,
-      "dixie_flatline": 2,
-      "air_five_l": 10,
-      "admin_override": 5,
-      "dragon_install": 1,
-      "keyboard_roll": 5,
-      "kernel_exploit": 1
-    },
-    "program": [
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "keyboard_roll"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "flux",
-        "comparison_operator": ">=",
-        "quantity_threshold": 10,
-        "action_card_id": "threefold_siphon",
-        "quantity_target": "opponent"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "bandwidth",
-        "comparison_operator": ">=",
-        "quantity_threshold": 10,
-        "action_card_id": "kernel_exploit",
-        "quantity_target": "your"
-      },
-      {
-        "condition_type": "card_is",
-        "action_type": "play_named_card",
-        "condition_card_id": "dixie_flatline",
-        "card_condition": "on_your_side_of_board",
-        "action_card_id": "cursed_seal"
-      },
-      {
-        "condition_type": "card_is",
-        "action_type": "play_named_card",
-        "condition_card_id": "dixie_flatline",
-        "card_condition": "in_your_hand",
-        "action_card_id": "dixie_flatline"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "dragon_install"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "admin_override"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "air_five_l"
-      }
-    ],
-    "reactions": [],
-    "default_action": "play_random_card",
-    "random_card_ids": [
-      "cursed_seal"
-    ],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-4"
-  },
-  {
-    "name": "Junichiro Hill",
+    "name": "Bill Dauterive",
     "owner_name": "Noonan",
     "decklist": {
-      "farmer_with_shotgun": 11,
-      "rampant_growth": 1,
-      "junk_food": 9
+      "threefold_siphon": 8,
+      "air_five_l": 1,
+      "crush_card_virus": 1,
+      "garbage_collection": 5,
+      "scorched_earth": 6,
+      "kernel_exploit": 2,
+      "junk_food": 7
     },
     "program": [
       {
         "condition_type": "quantity_compare",
+        "action_type": "play_combo",
+        "quantity_target": "opponent",
+        "quantity": "sync",
+        "comparison_operator": "<=",
+        "quantity_threshold": 2,
+        "action_card_ids": [
+          "crush_card_virus",
+          "air_five_l"
+        ],
+        "only_when_all_cards_in_hand": true
+      },
+      {
+        "condition_type": "if_able",
         "action_type": "play_named_card",
-        "quantity": "cards_in_deck",
-        "comparison_operator": "<",
-        "quantity_threshold": 4,
-        "action_card_id": "farmer_with_shotgun",
-        "quantity_target": "your"
+        "action_card_id": "kernel_exploit"
       },
       {
         "condition_type": "quantity_compare",
         "action_type": "play_named_card",
+        "quantity_target": "your",
+        "quantity": "cards_in_discard",
+        "comparison_operator": ">=",
+        "quantity_threshold": 2,
+        "action_card_id": "garbage_collection"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity_target": "opponent",
+        "quantity": "flux",
+        "comparison_operator": ">=",
+        "quantity_threshold": 3,
+        "action_card_id": "threefold_siphon"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity_target": "opponent",
         "quantity": "cards_on_board",
         "comparison_operator": ">=",
-        "quantity_threshold": 10,
-        "action_card_id": "rampant_growth",
-        "quantity_target": "your"
+        "quantity_threshold": 2,
+        "action_card_id": "scorched_earth"
       },
       {
         "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
+        "action_type": "end_turn",
+        "quantity_target": "your",
         "quantity": "cards_in_deck",
-        "comparison_operator": ">=",
-        "quantity_threshold": 4,
-        "action_card_id": "junk_food",
-        "quantity_target": "your"
-      }
-    ],
-    "reactions": [],
-    "default_action": "end_turn",
-    "random_card_ids": [],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-4"
-  },
-  {
-    "name": "Star Wars Attack of the Clones",
-    "owner_name": "Alex",
-    "decklist": {
-      "ninjutsu": 1,
-      "clone_jutsu": 5,
-      "naruto_knuckleheaded_ninja": 11,
-      "red_ribbon_funding": 3,
-      "junk_food": 5,
-      "cultivate": 5
-    },
-    "program": [
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "naruto_knuckleheaded_ninja"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "vandalize_hokage_monument"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "shadow_clone_jutsu"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "clone_jutsu"
-      },
-      {
-        "condition_type": "card_is",
-        "action_type": "play_named_card",
-        "condition_card_id": "naruto_knuckleheaded_ninja",
-        "card_condition": "on_your_side_of_board",
-        "action_card_id": "red_ribbon_funding"
-      },
-      {
-        "condition_type": "card_is",
-        "action_type": "play_named_card",
-        "condition_card_id": "naruto_knuckleheaded_ninja",
-        "card_condition": "on_your_side_of_board",
-        "action_card_id": "cultivate"
+        "comparison_operator": "<",
+        "quantity_threshold": 4
       },
       {
         "condition_type": "if_able",
@@ -169,103 +71,89 @@
         "action_card_id": "junk_food"
       }
     ],
-    "reactions": [],
+    "card_programs": [],
     "default_action": "end_turn",
-    "random_card_ids": [],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-4"
+    "random_card_ids": [
+      "air_five_l",
+      "crush_card_virus"
+    ],
+    "submission_schema_version": 2,
+    "format_id": "next-set-2-patch-6"
   },
   {
-    "name": "If you give guns to shadow clones they still shoot normal bullets",
-    "owner_name": "Colin",
+    "name": "Back to Basics",
+    "owner_name": "Alex",
     "decklist": {
-      "ninjutsu": 1,
-      "clone_jutsu": 5,
-      "naruto_knuckleheaded_ninja": 10,
-      "substitution_jutsu": 1,
-      "dragon_install": 1,
-      "red_ribbon_funding": 5,
-      "junk_food": 7
+      "victory_point_2": 20,
+      "junk_food": 10
     },
     "program": [
       {
         "condition_type": "if_able",
         "action_type": "play_named_card",
-        "action_card_id": "substitution_jutsu"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_combo",
-        "action_card_ids": [
-          "shadow_clone_jutsu",
-          "naruto_knuckleheaded_ninja"
-        ],
-        "cancel_if_card_not_played": true
+        "action_card_id": "victory_point_2"
       },
       {
         "condition_type": "if_able",
         "action_type": "play_named_card",
-        "action_card_id": "shadow_clone_jutsu"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_combo",
-        "action_card_ids": [
-          "clone_jutsu",
-          "naruto_knuckleheaded_ninja"
-        ],
-        "cancel_if_card_not_played": true
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "vandalize_hokage_monument"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "cards_on_board",
-        "comparison_operator": ">",
-        "quantity_threshold": 5,
-        "action_card_id": "red_ribbon_funding",
-        "quantity_target": "your"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "naruto_knuckleheaded_ninja"
-      },
-      {
-        "condition_type": "if_able",
-        "action_type": "play_named_card",
-        "action_card_id": "dragon_install"
-      },
-      {
-        "condition_type": "quantity_compare",
-        "action_type": "play_named_card",
-        "quantity": "cards_in_deck",
-        "comparison_operator": ">",
-        "quantity_threshold": 5,
-        "action_card_id": "junk_food",
-        "quantity_target": "your"
+        "action_card_id": "junk_food"
       }
     ],
-    "reactions": [],
+    "card_programs": [],
     "default_action": "end_turn",
-    "random_card_ids": [
-      "clone_jutsu"
-    ],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-4"
+    "random_card_ids": [],
+    "submission_schema_version": 2,
+    "format_id": "next-set-2-patch-6"
   },
   {
-    "name": "Snack Wardens",
+    "name": "Best deck of last time with altered ratios",
+    "owner_name": "Colin",
+    "decklist": {
+      "victory_point_2": 7,
+      "sparkleback_totem": 6,
+      "junk_food": 5,
+      "soul_warden": 5
+    },
+    "program": [
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "soul_warden"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "sparkleback_totem"
+      },
+      {
+        "condition_type": "if_able",
+        "action_type": "play_named_card",
+        "action_card_id": "victory_point_2"
+      },
+      {
+        "condition_type": "quantity_compare",
+        "action_type": "play_named_card",
+        "quantity_target": "your",
+        "quantity": "cards_in_deck",
+        "comparison_operator": ">=",
+        "quantity_threshold": 5,
+        "action_card_id": "junk_food"
+      }
+    ],
+    "card_programs": [],
+    "default_action": "end_turn",
+    "random_card_ids": [],
+    "submission_schema_version": 2,
+    "format_id": "next-set-2-patch-6"
+  },
+  {
+    "name": "Snackin Wardens V2 (Diet Edition)",
     "owner_name": "Taylor",
     "decklist": {
-      "victory_point_2": 8,
-      "sparkleback_totem": 7,
-      "junk_food": 9,
-      "soul_warden": 6
+      "victory_point_2": 7,
+      "sparkleback_totem": 6,
+      "junk_food": 5,
+      "soul_warden": 4
     },
     "program": [
       {
@@ -274,14 +162,12 @@
         "action_card_ids": [
           "soul_warden",
           "sparkleback_totem",
-          "matt_daemon",
           "victory_point_1",
           "victory_point_2"
         ],
         "action_card_all_ids": [
           "sparkleback_totem",
           "soul_warden",
-          "matt_daemon",
           "victory_point_2",
           "victory_point_1"
         ]
@@ -292,14 +178,14 @@
         "action_card_id": "junk_food"
       }
     ],
-    "reactions": [],
+    "card_programs": [],
     "default_action": "end_turn",
     "random_card_ids": [
       "victory_point_2",
       "sparkleback_totem",
       "soul_warden"
     ],
-    "submission_schema_version": 1,
-    "format_id": "next-set-2-patch-4"
+    "submission_schema_version": 2,
+    "format_id": "next-set-2-patch-6"
   }
 ]

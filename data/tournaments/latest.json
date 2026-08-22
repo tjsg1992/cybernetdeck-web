@@ -1,5 +1,5 @@
 {
-  "snapshot_id": "tournament-20260819T135005Z",
+  "snapshot_id": "tournament-20260822T154327Z",
   "manifest": {
     "cards": [
       {
@@ -272,8 +272,14 @@
         "card_kind": "daemon",
         "card_kind_label": "Module \u2022 Jutsu",
         "display_name": "Transformation Jutsu",
-        "effect": "When this enters play, attach it to the Agent you control with the highest Breach. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.",
-        "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Snake"
+        "effect": "When this enters play, attach it to an Agent you specify. The first time that Agent would be chosen to take damage, if another Agent can take that damage, ignore the attached Agent, then delete this Module.",
+        "keyword_line": "Bandwidth 1 \u2022 Signs \u2014 Ram, Snake",
+        "module": true,
+        "programmed_target": {
+          "card_kind": "agent",
+          "controller": "self",
+          "zone": "battlefield"
+        }
       },
       {
         "card_id": "substitution_jutsu",
@@ -282,6 +288,11 @@
         "display_name": "Substitution Jutsu",
         "effect": "You lose 2 Sync. When an Agent you control would be deleted, you may resolve this card. If you do, prevent that deletion, set that Agent's Integrity to 1 if it is lower, then deal 1 damage to your opponent.",
         "keyword_line": "Signs \u2014 None",
+        "programmed_target": {
+          "card_kind": "agent",
+          "controller": "self",
+          "zone": "battlefield"
+        },
         "reaction_triggers": [
           "own_agent_would_be_deleted"
         ]
@@ -435,229 +446,116 @@
         "keyword_line": "Bandwidth 2"
       }
     ],
-    "created_at": "2026-08-19T13:50:05.768341+00:00",
-    "format_fingerprint": "43785889cc3d8612d885629ef108f2ec40cd023f9e52da01a0369737d2fae396",
-    "format_id": "next-set-2-patch-4",
+    "created_at": "2026-08-22T15:43:27.077422+00:00",
+    "format_fingerprint": "1b24d0ce3240e9507c548b12f92b57253a161d1b01b0b770538422d067d705f0",
+    "format_id": "next-set-2-patch-6",
     "format_version": "cd-ts-1",
-    "id": "tournament-20260819T135005Z",
+    "id": "tournament-20260822T154327Z",
     "published": true,
-    "published_at": "2026-08-19T14:01:35.323242+00:00",
     "replay_assets": {
       "card-rules": "card-rules.js",
       "card-specs": "card-specs.js",
       "cards": "cards.js",
       "engine": "engine.js"
     },
-    "rules_fingerprint": "9ef988cf358900c3ee11b35e0bdb6fc9efa3cddb46bfe86a5b4ceb81fe63f416",
-    "tournament_seed": 2673428693
+    "rules_fingerprint": "731876acc5f573c8c4e27a205975331dfb1939dca65011e27e38fee96fcecf7c",
+    "tournament_seed": 1634634465
   },
   "standings": [
     {
-      "deck_name": "Snack Wardens",
-      "discord_user_id": "184439858255626240",
-      "player_name": "Taylor",
-      "total_wins": 3646
-    },
-    {
-      "deck_name": "If you give guns to shadow clones they still shoot normal bullets",
-      "discord_user_id": "173986825889644544",
-      "player_name": "Colin",
-      "total_wins": 2816
-    },
-    {
-      "deck_name": "Star Wars Attack of the Clones",
-      "discord_user_id": "173981293229506561",
-      "player_name": "Alex",
-      "total_wins": 2455
-    },
-    {
-      "deck_name": "You think I know what I'm doing?",
-      "discord_user_id": "134208646606356480",
-      "player_name": "Eli",
-      "total_wins": 808
-    },
-    {
-      "deck_name": "Junichiro Hill",
+      "deck_name": "Bill Dauterive",
       "discord_user_id": "163009224090058753",
       "player_name": "Noonan",
-      "total_wins": 275
+      "total_wins": 2491
+    },
+    {
+      "deck_name": "Snackin Wardens V2 (Diet Edition)",
+      "discord_user_id": "184439858255626240",
+      "player_name": "Taylor",
+      "total_wins": 1323
+    },
+    {
+      "deck_name": "Best deck of last time with altered ratios",
+      "discord_user_id": "173986825889644544",
+      "player_name": "Colin",
+      "total_wins": 1268
+    },
+    {
+      "deck_name": "Back to Basics",
+      "discord_user_id": "173981293229506561",
+      "player_name": "Alex",
+      "total_wins": 918
     }
   ],
   "decks": [
     {
-      "discord_user_id": "134208646606356480",
-      "player_name": "Eli",
-      "submission": {
-        "name": "You think I know what I'm doing?",
-        "owner_name": "Rawhide Kobayashi",
-        "decklist": {
-          "threefold_siphon": 5,
-          "cursed_seal": 1,
-          "dixie_flatline": 2,
-          "air_five_l": 10,
-          "admin_override": 5,
-          "dragon_install": 1,
-          "keyboard_roll": 5,
-          "kernel_exploit": 1
-        },
-        "program": [
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "keyboard_roll"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "flux",
-            "comparison_operator": ">=",
-            "quantity_threshold": 10,
-            "action_card_id": "threefold_siphon",
-            "quantity_target": "opponent"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
-            "quantity": "bandwidth",
-            "comparison_operator": ">=",
-            "quantity_threshold": 10,
-            "action_card_id": "kernel_exploit",
-            "quantity_target": "your"
-          },
-          {
-            "condition_type": "card_is",
-            "action_type": "play_named_card",
-            "condition_card_id": "dixie_flatline",
-            "card_condition": "on_your_side_of_board",
-            "action_card_id": "cursed_seal"
-          },
-          {
-            "condition_type": "card_is",
-            "action_type": "play_named_card",
-            "condition_card_id": "dixie_flatline",
-            "card_condition": "in_your_hand",
-            "action_card_id": "dixie_flatline"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "dragon_install"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "admin_override"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "air_five_l"
-          }
-        ],
-        "reactions": [],
-        "default_action": "play_random_card",
-        "random_card_ids": [
-          "cursed_seal"
-        ],
-        "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-4"
-      }
-    },
-    {
       "discord_user_id": "163009224090058753",
       "player_name": "Noonan",
       "submission": {
-        "name": "Junichiro Hill",
+        "name": "Bill Dauterive",
         "owner_name": "NNBJ",
         "decklist": {
-          "farmer_with_shotgun": 11,
-          "rampant_growth": 1,
-          "junk_food": 9
+          "threefold_siphon": 8,
+          "air_five_l": 1,
+          "crush_card_virus": 1,
+          "garbage_collection": 5,
+          "scorched_earth": 6,
+          "kernel_exploit": 2,
+          "junk_food": 7
         },
         "program": [
           {
             "condition_type": "quantity_compare",
+            "action_type": "play_combo",
+            "quantity_target": "opponent",
+            "quantity": "sync",
+            "comparison_operator": "<=",
+            "quantity_threshold": 2,
+            "action_card_ids": [
+              "crush_card_virus",
+              "air_five_l"
+            ],
+            "only_when_all_cards_in_hand": true
+          },
+          {
+            "condition_type": "if_able",
             "action_type": "play_named_card",
-            "quantity": "cards_in_deck",
-            "comparison_operator": "<",
-            "quantity_threshold": 4,
-            "action_card_id": "farmer_with_shotgun",
-            "quantity_target": "your"
+            "action_card_id": "kernel_exploit"
           },
           {
             "condition_type": "quantity_compare",
             "action_type": "play_named_card",
+            "quantity_target": "your",
+            "quantity": "cards_in_discard",
+            "comparison_operator": ">=",
+            "quantity_threshold": 2,
+            "action_card_id": "garbage_collection"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity_target": "opponent",
+            "quantity": "flux",
+            "comparison_operator": ">=",
+            "quantity_threshold": 3,
+            "action_card_id": "threefold_siphon"
+          },
+          {
+            "condition_type": "quantity_compare",
+            "action_type": "play_named_card",
+            "quantity_target": "opponent",
             "quantity": "cards_on_board",
             "comparison_operator": ">=",
-            "quantity_threshold": 10,
-            "action_card_id": "rampant_growth",
-            "quantity_target": "your"
+            "quantity_threshold": 2,
+            "action_card_id": "scorched_earth"
           },
           {
             "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
+            "action_type": "end_turn",
+            "quantity_target": "your",
             "quantity": "cards_in_deck",
-            "comparison_operator": ">=",
-            "quantity_threshold": 4,
-            "action_card_id": "junk_food",
-            "quantity_target": "your"
-          }
-        ],
-        "reactions": [],
-        "default_action": "end_turn",
-        "random_card_ids": [],
-        "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-4"
-      }
-    },
-    {
-      "discord_user_id": "173981293229506561",
-      "player_name": "Alex",
-      "submission": {
-        "name": "Star Wars Attack of the Clones",
-        "owner_name": "\"Hope you're toe\" Johnson",
-        "decklist": {
-          "ninjutsu": 1,
-          "clone_jutsu": 5,
-          "naruto_knuckleheaded_ninja": 11,
-          "red_ribbon_funding": 3,
-          "junk_food": 5,
-          "cultivate": 5
-        },
-        "program": [
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "naruto_knuckleheaded_ninja"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "vandalize_hokage_monument"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "shadow_clone_jutsu"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "clone_jutsu"
-          },
-          {
-            "condition_type": "card_is",
-            "action_type": "play_named_card",
-            "condition_card_id": "naruto_knuckleheaded_ninja",
-            "card_condition": "on_your_side_of_board",
-            "action_card_id": "red_ribbon_funding"
-          },
-          {
-            "condition_type": "card_is",
-            "action_type": "play_named_card",
-            "condition_card_id": "naruto_knuckleheaded_ninja",
-            "card_condition": "on_your_side_of_board",
-            "action_card_id": "cultivate"
+            "comparison_operator": "<",
+            "quantity_threshold": 4
           },
           {
             "condition_type": "if_able",
@@ -665,111 +563,101 @@
             "action_card_id": "junk_food"
           }
         ],
-        "reactions": [],
+        "card_programs": [],
+        "default_action": "end_turn",
+        "random_card_ids": [
+          "air_five_l",
+          "crush_card_virus"
+        ],
+        "submission_schema_version": 2,
+        "format_id": "next-set-2-patch-6"
+      }
+    },
+    {
+      "discord_user_id": "173981293229506561",
+      "player_name": "Alex",
+      "submission": {
+        "name": "Back to Basics",
+        "owner_name": "\"Hope you're toe\" Johnson",
+        "decklist": {
+          "victory_point_2": 20,
+          "junk_food": 10
+        },
+        "program": [
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "victory_point_2"
+          },
+          {
+            "condition_type": "if_able",
+            "action_type": "play_named_card",
+            "action_card_id": "junk_food"
+          }
+        ],
+        "card_programs": [],
         "default_action": "end_turn",
         "random_card_ids": [],
-        "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-4"
+        "submission_schema_version": 2,
+        "format_id": "next-set-2-patch-6"
       }
     },
     {
       "discord_user_id": "173986825889644544",
       "player_name": "Colin",
       "submission": {
-        "name": "If you give guns to shadow clones they still shoot normal bullets",
+        "name": "Best deck of last time with altered ratios",
         "owner_name": "Phen",
         "decklist": {
-          "ninjutsu": 1,
-          "clone_jutsu": 5,
-          "naruto_knuckleheaded_ninja": 10,
-          "substitution_jutsu": 1,
-          "dragon_install": 1,
-          "red_ribbon_funding": 5,
-          "junk_food": 7
+          "victory_point_2": 7,
+          "sparkleback_totem": 6,
+          "junk_food": 5,
+          "soul_warden": 5
         },
         "program": [
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "substitution_jutsu"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_combo",
-            "action_card_ids": [
-              "shadow_clone_jutsu",
-              "naruto_knuckleheaded_ninja"
-            ],
-            "cancel_if_card_not_played": true
+            "action_card_id": "soul_warden"
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "shadow_clone_jutsu"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_combo",
-            "action_card_ids": [
-              "clone_jutsu",
-              "naruto_knuckleheaded_ninja"
-            ],
-            "cancel_if_card_not_played": true
+            "action_card_id": "sparkleback_totem"
           },
           {
             "condition_type": "if_able",
             "action_type": "play_named_card",
-            "action_card_id": "vandalize_hokage_monument"
+            "action_card_id": "victory_point_2"
           },
           {
             "condition_type": "quantity_compare",
             "action_type": "play_named_card",
-            "quantity": "cards_on_board",
-            "comparison_operator": ">",
-            "quantity_threshold": 5,
-            "action_card_id": "red_ribbon_funding",
-            "quantity_target": "your"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "naruto_knuckleheaded_ninja"
-          },
-          {
-            "condition_type": "if_able",
-            "action_type": "play_named_card",
-            "action_card_id": "dragon_install"
-          },
-          {
-            "condition_type": "quantity_compare",
-            "action_type": "play_named_card",
+            "quantity_target": "your",
             "quantity": "cards_in_deck",
-            "comparison_operator": ">",
+            "comparison_operator": ">=",
             "quantity_threshold": 5,
-            "action_card_id": "junk_food",
-            "quantity_target": "your"
+            "action_card_id": "junk_food"
           }
         ],
-        "reactions": [],
+        "card_programs": [],
         "default_action": "end_turn",
-        "random_card_ids": [
-          "clone_jutsu"
-        ],
-        "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-4"
+        "random_card_ids": [],
+        "submission_schema_version": 2,
+        "format_id": "next-set-2-patch-6"
       }
     },
     {
       "discord_user_id": "184439858255626240",
       "player_name": "Taylor",
       "submission": {
-        "name": "Snack Wardens",
+        "name": "Snackin Wardens V2 (Diet Edition)",
         "owner_name": "Loth",
         "decklist": {
-          "victory_point_2": 8,
-          "sparkleback_totem": 7,
-          "junk_food": 9,
-          "soul_warden": 6
+          "victory_point_2": 7,
+          "sparkleback_totem": 6,
+          "junk_food": 5,
+          "soul_warden": 4
         },
         "program": [
           {
@@ -778,14 +666,12 @@
             "action_card_ids": [
               "soul_warden",
               "sparkleback_totem",
-              "matt_daemon",
               "victory_point_1",
               "victory_point_2"
             ],
             "action_card_all_ids": [
               "sparkleback_totem",
               "soul_warden",
-              "matt_daemon",
               "victory_point_2",
               "victory_point_1"
             ]
@@ -796,137 +682,89 @@
             "action_card_id": "junk_food"
           }
         ],
-        "reactions": [],
+        "card_programs": [],
         "default_action": "end_turn",
         "random_card_ids": [
           "victory_point_2",
           "sparkleback_totem",
           "soul_warden"
         ],
-        "submission_schema_version": 1,
-        "format_id": "next-set-2-patch-4"
+        "submission_schema_version": 2,
+        "format_id": "next-set-2-patch-6"
       }
     }
   ],
   "matchups": [
     {
       "matchup_id": "matchup-001",
-      "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "163009224090058753",
+      "first_discord_user_id": "163009224090058753",
+      "second_discord_user_id": "173981293229506561",
       "summary": {
-        "average_turns": 8.4,
+        "average_turns": 13.1,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 725,
-        "second_wins": 275
+        "first_wins": 648,
+        "second_wins": 352
       }
     },
     {
       "matchup_id": "matchup-002",
-      "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "173981293229506561",
+      "first_discord_user_id": "163009224090058753",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 6.9,
+        "average_turns": 16.2,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 1,
-        "second_wins": 999
+        "first_wins": 937,
+        "second_wins": 63
       }
     },
     {
       "matchup_id": "matchup-003",
-      "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "173986825889644544",
+      "first_discord_user_id": "163009224090058753",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 6.2,
+        "average_turns": 11.0,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 79,
-        "second_wins": 921
+        "first_wins": 906,
+        "second_wins": 94
       }
     },
     {
       "matchup_id": "matchup-004",
-      "first_discord_user_id": "134208646606356480",
-      "second_discord_user_id": "184439858255626240",
+      "first_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "173986825889644544",
       "summary": {
-        "average_turns": 6.0,
+        "average_turns": 6.4,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 3,
-        "second_wins": 997
+        "first_wins": 296,
+        "second_wins": 704
       }
     },
     {
       "matchup_id": "matchup-005",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "173981293229506561",
+      "first_discord_user_id": "173981293229506561",
+      "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 10.5,
+        "average_turns": 6.3,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 0,
-        "second_wins": 1000
+        "first_wins": 270,
+        "second_wins": 730
       }
     },
     {
       "matchup_id": "matchup-006",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "173986825889644544",
-      "summary": {
-        "average_turns": 8.6,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 0,
-        "second_wins": 1000
-      }
-    },
-    {
-      "matchup_id": "matchup-007",
-      "first_discord_user_id": "163009224090058753",
-      "second_discord_user_id": "184439858255626240",
-      "summary": {
-        "average_turns": 7.3,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 0,
-        "second_wins": 1000
-      }
-    },
-    {
-      "matchup_id": "matchup-008",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "173986825889644544",
-      "summary": {
-        "average_turns": 11.9,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 339,
-        "second_wins": 661
-      }
-    },
-    {
-      "matchup_id": "matchup-009",
-      "first_discord_user_id": "173981293229506561",
-      "second_discord_user_id": "184439858255626240",
-      "summary": {
-        "average_turns": 7.6,
-        "battle_count": 1000,
-        "draws": 0,
-        "first_wins": 117,
-        "second_wins": 883
-      }
-    },
-    {
-      "matchup_id": "matchup-010",
       "first_discord_user_id": "173986825889644544",
       "second_discord_user_id": "184439858255626240",
       "summary": {
-        "average_turns": 7.1,
+        "average_turns": 5.2,
         "battle_count": 1000,
         "draws": 0,
-        "first_wins": 234,
-        "second_wins": 766
+        "first_wins": 501,
+        "second_wins": 499
       }
     }
   ]

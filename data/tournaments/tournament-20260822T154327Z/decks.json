@@ -1,0 +1,207 @@
+[
+  {
+    "discord_user_id": "163009224090058753",
+    "player_name": "Noonan",
+    "submission": {
+      "name": "Bill Dauterive",
+      "owner_name": "NNBJ",
+      "decklist": {
+        "threefold_siphon": 8,
+        "air_five_l": 1,
+        "crush_card_virus": 1,
+        "garbage_collection": 5,
+        "scorched_earth": 6,
+        "kernel_exploit": 2,
+        "junk_food": 7
+      },
+      "program": [
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_combo",
+          "quantity_target": "opponent",
+          "quantity": "sync",
+          "comparison_operator": "<=",
+          "quantity_threshold": 2,
+          "action_card_ids": [
+            "crush_card_virus",
+            "air_five_l"
+          ],
+          "only_when_all_cards_in_hand": true
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "kernel_exploit"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity_target": "your",
+          "quantity": "cards_in_discard",
+          "comparison_operator": ">=",
+          "quantity_threshold": 2,
+          "action_card_id": "garbage_collection"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity_target": "opponent",
+          "quantity": "flux",
+          "comparison_operator": ">=",
+          "quantity_threshold": 3,
+          "action_card_id": "threefold_siphon"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity_target": "opponent",
+          "quantity": "cards_on_board",
+          "comparison_operator": ">=",
+          "quantity_threshold": 2,
+          "action_card_id": "scorched_earth"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "end_turn",
+          "quantity_target": "your",
+          "quantity": "cards_in_deck",
+          "comparison_operator": "<",
+          "quantity_threshold": 4
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "junk_food"
+        }
+      ],
+      "card_programs": [],
+      "default_action": "end_turn",
+      "random_card_ids": [
+        "air_five_l",
+        "crush_card_virus"
+      ],
+      "submission_schema_version": 2,
+      "format_id": "next-set-2-patch-6"
+    }
+  },
+  {
+    "discord_user_id": "173981293229506561",
+    "player_name": "Alex",
+    "submission": {
+      "name": "Back to Basics",
+      "owner_name": "\"Hope you're toe\" Johnson",
+      "decklist": {
+        "victory_point_2": 20,
+        "junk_food": 10
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "junk_food"
+        }
+      ],
+      "card_programs": [],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "submission_schema_version": 2,
+      "format_id": "next-set-2-patch-6"
+    }
+  },
+  {
+    "discord_user_id": "173986825889644544",
+    "player_name": "Colin",
+    "submission": {
+      "name": "Best deck of last time with altered ratios",
+      "owner_name": "Phen",
+      "decklist": {
+        "victory_point_2": 7,
+        "sparkleback_totem": 6,
+        "junk_food": 5,
+        "soul_warden": 5
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "soul_warden"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "sparkleback_totem"
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "victory_point_2"
+        },
+        {
+          "condition_type": "quantity_compare",
+          "action_type": "play_named_card",
+          "quantity_target": "your",
+          "quantity": "cards_in_deck",
+          "comparison_operator": ">=",
+          "quantity_threshold": 5,
+          "action_card_id": "junk_food"
+        }
+      ],
+      "card_programs": [],
+      "default_action": "end_turn",
+      "random_card_ids": [],
+      "submission_schema_version": 2,
+      "format_id": "next-set-2-patch-6"
+    }
+  },
+  {
+    "discord_user_id": "184439858255626240",
+    "player_name": "Taylor",
+    "submission": {
+      "name": "Snackin Wardens V2 (Diet Edition)",
+      "owner_name": "Loth",
+      "decklist": {
+        "victory_point_2": 7,
+        "sparkleback_totem": 6,
+        "junk_food": 5,
+        "soul_warden": 4
+      },
+      "program": [
+        {
+          "condition_type": "if_able",
+          "action_type": "play_combo",
+          "action_card_ids": [
+            "soul_warden",
+            "sparkleback_totem",
+            "victory_point_1",
+            "victory_point_2"
+          ],
+          "action_card_all_ids": [
+            "sparkleback_totem",
+            "soul_warden",
+            "victory_point_2",
+            "victory_point_1"
+          ]
+        },
+        {
+          "condition_type": "if_able",
+          "action_type": "play_named_card",
+          "action_card_id": "junk_food"
+        }
+      ],
+      "card_programs": [],
+      "default_action": "end_turn",
+      "random_card_ids": [
+        "victory_point_2",
+        "sparkleback_totem",
+        "soul_warden"
+      ],
+      "submission_schema_version": 2,
+      "format_id": "next-set-2-patch-6"
+    }
+  }
+]
