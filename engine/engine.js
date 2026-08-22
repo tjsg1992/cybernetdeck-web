@@ -40,6 +40,7 @@ const OPERATORS = ["<", "<=", "=", ">=", ">"];
 const QUANTITY_KINDS = [
     "cards_in_deck",
     "cards_in_hand",
+    "cards_in_discard",
     "cards_on_board",
     "flux",
     "ki",

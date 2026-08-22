@@ -403,7 +403,7 @@ function decodeBody(raw, cardIds, legacyPrefix, schemaVersion = 1) {
 }
 export function decodeSubmission(code, catalogs, expectedFormatId) {
     const normalized = String(code ?? "").replace(/\s+/g, ""), match = /^(CD4|CD5|CD6)\.([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/.exec(normalized);
-    if (!match || match[2] !== expectedFormatId)
+    if (!match || (match[1] !== "CD6" && match[2] !== expectedFormatId))
         throw Error("That deck code is for a different or unsupported card format.");
     const raw = b64decode(match[3]);
     if (match[1] === "CD6") {
